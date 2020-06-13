@@ -5169,8 +5169,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>Q</name>
-                        <keycode>81</keycode>
+                        <name>1</name>
+                        <keycode>49</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>
@@ -5318,13 +5318,13 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                   </output>
                   <hasMapping>true</hasMapping>
                 </zDownWheelMapping>
-                <description>Keymap 8</description>
+                <description></description>
               </Keymap>
             </keymaps>
             <author>Vapula</author>
             <lastUpdatedDate>1592019725406</lastUpdatedDate>
             <info></info>
-            <defaultMap>0</defaultMap>
+            <defaultMap>2</defaultMap>
           </Profile>
           <Profile>
             <app reference="../../.."/>
@@ -8942,7 +8942,7 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
             <author></author>
             <lastUpdatedDate>1592022948883</lastUpdatedDate>
             <info></info>
-            <defaultMap>0</defaultMap>
+            <defaultMap>6</defaultMap>
           </Profile>
         </profiles>
       </App>

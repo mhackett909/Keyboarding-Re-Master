@@ -1703,9 +1703,10 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
             <name>World of Warcraft</name>
             <appType>GAME</appType>
             <profiles>
+              <Profile reference="../../.."/>
               <Profile>
                 <app reference="../../.."/>
-                <profileName>Classic</profileName>
+                <profileName>test</profileName>
                 <keymaps>
                   <Keymap>
                     <id>1</id>
@@ -1734,8 +1735,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                             <inputString>C</inputString>
                           </inputHardware>
                           <output class="OutputKey">
-                            <name>H</name>
-                            <keycode>72</keycode>
+                            <name>C</name>
+                            <keycode>67</keycode>
                             <modifier>0</modifier>
                             <description></description>
                           </output>
@@ -1846,8 +1847,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                             <inputString>R</inputString>
                           </inputHardware>
                           <output class="OutputKey">
-                            <name>A</name>
-                            <keycode>65</keycode>
+                            <name>R</name>
+                            <keycode>82</keycode>
                             <modifier>0</modifier>
                             <description></description>
                           </output>
@@ -1990,8 +1991,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                             <inputString>Middle</inputString>
                           </inputHardware>
                           <output class="OutputMouse">
-                            <name>Click</name>
-                            <keycode>16</keycode>
+                            <name>Middle</name>
+                            <keycode>8</keycode>
                             <modifier>0</modifier>
                             <description></description>
                             <mouseType>MouseClick</mouseType>
@@ -2156,7 +2157,7 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                       </output>
                       <hasMapping>true</hasMapping>
                     </zDownWheelMapping>
-                    <description>Keymap 1</description>
+                    <description></description>
                   </Keymap>
                   <Keymap>
                     <id>2</id>
@@ -2458,8 +2459,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                             <inputString>1</inputString>
                           </inputHardware>
                           <output class="OutputKey">
-                            <name>Z</name>
-                            <keycode>90</keycode>
+                            <name>1</name>
+                            <keycode>49</keycode>
                             <modifier>0</modifier>
                             <description></description>
                           </output>
@@ -2607,7 +2608,7 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                       </output>
                       <hasMapping>true</hasMapping>
                     </zDownWheelMapping>
-                    <description>Keymap 2</description>
+                    <description></description>
                   </Keymap>
                   <Keymap>
                     <id>3</id>
@@ -4472,8 +4473,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                             <inputString>D</inputString>
                           </inputHardware>
                           <output class="OutputKey">
-                            <name>V</name>
-                            <keycode>86</keycode>
+                            <name>D</name>
+                            <keycode>68</keycode>
                             <modifier>0</modifier>
                             <description></description>
                           </output>
@@ -5164,8 +5165,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                             <inputString>1</inputString>
                           </inputHardware>
                           <output class="OutputKey">
-                            <name>Q</name>
-                            <keycode>81</keycode>
+                            <name>1</name>
+                            <keycode>49</keycode>
                             <modifier>0</modifier>
                             <description></description>
                           </output>
@@ -5313,18 +5314,17 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                       </output>
                       <hasMapping>true</hasMapping>
                     </zDownWheelMapping>
-                    <description>Keymap 8</description>
+                    <description></description>
                   </Keymap>
                 </keymaps>
-                <author>Vapula</author>
-                <lastUpdatedDate>1592019725406</lastUpdatedDate>
+                <author></author>
+                <lastUpdatedDate>1592022948883</lastUpdatedDate>
                 <info></info>
-                <defaultMap>0</defaultMap>
+                <defaultMap>6</defaultMap>
               </Profile>
-              <Profile reference="../../.."/>
             </profiles>
           </app>
-          <profileName>test</profileName>
+          <profileName>Classic</profileName>
           <keymaps>
             <Keymap>
               <id>1</id>
@@ -5353,8 +5353,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                       <inputString>C</inputString>
                     </inputHardware>
                     <output class="OutputKey">
-                      <name>C</name>
-                      <keycode>67</keycode>
+                      <name>H</name>
+                      <keycode>72</keycode>
                       <modifier>0</modifier>
                       <description></description>
                     </output>
@@ -5465,8 +5465,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                       <inputString>R</inputString>
                     </inputHardware>
                     <output class="OutputKey">
-                      <name>R</name>
-                      <keycode>82</keycode>
+                      <name>A</name>
+                      <keycode>65</keycode>
                       <modifier>0</modifier>
                       <description></description>
                     </output>
@@ -5609,8 +5609,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                       <inputString>Middle</inputString>
                     </inputHardware>
                     <output class="OutputMouse">
-                      <name>Middle</name>
-                      <keycode>8</keycode>
+                      <name>Click</name>
+                      <keycode>16</keycode>
                       <modifier>0</modifier>
                       <description></description>
                       <mouseType>MouseClick</mouseType>
@@ -5775,7 +5775,7 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                 </output>
                 <hasMapping>true</hasMapping>
               </zDownWheelMapping>
-              <description></description>
+              <description>Keymap 1</description>
             </Keymap>
             <Keymap>
               <id>2</id>
@@ -6077,8 +6077,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                       <inputString>1</inputString>
                     </inputHardware>
                     <output class="OutputKey">
-                      <name>1</name>
-                      <keycode>49</keycode>
+                      <name>Z</name>
+                      <keycode>90</keycode>
                       <modifier>0</modifier>
                       <description></description>
                     </output>
@@ -6226,7 +6226,7 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                 </output>
                 <hasMapping>true</hasMapping>
               </zDownWheelMapping>
-              <description></description>
+              <description>Keymap 2</description>
             </Keymap>
             <Keymap>
               <id>3</id>
@@ -8091,8 +8091,8 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
                       <inputString>D</inputString>
                     </inputHardware>
                     <output class="OutputKey">
-                      <name>D</name>
-                      <keycode>68</keycode>
+                      <name>V</name>
+                      <keycode>86</keycode>
                       <modifier>0</modifier>
                       <description></description>
                     </output>
@@ -8935,10 +8935,10 @@ MEwbrfsAAAAASUVORK5CYII=</devLogoByteArray>
               <description></description>
             </Keymap>
           </keymaps>
-          <author></author>
-          <lastUpdatedDate>1592022948883</lastUpdatedDate>
+          <author>Vapula</author>
+          <lastUpdatedDate>1592019725406</lastUpdatedDate>
           <info></info>
-          <defaultMap>0</defaultMap>
+          <defaultMap>3</defaultMap>
         </profile>
         <isConnected>true</isConnected>
         <isEnabled>true</isEnabled>

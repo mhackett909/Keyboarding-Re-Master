@@ -291,7 +291,11 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		}
 		else PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
     }
-    /**
+	/**
+	 * Returns the KeymapUIManager
+	 */
+	 public KeymapUIManager getKeymapUIManager() { return keymapUIManager; }
+	/**
      * Opens the display keymap popup with the specified keymap id.
      * @param keymapID from 0 to 7.
      */ 

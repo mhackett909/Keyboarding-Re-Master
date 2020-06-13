@@ -155,7 +155,12 @@ public class ConfigureDeviceUIController implements Initializable, PopupNotifyIn
 	}else if(obj == displayKeymapB){
 	    profileUIController.openDisplayKeymapPopup(driverTabPane.getSelectionModel().getSelectedIndex());
 	}else if(obj == eraseKeymapB){
-		System.out.println("Erase this keymap.");
+		int selectedKeymap = driverTabPane.getSelectionModel().getSelectedIndex();
+		device.setDefaultKeymap(device.getProfile(),selectedKeymap);
+		profileUIController.setKeymapDescription(selectedKeymap, "");
+		DriverUIController driverUIController = profileUIController.getKeymapUIManager().getDriverUIController(selectedKeymap);
+		driverUIController.setSelectedKeymap(device.getProfile().getKeymap(selectedKeymap));
+
 	}else if(obj == hideB){
 		profileUIController.saveProfile();
 	    stage.hide();

@@ -10,6 +10,7 @@ import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.profiles.Profile;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Driver;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
@@ -77,6 +78,10 @@ public class KeymapUIManager implements ChangeListener{
 	 public void setProfileUIController(ProfileUIController profileUIController) {
 	 	this.profileUIController = profileUIController;
 	 }
+	/**
+	 * Gets the DriverUIController. Used for resetting keymap to default.
+	 */
+	 public DriverUIController getDriverUIController(int i) { return driverUIController[i]; }
 	/**
      * Adds notification if a profile should be saved.
      * @param notification the interface to listen for save events.

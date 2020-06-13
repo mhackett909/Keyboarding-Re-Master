@@ -84,6 +84,9 @@ public abstract class Device implements Mapper{
 	    profile.setKeymap(i,this.generateDefaultKeymap(i));
 	}
     }
+	public void setDefaultKeymap(Profile profile, int id){
+    	profile.setKeymap(id,this.generateDefaultKeymap(id));
+	}
     public Profile getProfile() {
 	return deviceState.getProfile();
     }
