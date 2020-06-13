@@ -1,0 +1,3 @@
+KERNEL=="uinput", MODE="0664", GROUP="games"
+KERNEL=="event[0-9]*", SUBSYSTEM=="input", GROUP="games", MODE="0664"
+KERNEL=="mouse[0-9]*", SUBSYSTEM=="input", GROUP="games", MODE="0664"

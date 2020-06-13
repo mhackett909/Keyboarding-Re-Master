@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" minHeight="171.798828125" prefHeight="171.798828125" prefWidth="415.0" styleClass="mainFxmlClass, popupWindow" xmlns:fx="http://javafx.com/fxml" fx:controller="com.monkygames.kbmaster.controller.SetDescriptionUIController">
+  <children>
+    <Label layoutX="123.0" layoutY="25.0" text="Set Description">
+      <font>
+        <Font size="24.0" />
+      </font>
+    </Label>
+    <Line endX="140.0" endY="0.0" layoutX="203.0" layoutY="70.0" startX="-130.0" startY="0.0" stroke="WHITE" />
+    <TextField id="programTF" fx:id="descriptionTF" layoutX="31.0" layoutY="85.0" prefWidth="358.5" />
+    <Button fx:id="cancelB" layoutX="299.0" layoutY="121.0" mnemonicParsing="false" onAction="#cancelEventFired" prefWidth="89.0" text="Cancel" />
+    <Button fx:id="okB" layoutX="204.0" layoutY="121.0" mnemonicParsing="false" onAction="#okEventFired" prefWidth="89.0" text="Ok" />
+  </children>
+  <stylesheets>
+    <URL value="@../master.css" />
+  </stylesheets>
+</AnchorPane>

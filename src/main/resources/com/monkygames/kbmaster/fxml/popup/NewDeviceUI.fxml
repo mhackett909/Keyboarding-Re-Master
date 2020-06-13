@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" minHeight="402.798828125" prefHeight="403.0" prefWidth="542.0" styleClass="mainFxmlClass, popupWindow" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.monkygames.kbmaster.controller.NewDeviceUIController">
+  <children>
+    <Label layoutX="197.0" layoutY="16.0" text="Add Device">
+      <font>
+        <Font size="18.0" />
+      </font>
+    </Label>
+    <HBox layoutX="48.0" layoutY="44.0" prefHeight="85.0" prefWidth="454.0">
+      <children>
+        <VBox alignment="TOP_RIGHT" prefHeight="86.0" prefWidth="100.0" spacing="5.0">
+          <children>
+            <Label alignment="CENTER_LEFT" prefHeight="22.0" text="Device Type: " />
+            <Label prefHeight="22.0" text="Device Make: " />
+            <Label prefHeight="22.0" text="Device Name: " />
+          </children>
+        </VBox>
+        <VBox prefHeight="85.0" prefWidth="350.0" spacing="5.0">
+          <children>
+            <ComboBox fx:id="deviceTypeCB" prefHeight="25.0" prefWidth="369.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox fx:id="deviceMakeCB" prefHeight="25.0" prefWidth="378.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox fx:id="deviceNameCB" prefHeight="25.0" prefWidth="358.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+          </children>
+          <padding>
+            <Insets />
+          </padding>
+        </VBox>
+      </children>
+    </HBox>
+    <Line endX="260.0" endY="0.0" layoutX="246.0" layoutY="139.0" startX="-200.0" stroke="WHITE" />
+    <Label layoutX="184.0" layoutY="150.0" text="Device Information">
+      <font>
+        <Font size="15.0" />
+      </font>
+    </Label>
+    <HBox id="iconImage" fx:id="iconImageHBox" alignment="CENTER" layoutX="55.0" layoutY="174.0" minHeight="68.0" minWidth="69.0" prefHeight="70.0" prefWidth="70.0" styleClass="display-border" />
+    <TextArea id="deviceInformationTA" fx:id="deviceDescriptionTA" layoutX="184.0" layoutY="175.0" prefHeight="159.0" prefWidth="348.0" styleClass="textareaLabel" wrapText="true" />
+    <HBox layoutX="21.0" layoutY="256.0" prefHeight="18.0" prefWidth="144.0">
+      <children>
+        <Label text="Driver Version: " />
+        <Label fx:id="driverVersionL" text="x.x.x" />
+      </children>
+    </HBox>
+    <HBox layoutX="21.0" layoutY="280.0" prefHeight="18.0" prefWidth="144.0">
+      <children>
+        <Label text="Status: " />
+        <Label fx:id="driverStatusL" text="Disconnected" />
+      </children>
+    </HBox>
+    <Button fx:id="addB" layoutX="286.0" layoutY="348.0" mnemonicParsing="false" onAction="#addEventFired" prefWidth="117.0" text="Add" />
+    <Button fx:id="cancelB" layoutX="415.0" layoutY="348.0" mnemonicParsing="false" onAction="#cancelEventFired" prefWidth="117.0" text="Cancel" />
+      <HBox layoutX="21.0" layoutY="298.0" prefHeight="35.0" prefWidth="137.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="35.0" prefWidth="20.0">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/icons/amazon-icon-small.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="35.0" prefWidth="116.0">
+               <children>
+                  <Hyperlink fx:id="amazonLink" alignment="TOP_LEFT" contentDisplay="BOTTOM" disable="true" onAction="#handleAmazonLink" prefHeight="23.0" prefWidth="113.0" text="unavailable" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+  </children>
+  <stylesheets>
+    <URL value="@../master.css" />
+  </stylesheets>
+</AnchorPane>

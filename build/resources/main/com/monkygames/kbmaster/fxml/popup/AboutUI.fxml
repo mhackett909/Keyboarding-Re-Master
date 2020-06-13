@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" minHeight="368.798828125" prefHeight="368.798828125" prefWidth="600.0" styleClass="mainFxmlClass, popupWindow" xmlns:fx="http://javafx.com/fxml" fx:controller="com.monkygames.kbmaster.controller.AboutUIController">
+  <children>
+    <Button layoutX="494.0" layoutY="327.0" mnemonicParsing="false" onAction="#handleCloseEvent" prefWidth="93.0" text="Close" />
+    <ImageView fx:id="logoIV" fitHeight="50.0" fitWidth="50.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+    <HBox alignment="CENTER_LEFT" layoutX="88.0" layoutY="14.0" prefHeight="50.0" prefWidth="499.0">
+      <children>
+        <Label fx:id="titleL" alignment="CENTER" contentDisplay="CENTER" text="Label">
+          <font>
+            <Font size="25.0" />
+          </font>
+        </Label>
+      </children>
+    </HBox>
+    <GridPane layoutX="90.0" layoutY="65.0" prefHeight="59.0" prefWidth="483.0">
+      <children>
+        <Label text="Version" GridPane.columnIndex="0" GridPane.rowIndex="0">
+          <font>
+            <Font name="System Bold" size="13.0" fx:id="x1" />
+          </font>
+        </Label>
+        <Label fx:id="versionL" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label fx:id="vendorL" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label font="$x1" text="Vendor" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label font="$x1" text="Homepage" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Hyperlink id="homepageL" fx:id="homepageHL" text="Hyperlink" textFill="#9766ff" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <TextArea fx:id="infoTA" layoutX="88.0" layoutY="129.0" prefHeight="188.0" prefWidth="471.0" styleClass="custom-text-area" wrapText="true" />
+  </children>
+  <stylesheets>
+    <URL value="@../master.css" />
+  </stylesheets>
+</AnchorPane>

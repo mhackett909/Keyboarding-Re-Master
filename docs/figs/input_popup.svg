@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg5319"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="input_popup.svg"
+   inkscape:export-filename="/home/spethm/Projects/tools/keyboardingmaster/docs/figs/input_popup.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs5321" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="56.677117"
+     inkscape:cy="807.65351"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1361"
+     inkscape:window-height="809"
+     inkscape:window-x="317"
+     inkscape:window-y="156"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata5324">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="-292.26541"
+       y="-79.724815"
+       id="text5339"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5341"
+         x="-292.26541"
+         y="-79.724815">&lt;input name&gt;</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:56px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="84.243668"
+       y="-208.1875"
+       id="text5343"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5345"
+         x="84.243668"
+         y="-208.1875">Input Assignment</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:2.60536528;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5347"
+       width="580"
+       height="51.717545"
+       x="60"
+       y="-116.9866" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.79888606;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 592.05581,-104.0183 19.91401,22.108602 18.58641,-23.214032 z"
+       id="path4433"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:3.15800047;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:9.47400114, 3.15800038;stroke-dashoffset:0"
+       id="rect5367"
+       width="117.01969"
+       height="104.89787"
+       x="759.71368"
+       y="-109.23424" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="773.77679"
+       y="-46.683796"
+       id="text5369"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5371"
+         x="773.77679"
+         y="-46.683796">Icon</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="-16.365499"
+       y="366.3692"
+       id="text5881"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5883"
+         x="-16.365499"
+         y="366.3692">&lt;Input Assignment Selected&gt;</tspan></text>
+    <g
+       id="g3123">
+      <text
+         sodipodi:linespacing="125%"
+         id="text5889"
+         y="710.66809"
+         x="747.18066"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="710.66809"
+           x="747.18066"
+           id="tspan5891"
+           sodipodi:role="line">Cancel</tspan></text>
+      <rect
+         ry="12.207994"
+         y="666.00598"
+         x="721.55652"
+         height="61.03997"
+         width="181.30255"
+         id="rect5893-4"
+         style="fill:none;stroke:#000000;stroke-width:3.4375844;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5923"
+       width="1314.2858"
+       height="1045.7142"
+       x="-371.42856"
+       y="-270.49496"
+       ry="12.207994" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="-206.77879"
+       y="22.52318"
+       id="text5944"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5946"
+         x="-206.77879"
+         y="22.52318">Description:</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5948"
+       width="585.71429"
+       height="57.142857"
+       x="57.142857"
+       y="-19.843756"
+       ry="0" />
+    <rect
+       style="fill:none;stroke:#ababab;stroke-width:3;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5950"
+       width="981.86829"
+       height="517.19812"
+       x="-214.15234"
+       y="90.69696" />
+    <g
+       id="g3118">
+      <text
+         sodipodi:linespacing="125%"
+         id="text5885"
+         y="710.32147"
+         x="571.7608"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="710.32147"
+           x="571.7608"
+           id="tspan5887"
+           sodipodi:role="line">OK</tspan></text>
+      <rect
+         ry="12.207994"
+         y="666.26849"
+         x="507.35901"
+         height="61.03997"
+         width="181.30255"
+         id="rect5893-4-0"
+         style="fill:none;stroke:#000000;stroke-width:3.4375844;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:3.15800071;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:9.47400151, 3.1580005;stroke-dashoffset:0"
+       id="rect5367-0"
+       width="108.93847"
+       height="90.755745"
+       x="-344.383"
+       y="-249.64543"
+       inkscape:transform-center-x="55.366214"
+       inkscape:transform-center-y="-6.4121864" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="-334.36053"
+       y="-193.15594"
+       id="text5369-0"
+       sodipodi:linespacing="125%"
+       inkscape:transform-center-x="102.86164"
+       inkscape:transform-center-y="-15.307095"><tspan
+         sodipodi:role="line"
+         id="tspan5371-4"
+         x="-334.36053"
+         y="-193.15594">Icon</tspan></text>
+  </g>
+</svg>

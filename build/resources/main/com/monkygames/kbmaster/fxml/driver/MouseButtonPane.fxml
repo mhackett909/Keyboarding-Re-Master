@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="186.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml" fx:controller="com.monkygames.kbmaster.controller.driver.MouseButtonController">
+  <children>
+    <Label layoutX="256.0" layoutY="46.0" text="Select Button" />
+    <HBox alignment="CENTER_LEFT" layoutX="170.0" layoutY="15.0" minHeight="39.0" prefHeight="39.0" prefWidth="260.0">
+      <children>
+        <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="@../resources/mapping/mousebutton.png" preserveRatio="false" smooth="false" />
+          </image>
+        </ImageView>
+        <Label text="Mouse Button Settings">
+          <font>
+            <Font size="18.0" />
+          </font>
+        </Label>
+      </children>
+    </HBox>
+    <ComboBox fx:id="buttonCB" layoutX="184.0" layoutY="82.0" prefWidth="232.0">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="Item 1" />
+          <String fx:value="Item 2" />
+          <String fx:value="Item 3" />
+        </FXCollections>
+      </items>
+    </ComboBox>
+  </children>
+  <stylesheets>
+    <URL value="@../master.css" />
+  </stylesheets>
+</AnchorPane>

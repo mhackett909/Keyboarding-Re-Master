@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="270.0" prefWidth="471.0" styleClass="mainFxmlClass, popupWindow" xmlns:fx="http://javafx.com/fxml" fx:controller="com.monkygames.kbmaster.controller.profile.CloneProfileUIController">
+  <children>
+    <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image url="@../resources/profile/clone.png" preserveRatio="false" smooth="false" />
+      </image>
+    </ImageView>
+    <Label layoutX="183.0" layoutY="25.0" text="Clone Profile">
+      <font>
+        <Font size="24.0" />
+      </font>
+    </Label>
+    <Line endX="170.0" endY="0.0" layoutX="261.0" layoutY="72.0" startX="-183.0" startY="0.0" stroke="WHITE" />
+    <GridPane layoutX="63.0" layoutY="86.0" prefWidth="384.0">
+      <children>
+        <Label text="Profile To Clone: " GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label fx:id="profileNameL" prefWidth="244.0" text="&lt;Profile&gt;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label text="Type: " GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <ComboBox id="" fx:id="typeCB" prefWidth="244.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <Label text="Program: " GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <ComboBox id="" fx:id="programCB" prefWidth="244.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <Label text="New Profile Name: " GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField id="" fx:id="profileTF" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints fillWidth="true" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="140.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <Button layoutX="362.0" layoutY="212.0" mnemonicParsing="false" onAction="#cancelEventFired" prefWidth="85.0" text="Cancel" />
+    <Button layoutX="267.0" layoutY="212.0" mnemonicParsing="false" onAction="#okEventFired" prefWidth="85.0" text="Ok" />
+  </children>
+  <stylesheets>
+    <URL value="@../master.css" />
+  </stylesheets>
+</AnchorPane>

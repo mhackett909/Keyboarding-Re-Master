@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="186.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <HBox alignment="CENTER_LEFT" layoutX="189.0" layoutY="11.0" minHeight="39.0" prefHeight="39.0" prefWidth="223.0" spacing="2.0">
+      <children>
+        <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="@../resources/mapping/disabled.png" preserveRatio="false" smooth="false" />
+          </image>
+        </ImageView>
+        <Label text="Disabled">
+          <font>
+            <Font size="18.0" />
+          </font>
+        </Label>
+      </children>
+    </HBox>
+  </children>
+  <stylesheets>
+    <URL value="@../master.css" />
+  </stylesheets>
+</AnchorPane>

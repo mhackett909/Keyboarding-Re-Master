@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" fx:id="rootPane" focusTraversable="true" prefHeight="186.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml" fx:controller="com.monkygames.kbmaster.controller.driver.SingleKeyController">
+  <children>
+    <Label layoutX="246.0" layoutY="46.0" text="Enter Single Key" />
+    <TextField fx:id="singleKeyTF" alignment="CENTER" disable="true" layoutX="150.0" layoutY="72.0" prefWidth="300.0" />
+    <HBox alignment="CENTER" layoutX="164.0" layoutY="100.0" prefHeight="21.0" prefWidth="272.0" spacing="75.0">
+      <children>
+        <Label fx:id="shiftL" disable="true" text="Shift" />
+        <Label fx:id="ctrlL" disable="true" text="Ctrl" />
+        <Label fx:id="altL" disable="true" text="Alt" />
+      </children>
+    </HBox>
+    <HBox alignment="CENTER_LEFT" layoutX="170.0" layoutY="14.0" minHeight="39.0" prefHeight="39.0" prefWidth="260.0">
+      <children>
+        <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="@../resources/mapping/singlekey.png" preserveRatio="false" smooth="false" />
+          </image>
+        </ImageView>
+        <Label text="Single Key Settings">
+          <font>
+            <Font size="18.0" />
+          </font>
+        </Label>
+      </children>
+    </HBox>
+  </children>
+  <stylesheets>
+    <URL value="@../master.css" />
+  </stylesheets>
+</AnchorPane>

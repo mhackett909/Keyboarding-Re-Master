@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" minWidth="570.0" prefHeight="506.0" prefWidth="592.0" styleClass="mainFxmlClass, popupWindow" stylesheets="@../master.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.monkygames.kbmaster.controller.login.DropBoxUIController">
+  <children>
+    <Button fx:id="acceptB" alignment="CENTER" contentDisplay="TOP" layoutX="327.0" layoutY="464.0" minHeight="23.0" mnemonicParsing="false" onAction="#acceptEventFired" prefHeight="34.0" prefWidth="128.0" text="Accept" textAlignment="LEFT" textOverrun="ELLIPSIS" wrapText="false" />
+    <Button fx:id="cancelB" layoutX="192.0" layoutY="464.0" mnemonicParsing="false" onAction="#cancelEventFired" prefHeight="34.0" prefWidth="128.0" text="Cancel" />
+      <ImageView fitHeight="34.0" fitWidth="25.0" layoutX="554.0" layoutY="469.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/icons/dropbox.png" />
+         </image>
+      </ImageView>
+      <WebView fx:id="web" layoutX="14.0" layoutY="14.0" prefHeight="423.0" prefWidth="565.0" />
+  </children>
+</AnchorPane>

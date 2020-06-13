@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" minHeight="625.0" prefHeight="634.0000999999975" prefWidth="402.0" styleClass="mainFxmlClass, popupWindow" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.monkygames.kbmaster.controller.SelectProfileUIController">
+  <children>
+    <GridPane layoutX="38.0" layoutY="83.0" prefHeight="99.0" prefWidth="335.0">
+      <children>
+        <Label text="Type: " GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <ComboBox fx:id="typeCB" prefWidth="249.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <Label text="App:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <ComboBox id="programCB" fx:id="appCB" prefWidth="249.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <Label text="Profile: " GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <ComboBox fx:id="profileCB" prefWidth="249.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+      </children>
+      <columnConstraints>
+        <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="80.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <HBox layoutX="82.0" layoutY="190.0" prefHeight="244.0" prefWidth="291.0">
+      <children>
+        <Label text="Info: " />
+        <TextArea id="infoA" fx:id="infoTA" prefHeight="239.0" prefWidth="247.0" styleClass="textareaLabel" wrapText="true" />
+      </children>
+    </HBox>
+    <GridPane hgap="5.0" layoutX="32.0" layoutY="449.0" prefHeight="33.0" prefWidth="335.0">
+      <children>
+        <Label text="Author:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label fx:id="authorL" text="" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label text="Updated:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label fx:id="updatedL" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="270.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <HBox layoutX="34.0" layoutY="482.0" prefHeight="48.0" prefWidth="343.0" spacing="5.0">
+      <children>
+        <Label text="App Details: " />
+        <ImageView fx:id="appLogoIV" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image preserveRatio="false" smooth="false" url="@resources/profile/app_logo.png" />
+          </image>
+        </ImageView>
+        <TextArea fx:id="appInfoTA" prefHeight="48.0" prefWidth="188.0" styleClass="textareaLabel" wrapText="true" />
+      </children>
+    </HBox>
+    <HBox layoutX="36.0" layoutY="530.0" prefHeight="48.0" prefWidth="176.0">
+      <children>
+        <Label text="Developer: " />
+        <ImageView fx:id="developerIV" blendMode="SRC_OVER" disable="false" fitHeight="48.0" fitWidth="100.0" focusTraversable="false" pickOnBounds="true" preserveRatio="true" smooth="true" visible="true" HBox.hgrow="NEVER">
+          <image>
+            <Image preserveRatio="false" smooth="false" url="@resources/profile/dev_logo.png" />
+          </image>
+        </ImageView>
+      </children>
+    </HBox>
+    <HBox layoutX="14.0" layoutY="15.0" prefHeight="54.0" prefWidth="54.0" styleClass="component-border">
+      <children>
+        <ImageView fx:id="deviceIV" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" />
+      </children>
+    </HBox>
+    <Label layoutX="148.0" layoutY="27.0" text="Set Profile">
+      <font>
+        <Font size="25.0" />
+      </font>
+    </Label>
+    <Button fx:id="okB" layoutX="124.0" layoutY="591.0" mnemonicParsing="false" onAction="#handleButtonAction" prefWidth="126.0" text="OK" />
+    <Button fx:id="cancelB" layoutX="262.0" layoutY="591.0" mnemonicParsing="false" onAction="#handleButtonAction" prefWidth="126.0" text="Cancel" />
+    <Line endX="289.0" endY="-8.0" layoutX="21.0" layoutY="71.0" startX="97.0" startY="-8.0" stroke="WHITE" strokeLineCap="ROUND" />
+  </children>
+  <stylesheets>
+    <URL value="@master.css" />
+  </stylesheets>
+</AnchorPane>

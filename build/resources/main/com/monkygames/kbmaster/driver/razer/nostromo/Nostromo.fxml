@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="472.0" prefWidth="574.0" styleClass="mainFxmlClass" stylesheets="@../../driver.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.monkygames.kbmaster.controller.DriverUIController">
+  <children>
+    <Line endX="0.0" endY="500.0" layoutX="342.0" layoutY="-78.0" rotate="0.0" startX="0.0" startY="100.0" stroke="WHITE" strokeWidth="1.0" />
+    <Label layoutX="140.0" layoutY="432.0" text="Front View" />
+    <Label layoutX="421.0" layoutY="432.0" text="Side View" />
+    <ImageView fitHeight="382.44846649077056" fitWidth="319.18902587890625" layoutX="14.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image url="@resources/top.png" />
+      </image>
+    </ImageView>
+    <ImageView fitHeight="214.0" fitWidth="214.0" layoutX="346.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image url="@resources/side.png" />
+      </image>
+    </ImageView>
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="43.0" layoutY="40.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="1" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="81.0" layoutY="30.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="2" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="120.0" layoutY="26.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="3" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="162.0" layoutY="27.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="4" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="202.0" layoutY="27.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="5" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="43.0" layoutY="80.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="6" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="80.0" layoutY="70.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="7" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="120.0" layoutY="70.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="8" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="162.0" layoutY="67.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="9" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="202.0" layoutY="66.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="10" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="43.0" layoutY="120.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="11" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="80.0" layoutY="109.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="12" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="120.0" layoutY="107.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="13" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="162.0" layoutY="106.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="14" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="219.0" layoutY="116.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="12.0" prefWidth="12.0" styleClass="button_stamp" text="21" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="217.0" layoutY="144.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="12.0" prefWidth="12.0" styleClass="button_stamp" text="22" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="218.0" layoutY="130.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="12.0" prefWidth="12.0" styleClass="button_stamp" text="23" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="401.0" layoutY="230.0" minWidth="31.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="55.0" prefWidth="52.0" text="15" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="490.0" layoutY="199.0" minWidth="19.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="24.0" prefWidth="24.0" text="16" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="470.0" layoutY="221.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="19.0" prefWidth="19.0" text="20" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="458.0" layoutY="253.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="18.0" prefWidth="18.0" text="18" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="475.0" layoutY="244.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="19.0" prefWidth="19.0" text="17" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+    <Button id="B01" contentDisplay="GRAPHIC_ONLY" defaultButton="false" layoutX="448.0" layoutY="227.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="19.0" prefWidth="19.0" text="19" textAlignment="CENTER" textOverrun="CLIP" visible="true" />
+  </children>
+</AnchorPane>

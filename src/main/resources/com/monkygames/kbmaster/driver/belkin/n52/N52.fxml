@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="472.0" prefWidth="574.0" styleClass="mainFxmlClass" stylesheets="@../../driver.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.monkygames.kbmaster.controller.DriverUIController">
+  <children>
+    <Line endX="0.0" endY="500.0" layoutX="342.0" layoutY="-78.0" rotate="0.0" startX="0.0" startY="100.0" stroke="WHITE" strokeWidth="1.0" />
+    <Label layoutX="140.0" layoutY="432.0" text="Front View" />
+    <Label layoutX="421.0" layoutY="432.0" text="Side View" />
+    <ImageView fitHeight="382.44846649077056" fitWidth="319.18902587890625" layoutX="14.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image preserveRatio="false" smooth="false" url="@resources/top.png" />
+      </image>
+    </ImageView>
+    <ImageView fitHeight="214.0" fitWidth="214.0" layoutX="346.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image preserveRatio="false" smooth="false" url="@resources/side.png" />
+      </image>
+    </ImageView>
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="44.0" layoutY="55.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="1" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="79.0" layoutY="43.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="2" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="119.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="3" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="159.0" layoutY="37.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="4" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="201.0" layoutY="39.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="5" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="44.0" layoutY="90.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="6" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="83.0" layoutY="82.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="7" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="121.0" layoutY="80.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="8" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="160.0" layoutY="78.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="9" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="200.0" layoutY="79.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="10" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="48.0" layoutY="132.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="11" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="85.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="12" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="123.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="13" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="161.0" layoutY="119.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="40.0" text="14" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="216.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="12.0" prefWidth="12.0" styleClass="button_stamp" text="21" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="216.0" layoutY="146.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="12.0" prefWidth="12.0" styleClass="button_stamp" text="23" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="216.0" layoutY="162.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="12.0" prefWidth="12.0" styleClass="button_stamp" text="22" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="413.0" layoutY="236.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="30.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="58.0" text="15" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="472.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="27.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="27.0" text="16" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="487.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="20.0" prefWidth="18.0" text="17" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="451.0" layoutY="196.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="20.0" prefWidth="18.0" text="19" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="471.0" layoutY="182.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="18.0" prefWidth="20.0" text="20" />
+    <Button contentDisplay="GRAPHIC_ONLY" layoutX="467.0" layoutY="215.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="18.0" prefWidth="20.0" text="18" />
+  </children>
+</AnchorPane>

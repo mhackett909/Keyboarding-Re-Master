@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Keyboarding Master Art Assets" company="Monky Games" webLink="http://www.monky-games.com" view-date="2012-11-04" view-index="1" gantt-divider-location="339" resource-divider-location="300" version="2.0" locale="en">
+    <description><![CDATA[This document details the art requirements for the Keyboarding Master project.]]></description>
+    <view zooming-state="default:0" id="gantt-chart">
+        <field id="tpd3" name="Name" width="57" order="0"/>
+        <field id="tpd4" name="Begin date" width="21" order="1"/>
+        <field id="tpd5" name="End date" width="21" order="2"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Name" width="50" order="0"/>
+        <field id="1" name="Default role" width="50" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <calendar id="1" name="default">
+                <default-week sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+                <only-show-weekends value="false"/>
+                <overriden-day-types/>
+                <days/>
+            </calendar>
+        </day-types>
+        <date year="1" month="1" date="1"/>
+        <date year="2012" month="1" date="2"/>
+        <date year="1" month="7" date="4"/>
+        <date year="1" month="11" date="11"/>
+        <date year="1" month="11" date="12"/>
+        <date year="1" month="12" date="25"/>
+        <date year="2012" month="1" date="16"/>
+        <date year="2013" month="1" date="21"/>
+        <date year="2014" month="1" date="20"/>
+        <date year="2015" month="1" date="19"/>
+        <date year="2016" month="1" date="18"/>
+        <date year="2017" month="1" date="16"/>
+        <date year="2018" month="1" date="15"/>
+        <date year="2019" month="1" date="21"/>
+        <date year="2020" month="1" date="20"/>
+        <date year="2021" month="1" date="18"/>
+        <date year="2012" month="2" date="20"/>
+        <date year="2013" month="2" date="18"/>
+        <date year="2014" month="2" date="17"/>
+        <date year="2015" month="2" date="16"/>
+        <date year="2016" month="2" date="15"/>
+        <date year="2017" month="2" date="20"/>
+        <date year="2018" month="2" date="19"/>
+        <date year="2019" month="2" date="18"/>
+        <date year="2020" month="2" date="17"/>
+        <date year="2021" month="2" date="15"/>
+        <date year="2012" month="5" date="28"/>
+        <date year="2013" month="5" date="27"/>
+        <date year="2014" month="5" date="26"/>
+        <date year="2015" month="5" date="25"/>
+        <date year="2016" month="5" date="30"/>
+        <date year="2017" month="5" date="29"/>
+        <date year="2018" month="5" date="28"/>
+        <date year="2019" month="5" date="27"/>
+        <date year="2020" month="5" date="25"/>
+        <date year="2021" month="5" date="31"/>
+        <date year="2012" month="9" date="3"/>
+        <date year="2013" month="9" date="2"/>
+        <date year="2014" month="9" date="1"/>
+        <date year="2015" month="9" date="7"/>
+        <date year="2016" month="9" date="5"/>
+        <date year="2017" month="9" date="4"/>
+        <date year="2018" month="9" date="3"/>
+        <date year="2019" month="9" date="2"/>
+        <date year="2020" month="9" date="7"/>
+        <date year="2021" month="9" date="6"/>
+        <date year="2012" month="10" date="8"/>
+        <date year="2013" month="10" date="14"/>
+        <date year="2014" month="10" date="13"/>
+        <date year="2015" month="10" date="12"/>
+        <date year="2016" month="10" date="10"/>
+        <date year="2017" month="10" date="9"/>
+        <date year="2018" month="10" date="15"/>
+        <date year="2019" month="10" date="14"/>
+        <date year="2020" month="10" date="12"/>
+        <date year="2021" month="10" date="11"/>
+        <date year="2012" month="11" date="22"/>
+        <date year="2013" month="11" date="28"/>
+        <date year="2014" month="11" date="27"/>
+        <date year="2015" month="11" date="26"/>
+        <date year="2016" month="11" date="24"/>
+        <date year="2017" month="11" date="23"/>
+        <date year="2018" month="11" date="22"/>
+        <date year="2019" month="11" date="28"/>
+        <date year="2020" month="11" date="26"/>
+        <date year="2021" month="11" date="25"/>
+        <date year="" month="1" date="1"/>
+        <date year="" month="7" date="4"/>
+        <date year="" month="11" date="11"/>
+        <date year="" month="11" date="12"/>
+        <date year="" month="12" date="25"/>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="Project Research" color="#8cb6ce" meeting="false" start="2012-11-05" duration="5" complete="0" expand="true">
+            <notes><![CDATA[Research jnostromo (watch tutorial video and application test video).  Read Art Asset Document and breifly look over Project Requirements Document.]]></notes>
+            <depend id="4" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="4" name="Project Logo" color="#8cb6ce" meeting="false" start="2012-11-13" duration="1" complete="0" expand="true">
+            <depend id="7" type="2" difference="0" hardness="Strong"/>
+            <depend id="53" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="7" name="Banner" color="#8cb6ce" meeting="false" start="2012-11-14" duration="1" complete="0" expand="true">
+            <depend id="13" type="2" difference="0" hardness="Strong"/>
+            <depend id="53" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="13" name="System Tray Icon" color="#8cb6ce" meeting="false" start="2012-11-15" duration="1" complete="0" expand="true">
+            <depend id="30" type="2" difference="0" hardness="Strong"/>
+            <depend id="53" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="30" name="Desktop Shortcut Icon" color="#8cb6ce" meeting="false" start="2012-11-16" duration="1" complete="0" expand="true">
+            <depend id="53" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="53" name="Logo Releated" color="#8cb6ce" meeting="true" start="2012-11-19" duration="0" complete="0" expand="true">
+            <notes><![CDATA[All taks relating to logos]]></notes>
+            <depend id="47" type="2" difference="0" hardness="Strong"/>
+            <depend id="95" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="47" name="Mapping Function Icons" color="#8cb6ce" meeting="false" start="2012-11-19" duration="5" complete="0" expand="true">
+            <depend id="95" type="2" difference="0" hardness="Strong"/>
+            <depend id="117" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="95" name="Profile Action Icons" color="#8cb6ce" meeting="false" start="2012-11-27" duration="6" complete="0" expand="true">
+            <depend id="117" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="117" name="Action Related" color="#8cb6ce" meeting="true" start="2012-12-05" duration="0" complete="0" expand="true">
+            <notes><![CDATA[Taks relating to actions]]></notes>
+            <depend id="149" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="149" name="Sort Icons" color="#8cb6ce" meeting="false" start="2012-12-05" duration="2" complete="0" expand="true">
+            <depend id="159" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="159" name="Package Assets" color="#8cb6ce" meeting="false" start="2012-12-07" duration="1" complete="0" expand="true">
+            <notes><![CDATA[Package Assets into zip and document anything that is necessary.]]></notes>
+        </task>
+    </tasks>
+    <resources>
+        <resource id="0" name="Keith Jones" function="1" contacts="kljones@gmail.com" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="0" resource-id="0" function="1" responsible="true" load="100.0"/>
+        <allocation task-id="4" resource-id="0" function="1" responsible="true" load="100.0"/>
+        <allocation task-id="7" resource-id="0" function="1" responsible="true" load="100.0"/>
+        <allocation task-id="13" resource-id="0" function="1" responsible="true" load="100.0"/>
+        <allocation task-id="30" resource-id="0" function="1" responsible="true" load="100.0"/>
+        <allocation task-id="53" resource-id="0" function="1" responsible="true" load="100.0"/>
+        <allocation task-id="47" resource-id="0" function="1" responsible="true" load="100.0"/>
+        <allocation task-id="95" resource-id="0" function="1" responsible="true" load="100.0"/>
+        <allocation task-id="117" resource-id="0" function="1" responsible="true" load="100.0"/>
+        <allocation task-id="149" resource-id="0" function="1" responsible="true" load="100.0"/>
+        <allocation task-id="159" resource-id="0" function="1" responsible="true" load="100.0"/>
+    </allocations>
+    <vacations/>
+    <taskdisplaycolumns>
+        <displaycolumn property-id="tpd2" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd7" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd8" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd6" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd10" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd11" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd9" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd3" order="0" width="191" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="72" visible="true"/>
+        <displaycolumn property-id="tpd5" order="2" width="72" visible="true"/>
+    </taskdisplaycolumns>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles>
+        <role id="1" name="Artist"/>
+    </roles>
+</project>

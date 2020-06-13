@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" minHeight="399.7987060546875" prefHeight="399.7987060546875" prefWidth="832.0" styleClass="mainFxmlClass, popupWindow" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.monkygames.kbmaster.controller.DeviceMenuUIController">
+  <children>
+    <HBox layoutX="14.0" layoutY="345.0" prefHeight="41.0" prefWidth="321.800048828125">
+      <children>
+        <ImageView id="keyboardingMasterLogo" fx:id="kbmIV" fitHeight="40.17071533203125" fitWidth="40.17071533203125" onMouseClicked="#handleAboutEvent" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image preserveRatio="false" smooth="false" url="@resources/icons/KeyboardingMaster.png" />
+          </image>
+        </ImageView>
+        <ImageView id="linuxLogo" fx:id="linuxGamerIV" fitHeight="40.17071533203125" fitWidth="40.17071533203125" onMouseClicked="#handleAboutEvent" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image preserveRatio="false" smooth="false" url="@resources/icons/LinuxGamer.png" />
+          </image>
+        </ImageView>
+        <ImageView id="javaLogo" fx:id="javaIV" fitHeight="40.17071533203125" fitWidth="40.17071533203125" onMouseClicked="#handleAboutEvent" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image preserveRatio="false" smooth="false" url="@resources/icons/java.png" />
+          </image>
+        </ImageView>
+        <ImageView id="javafxLogo" fx:id="javafxIV" fitHeight="40.17071533203125" fitWidth="40.17071533203125" onMouseClicked="#handleAboutEvent" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image preserveRatio="false" smooth="false" url="@resources/icons/javafx.png" />
+          </image>
+        </ImageView>
+        <ImageView id="jinputLogo" fx:id="jinputIV" fitHeight="40.17071533203125" fitWidth="40.17071533203125" onMouseClicked="#handleAboutEvent" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image preserveRatio="false" smooth="false" url="@resources/icons/jinput.png" />
+          </image>
+        </ImageView>
+        <ImageView id="kryonetLogo" fitHeight="40.17071533203125" fitWidth="40.17071533203125" onMouseClicked="#handleAboutEvent" pickOnBounds="true" preserveRatio="true" fx:id="xstreamIV">
+          <image>
+            <Image url="@resources/icons/xstream.png" />
+          </image>
+        </ImageView>
+        <ImageView id="installBuilderLogo" fx:id="installBuilderIV" fitHeight="40.17071533203125" fitWidth="40.17071533203125" onMouseClicked="#handleAboutEvent" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image preserveRatio="false" smooth="false" url="@resources/icons/InstallBuilder.png" />
+          </image>
+        </ImageView>
+      </children>
+    </HBox>
+    <Button fx:id="hideB" layoutX="728.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleButtonAction" prefWidth="90.0" text="Hide" />
+    <Button fx:id="exitB" layoutX="630.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleButtonAction" prefWidth="90.0" text="Exit" />
+    <VBox alignment="TOP_CENTER" layoutX="187.0" layoutY="11.0" prefHeight="84.0" prefWidth="443.0">
+      <children>
+        <ImageView fitHeight="40.170716394451006" fitWidth="329.3998718261719" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image preserveRatio="false" smooth="false" url="@resources/main_text.png" />
+          </image>
+        </ImageView>
+        <HBox id="versionHBox" alignment="CENTER" prefHeight="17.0" prefWidth="158.0" visible="true">
+          <children>
+            <Label alignment="TOP_CENTER" text="Software Version: " />
+            <Label fx:id="versionL" alignment="CENTER" contentDisplay="CENTER" text="0.1" textAlignment="LEFT" />
+          </children>
+        </HBox>
+        <Hyperlink text="No Updates Available" textFill="WHITE" />
+      </children>
+    </VBox>
+    <HBox alignment="CENTER_RIGHT" layoutX="564.0" layoutY="70.0" prefHeight="22.0" prefWidth="254.0" spacing="2.0">
+      <children>
+            <ImageView fx:id="accountIcon" fitHeight="16.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@resources/icons/hdd.png" />
+               </image>
+            </ImageView>
+      </children>
+    </HBox>
+    <Button fx:id="logoutB" layoutX="534.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleButtonAction" prefWidth="90.0" text="Logout" />
+    <TableView fx:id="deviceTV" layoutX="18.0" layoutY="96.0" prefHeight="237.0" prefWidth="685.0">
+      <columns>
+        <TableColumn fx:id="deviceNameCol" minWidth="250.0" prefWidth="250.0" sortable="true" text="Device" />
+        <TableColumn fx:id="profileNameCol" minWidth="250.0" prefWidth="250.0" text="Active Profile" />
+        <TableColumn fx:id="isConnectedCol" minWidth="100.0" prefWidth="100.0" text="Connected" />
+        <TableColumn fx:id="isEnabledCol" minWidth="85.0" prefWidth="85.0" text="Enabled" />
+      </columns>
+    </TableView>
+    <VBox layoutX="711.0" layoutY="96.0" prefHeight="232.0" prefWidth="107.0" spacing="8.0">
+      <children>
+        <Button fx:id="addDeviceB" mnemonicParsing="false" onAction="#handleButtonAction" prefWidth="107.0" text="Add" />
+        <Button fx:id="removeDeviceB" mnemonicParsing="false" onAction="#handleButtonAction" prefWidth="106.0" text="Remove" />
+        <Button fx:id="configureB" mnemonicParsing="false" onAction="#handleButtonAction" prefWidth="105.00009999999747" text="Configure" />
+        <Button fx:id="detailsB" mnemonicParsing="false" onAction="#handleButtonAction" prefWidth="106.0" text="Details" />
+        <Button fx:id="setProfileB" mnemonicParsing="false" onAction="#handleButtonAction" prefWidth="106.0" text="Set Profile" />
+      </children>
+    </VBox>
+    <CheckBox fx:id="keysRepeatCB" layoutX="390.0" layoutY="357.0" mnemonicParsing="false" onAction="#handleButtonAction" selected="true" text="Keys Repeat" />
+  </children>
+  <stylesheets>
+    <URL value="@master.css" />
+  </stylesheets>
+</AnchorPane>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="190.798828125" prefWidth="453.0" styleClass="mainFxmlClass, popupWindow" xmlns:fx="http://javafx.com/fxml" fx:controller="com.monkygames.kbmaster.controller.ErrorUIController">
+  <children>
+    <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image url="@../resources/popup/error_icon.png" preserveRatio="false" smooth="false" />
+      </image>
+    </ImageView>
+    <Label fx:id="textL" alignment="TOP_LEFT" contentDisplay="LEFT" layoutX="87.0" layoutY="22.0" prefHeight="102.0" prefWidth="316.0" text="text" textOverrun="ELLIPSIS" wrapText="true">
+      <font>
+        <Font size="18.0" />
+      </font>
+    </Label>
+    <Button fx:id="okB" layoutX="285.0" layoutY="135.0" mnemonicParsing="false" onAction="#okEventFired" prefWidth="118.0" text="OK" />
+  </children>
+  <stylesheets>
+    <URL value="@../master.css" />
+  </stylesheets>
+</AnchorPane>

@@ -1,0 +1,52 @@
+.button {
+    -fx-background-repeat: no-repeat , no-repeat;
+    -fx-background-size:  stretch;
+}
+.button:hover {
+    -fx-border-color: white;
+}
+
+/**
+ * Used for buttons that like close.
+ */
+.button_control {
+    -fx-padding: 0px;
+}
+
+/**
+ * Affects all components.
+ */
+.mainFxmlClass {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}
+/**
+ * Load Fonts external fonts.
+ */
+@font-face {
+    font-family: Title1;
+    src: url('OCRAEXT.TTF');
+}
+.label{
+    -fx-text-fill: white;
+    -fx-background-color: black;
+}
+
+.newProfile {
+    -fx-background-image: url("resources/profile/new.png"); 
+}
+.cloneProfile {
+    -fx-background-image: url("resources/profile/clone.png"); 
+}
+.importProfile {
+    -fx-background-image: url("resources/profile/import.png"); 
+}
+.exportProfile {
+    -fx-background-image: url("resources/profile/export.png"); 
+}
+.pdfProfile {
+    -fx-background-image: url("resources/profile/pdf.png"); 
+}
+.deleteProfile {
+    -fx-background-image: url("resources/profile/delete.png");
+}
