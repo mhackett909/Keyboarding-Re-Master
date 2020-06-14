@@ -60,14 +60,12 @@ public class KeymapUIManager implements ChangeListener{
      */
     public void setProfile(Profile profile){
    		this.profile = profile;
-		// opens the default keymap's UI
 		if (profile == null) {
 			tabPane.getSelectionModel().select(0);
 			return;
 		}
-		tabPane.getSelectionModel().select(profile.getDefaultKeymap());
-		//not sure why this is necessary. change event not firing if defaultkeymap is 0
-		if (profile.getDefaultKeymap() == 0) setDescriptionText(profile.getKeymap(profile.getDefaultKeymap()).getDescription());
+		if (tabPane.getSelectionModel().getSelectedIndex()==profile.getDefaultKeymap()) changedEvent();
+		else tabPane.getSelectionModel().select(profile.getDefaultKeymap());
 		for(int i = 0; i < driverUIController.length; i++){
 			driverUIController[i].setSelectedKeymap(profile.getKeymap(i));
 		}
@@ -138,9 +136,12 @@ public class KeymapUIManager implements ChangeListener{
 			keymapDescription.setText("");
 			return;
 		}
-    	int selectedIndex = tabPane.getSelectionModel().getSelectedIndex();
-    	profile.setDefaultKeymap(selectedIndex);
-    	keymapDescription.setText( profile.getKeymap(selectedIndex).getDescription());
+		changedEvent();
+    }
+    public void changedEvent() {
+		int selectedIndex = tabPane.getSelectionModel().getSelectedIndex();
+		profile.setDefaultKeymap(selectedIndex);
+		keymapDescription.setText(profile.getKeymap(selectedIndex).getDescription());
     }
 // ============= Internal Classes ============== //
 // ============= Static Methods ============== //

@@ -140,8 +140,6 @@ com/monkygames/kbmaster/account/DropBoxApp.java
 com/monkygames/kbmaster/controller/ProfileUIController.java
  com.monkygames.kbmaster.controller.ProfileUIController
  com.monkygames.kbmaster.controller.ProfileUIController$1
- com.monkygames.kbmaster.controller.ProfileUIController$2
- com.monkygames.kbmaster.controller.ProfileUIController$3
 com/monkygames/kbmaster/input/Keymap.java
  com.monkygames.kbmaster.input.Keymap
 com/monkygames/kbmaster/controller/NewDeviceUIController.java

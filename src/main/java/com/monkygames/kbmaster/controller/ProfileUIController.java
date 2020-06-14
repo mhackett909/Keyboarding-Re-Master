@@ -218,121 +218,101 @@ public class ProfileUIController implements Initializable, ChangeListener<String
      * Set the description label for keymaps.
      */
     public void setDescriptionLabel(Label descriptionLabel){ keymapUIManager.setLabel(descriptionLabel); }
-    /**
-     * Only updates the profiles combo box.
-     */
-    public void updateProfilesComboBox(){
-	App app;
-	ObservableList<Profile> profiles = null;
-	app = (App)appsCB.getSelectionModel().getSelectedItem();
-	if(app == null){
-	    return;
-	}
-	updateAppUIInfo(app);
-	System.out.println("Problems here?");
-	profileCB.valueProperty().removeListener(profileChangeListener);
-	profiles = FXCollections.observableArrayList(app.getProfiles());
-	profileCB.setItems(profiles);
-	if(profiles.size() > 0){
-		profileCB.setItems(profiles);
-		if (device.getProfile() == null) profileCB.getSelectionModel().selectFirst();
-		else profileCB.getSelectionModel().select(device.getProfile());
-		profileSelected();
-	}
-	else {
-		resetProfileUIInfo();
-		currentProfile = null;
-		keymapUIManager.setProfile(null);
-		device.setProfile(null);
-	}
 
-	deviceMenuController.setActiveProfile(device, currentProfile);
-	profileCB.valueProperty().addListener(profileChangeListener);
-    }
-    /**
-     * The profiles combo box selected a new profile.
-     */
+	/**
+	 * Set the description for the currently selected keymap.
+	 * @param keymapID the id of the keymap to set the description.
+	 * @param description the description of the keymap.
+	 */
+	public void setKeymapDescription(int keymapID, String description){
+		if(currentProfile != null){
+			currentProfile.getKeymap(keymapID).setDescription(description);
+			keymapUIManager.setDescriptionText(description);
+		}
+		else PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
+	}
+	/**
+	 * Returns the KeymapUIManager
+	 */
+	public KeymapUIManager getKeymapUIManager() { return keymapUIManager; }
+	/**
+	 * Opens the display keymap popup with the specified keymap id.
+	 * @param keymapID from 0 to 7.
+	 */
+	public void openDisplayKeymapPopup(int keymapID){
+		if (!checkDevice()) return;
+		if (currentProfile == null) {
+			PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
+			return;
+		}
+		try{
+			URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/DisplayKeymapUI.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(location);
+			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+			Parent root = (Parent)fxmlLoader.load(location.openStream());
+			displayKeymapUIController = (DisplayKeymapUIController) fxmlLoader.getController();
+			Stage stage = WindowUtil.createStage(root);
+			displayKeymapUIController.setStage(stage);
+		}catch(IOException e){}
+		GenerateBindingsImage generator = new GenerateBindingsImage(device);
+		displayKeymapUIController.setGenerateBindingsImage(generator);
+		displayKeymapUIController.displayKeymap(currentProfile.getKeymaps(),keymapID);
+	}
+	/**
+	 * Note, this needs to be called before other methods.
+	 */
+	public void setDeviceMenuController(DeviceMenuUIController deviceMenuController){
+		this.deviceMenuController = deviceMenuController;
+	}
+	/**
+	 * The profiles combo box selected a new profile.
+	 */
     public void profileSelected(){
 		Profile selectedProfile;
-		App app = (App)appsCB.getSelectionModel().getSelectedItem();
-		if(app == null) return;
 		selectedProfile = (Profile)profileCB.getSelectionModel().getSelectedItem();
-		if(selectedProfile != null){
-			saveProfile();
-	   	 	currentProfile = selectedProfile;
-			device.setProfile(currentProfile);
-	    	keymapUIManager.setProfile(currentProfile);
-	    	updateProfileUIInfo(currentProfile);
-			deviceMenuController.setActiveProfile(device, currentProfile);
-
-			//updateProfilesComboBox(); memory error? overflow?
-		}
+		if (selectedProfile != currentProfile) saveProfile();
+	   	currentProfile = selectedProfile;
+		device.setProfile(currentProfile);
+	    keymapUIManager.setProfile(currentProfile);
+	    updateProfileUIInfo(currentProfile);
+		deviceMenuController.setActiveProfile(device, currentProfile);
     }
+	/**
+	 * Updates only the profile ComboBox.
+	 */
+	public void updateProfilesComboBox(){
+		App app;
+		ObservableList<Profile> profiles;
+		app = (App)appsCB.getSelectionModel().getSelectedItem();
+		if(app == null) {
+			resetAppUIInfo();
+			resetProfileUIInfo();
+			profileSelected();
+			return;
+		}
+		updateAppUIInfo(app);
+		profileCB.valueProperty().removeListener(profileChangeListener);
+		profiles = FXCollections.observableArrayList(app.getProfiles());
+		if(profiles.size() > 0){ //might see a null ptr exception here
+			profileCB.setItems(profiles);
+			profileCB.getSelectionModel().selectFirst();
+		}
+		else resetProfileUIInfo();
+		profileSelected();
+		profileCB.valueProperty().addListener(profileChangeListener);
+	}
     /**
      * Updates the type, programs, and profiles combo boxes.
      */
     public void updateComboBoxes(){
-	if(typeCB.getSelectionModel().getSelectedIndex() == 0){
-	    updateComboBoxesOnType(AppType.GAME);
-	}else{
-	    updateComboBoxesOnType(AppType.APPLICATION);
-	}
-    }
-    /**
-     * Set the description for the currently selected keymap.
-     * @param keymapID the id of the keymap to set the description.
-     * @param description the description of the keymap.
-     */
-    public void setKeymapDescription(int keymapID, String description){
-		if(currentProfile != null){
-	   	 	currentProfile.getKeymap(keymapID).setDescription(description);
-	   	 	keymapUIManager.setDescriptionText(description);
+		if(typeCB.getSelectionModel().getSelectedIndex() == 0){
+	    	updateComboBoxesOnType(AppType.GAME);
+		}else{
+	   	 	updateComboBoxesOnType(AppType.APPLICATION);
 		}
-		else PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
     }
-	/**
-	 * Returns the KeymapUIManager
-	 */
-	 public KeymapUIManager getKeymapUIManager() { return keymapUIManager; }
-	/**
-     * Opens the display keymap popup with the specified keymap id.
-     * @param keymapID from 0 to 7.
-     */ 
-    public void openDisplayKeymapPopup(int keymapID){
-    if (!checkDevice()) return;
-    if (currentProfile == null) {
-		PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
-    	return;
-	}
-	try{
-	    URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/DisplayKeymapUI.fxml");
-	    FXMLLoader fxmlLoader = new FXMLLoader();
-	    fxmlLoader.setLocation(location);
-	    fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-	    Parent root = (Parent)fxmlLoader.load(location.openStream());
-	    displayKeymapUIController = (DisplayKeymapUIController) fxmlLoader.getController();
-	    Stage stage = WindowUtil.createStage(root);
-	    displayKeymapUIController.setStage(stage);
-	}catch(IOException e){}
-	GenerateBindingsImage generator = new GenerateBindingsImage(device);
-	displayKeymapUIController.setGenerateBindingsImage(generator);
-	displayKeymapUIController.displayKeymap(currentProfile.getKeymaps(),keymapID);
-    }
-    /**
-     * Note, this needs to be called before other methods.
-     */
-    public void setDeviceMenuController(DeviceMenuUIController deviceMenuController){
-	this.deviceMenuController = deviceMenuController;
-    }
-	/**
-     * Close the profile manager to free up the associated
-     * database files so other classes can use it.
-     */
-    public void closeProfileManager(){
-	if(profileManager != null){
-	    profileManager.close();
-	}
-    }
+
 	/**
 	 * Saves the current profile to disk.
 	 */
@@ -352,7 +332,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
      */
     private void updateComboBoxesOnType(AppType type){
 	ObservableList<App> apps;
-	ObservableList<Profile> profiles = null;
+	ObservableList<Profile> profiles;
 	Root root = profileManager.getRoot(type);
 	if(root.getList().isEmpty()){
 	    // clear the apps combo box
@@ -364,40 +344,36 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	    appsCB.valueProperty().addListener(appChangeListener);
 	    resetAppUIInfo();
 	    resetProfileUIInfo();
+	    profileSelected();
 	    return;
 	}
 	apps = FXCollections.observableArrayList(root.getList());
 	appsCB.valueProperty().removeListener(appChangeListener);
-	appsCB.setItems(apps);
-	if(apps.size() > 0){
+	if(apps.size() > 0){ //null ptr here?
+		appsCB.setItems(apps);
 		int selectedIndex = 0;
 		if (currentProfile != null) selectedIndex = apps.indexOf(currentProfile.getApp());
+		if (selectedIndex == -1) {
+			currentProfile = null;
+			selectedIndex = 0;
+		}
 		appsCB.getSelectionModel().select(selectedIndex);
 		profiles = FXCollections.observableArrayList(apps.get(selectedIndex).getProfiles());
-	    // set app ui
 	    updateAppUIInfo((App)appsCB.getSelectionModel().getSelectedItem());
 	}else{
 	    resetAppUIInfo();
 	    resetProfileUIInfo();
+	    profileSelected();
+	    return;
 	}
 	profileCB.valueProperty().removeListener(profileChangeListener);
-	profileCB.setItems(profiles);
-	if(profiles == null || profiles.size() == 0) {
-		resetProfileUIInfo();
-		currentProfile = null;
-		keymapUIManager.setProfile(null);
-		device.setProfile(null);
-	}
+	if(profiles.size() == 0) resetProfileUIInfo(); //null ptr here?
 	else{
+		profileCB.setItems(profiles);
 		if (currentProfile == null) profileCB.getSelectionModel().selectFirst();
 		else profileCB.getSelectionModel().select(currentProfile);
-	    currentProfile = (Profile)profileCB.getSelectionModel().getSelectedItem();
-	    device.setProfile(currentProfile);
-	    profileSelected();
 	}
-	// I usually have a listener for this class but
-	// typeCB and profileCB both contain Strings while programCB contains Apps.
-	// So its necessary to extend a generic listener here
+	profileSelected();
 	profileCB.valueProperty().addListener(profileChangeListener);
 	appsCB.valueProperty().addListener(appChangeListener);
     }
@@ -562,21 +538,27 @@ public class ProfileUIController implements Initializable, ChangeListener<String
      * Resets the app ui information.
      */
     private void resetAppUIInfo(){
-	appInfoTA.setText("");
-	appLogoIV.setImage(defaultAppLogoImage);
-	devLogoIV.setImage(defaultDevLogoImage);
+		appInfoTA.setText("");
+		appLogoIV.setImage(defaultAppLogoImage);
+		devLogoIV.setImage(defaultDevLogoImage);
+		appsCB.setItems(FXCollections.observableArrayList());
+		appsCB.getSelectionModel().select(null);
     }
     /**
      * Updates the UI with the profile information.
      * @param profile the information to update the UI with.
      */
     private void updateProfileUIInfo(Profile profile){
-	infoTA.setText(profile.getInfo());
-	authorL.setText(profile.getAuthor());
-	Calendar cal = Calendar.getInstance();
-	cal.setTimeInMillis(profile.getLastUpdatedDate());
-	SimpleDateFormat date_format = new SimpleDateFormat("yyyy/MM/dd");
-	updatedL.setText(date_format.format(cal.getTime()));
+    	if (profile == null) {
+    		resetProfileUIInfo();
+    		return;
+		}
+		infoTA.setText(profile.getInfo());
+		authorL.setText(profile.getAuthor());
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(profile.getLastUpdatedDate());
+		SimpleDateFormat date_format = new SimpleDateFormat("yyyy/MM/dd");
+		updatedL.setText(date_format.format(cal.getTime()));
     }
     /**
      * Resets the profile information.
@@ -585,27 +567,23 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		infoTA.setText("");
 		authorL.setText("");
 		updatedL.setText("");
-		profileCB.setItems(FXCollections.observableArrayList()); //clear first?
+		profileCB.setItems(FXCollections.observableArrayList());
 		profileCB.getSelectionModel().select(null);
+		keymapUIManager.setDescriptionText("");
+
     }
     private void createChangeListeners(){
-	appChangeListener = new ChangeListener<App>(){
-	    @Override
-	    public void changed(ObservableValue<? extends App> ov, App previousValue, App newValue) {
-		if(ov == appsCB.valueProperty()){
-		    updateProfilesComboBox();
-		}
-	    }
+	appChangeListener = (ov, previousValue, newValue) -> {
+		if(ov == appsCB.valueProperty()) updateProfilesComboBox();
 	};
-	profileChangeListener = new ChangeListener<Profile>(){
-	    @Override
-	    public void changed(ObservableValue<? extends Profile> ov, Profile previousValue, Profile newValue) {
-		if(ov == profileCB.valueProperty()){
-		    profileSelected();
-		}
-	    }
+	profileChangeListener = (ov, previousValue, newValue) -> {
+		if(ov == profileCB.valueProperty()) profileSelected();
 	};
-    }	
+    }
+	@Override
+	public void changed(ObservableValue<? extends String> ov,  String previousValue, String newValue) {
+		if(ov == typeCB.valueProperty()) updateComboBoxes();
+	}
     /**
      * Opens a file selector and writes the profile out.
      */
@@ -670,16 +648,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 
     }
 
-    @Override
-    public void changed(ObservableValue<? extends String> ov,  String previousValue, String newValue) {
-	if(ov == typeCB.valueProperty()){
-	    updateComboBoxes();
-	}else if(ov == profileCB.valueProperty()){
-	    // load new profile
-	    // set configurations!
-	    //profileSelected();
-	}
-    }
+
 
 // ============= Extended Methods ============== //
 // ============= Internal Classes ============== //
