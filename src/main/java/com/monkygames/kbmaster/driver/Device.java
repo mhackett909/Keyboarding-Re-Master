@@ -8,6 +8,8 @@ import com.monkygames.kbmaster.input.*;
 import com.monkygames.kbmaster.profiles.Profile;
 import java.awt.Rectangle;
 import java.util.HashMap;
+
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import javafx.scene.input.KeyCode;
 import net.java.games.input.Component.Identifier.Key;
 
@@ -21,12 +23,15 @@ public abstract class Device implements Mapper{
     /**
      * The device information.
      */
+     @XStreamOmitField
     private DeviceInformation deviceInformation;
     private DeviceState deviceState;
     /**
      * Stores the inputs used to identify the input.
      */
+	@XStreamOmitField
     protected HashMap<Integer,InputMap> inputMaps;
+	@XStreamOmitField
     protected HashMap<String,String> codeToJFX;
 
 // ============= Constructors ============== //

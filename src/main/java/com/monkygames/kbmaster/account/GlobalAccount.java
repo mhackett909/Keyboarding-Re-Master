@@ -51,9 +51,9 @@ public class GlobalAccount{
 	
 	// instantiate devices
 	for(DevicePackage devicePackage: deviceList.getList()){
-	    Device device = driverManager.getDeviceByPackageName(devicePackage.getDeviceState().getPackageName());
+	    Device device = driverManager.getDeviceByPackageName(devicePackage.getDevice().getDeviceState().getPackageName());
 	    if(device != null){
-		device.setDeviceState(devicePackage.getDeviceState());
+		device.setDeviceState(devicePackage.getDevice().getDeviceState());
 		installedDevices.add(device);
 	    }
 	}
@@ -88,7 +88,7 @@ public class GlobalAccount{
 	// first check if the device is already added 
 
 	for(DevicePackage devicePackage: deviceList.getList()){
-	    if(devicePackage.getDeviceState().getPackageName().equals(devicePackageName)){
+	    if(devicePackage.getDevice().getDeviceState().getPackageName().equals(devicePackageName)){
 		// already added
 		return false;
 	    }
@@ -102,12 +102,7 @@ public class GlobalAccount{
 		    return false;
 		}
 
-		DeviceState deviceState = new DeviceState(device.getProfile(),
-		    device.isConnected(),
-		    device.isEnabled(),
-		    device.getDeviceInformation().getPackageName());
-
-		DevicePackage devicePackage = new DevicePackage(deviceState);
+		DevicePackage devicePackage = new DevicePackage(device);
 		devicePackage.setIsDownloaded(true);
 		deviceList.getList().add(devicePackage);
 	    }
@@ -117,12 +112,12 @@ public class GlobalAccount{
 	/**
 	 * Saves the current state of each device to its respective DevicePackage.
 	 */
-	public void updateDeviceState(DeviceState currentState) {
-		for (DevicePackage devicePackage : deviceList.getList()) {
-			if (devicePackage.getDeviceState().getPackageName().equals(currentState.getPackageName()))
-				devicePackage.setDeviceState(currentState);
-		}
-	}
+	//public void updateDeviceState(DeviceState currentState) {
+//		for (DevicePackage devicePackage : deviceList.getList()) {
+		//	if (devicePackage.getDeviceState().getPackageName().equals(currentState.getPackageName()))
+		//		devicePackage.setDeviceState(currentState);
+//		}
+//	}
 	/**
      * Removes the device from the local device list and stores to the database.
      * @param device the device to remove.
@@ -132,7 +127,7 @@ public class GlobalAccount{
     public boolean removeDownloadedDevice(Device device){
 	String devicePackageName = device.getDeviceInformation().getPackageName();
 	for(DevicePackage devicePackage: deviceList.getList()){
-	    if(devicePackage.getDeviceState().getPackageName().equals(devicePackageName)){
+	    if(devicePackage.getDevice().getDeviceState().getPackageName().equals(devicePackageName)){
 		deviceList.getList().remove(devicePackage);
 		// save
 		return save();
@@ -150,7 +145,7 @@ public class GlobalAccount{
 	for(DevicePackage devicePackage: deviceList.getList()){
 
 	    if(devicePackage.isIsDownloaded()){
-		devices.add(driverManager.getDeviceByPackageName(devicePackage.getDeviceState().getPackageName()));
+		devices.add(driverManager.getDeviceByPackageName(devicePackage.getDevice().getDeviceState().getPackageName()));
 	    }
 	}
 	return devices;

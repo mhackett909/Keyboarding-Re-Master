@@ -53,6 +53,10 @@ public class XStreamManager {
     private XStream globalStream;
 
     /**
+     * For saving the root manager.
+     */
+     private XStream rootStream;
+    /**
      * The user settings file.
      */
     private File settingsFile;
@@ -71,17 +75,30 @@ public class XStreamManager {
         userSettingsStream.alias("UserSettings", UserSettings.class);
         settingsFile = new File(settingsFileName);
 
+        // root manager
+        rootStream = new XStream(new DomDriver());
+        rootStream.alias("RootManager",RootManager.class);
+        rootStream.alias("Root",Root.class);
+        rootStream.alias("App",App.class);
+        rootStream.alias("Profile",Profile.class);
+        rootStream.alias("Keymap",Keymap.class);
+        rootStream.alias("ButtonMapping",ButtonMapping.class);
+        rootStream.alias("Button",Button.class);
+        rootStream.alias("OutputKey",OutputKey.class);
+        rootStream.alias("OutputMouse",OutputMouse.class);
+        rootStream.alias("Wheel",Wheel.class);
+
         // global account
         globalStream = new XStream(new DomDriver());
-        globalStream.alias("RootManager",RootManager.class);
-        globalStream.alias("Root",Root.class);
-        globalStream.alias("AppType",AppType.class);
-        globalStream.alias("ArrayList",ArrayList.class);
         globalStream.alias("Profile",Profile.class);
         globalStream.alias("App",App.class);
         globalStream.alias("Keymap",Keymap.class);
-        globalStream.alias("HashMap",HashMap.class);
         globalStream.alias("ButtonMapping",ButtonMapping.class);
+        globalStream.alias("DeviceList",DeviceList.class);
+        globalStream.alias("DevicePackage",DevicePackage.class);
+        globalStream.alias("AppType",AppType.class);
+        globalStream.alias("ArrayList",ArrayList.class);
+        globalStream.alias("HashMap",HashMap.class);
         globalStream.alias("Button",Button.class);
         globalStream.alias("Output",Output.class);
         globalStream.alias("WheelMapping",WheelMapping.class);
@@ -92,12 +109,14 @@ public class XStreamManager {
         globalStream.alias("OutputKey",OutputKey.class);
         globalStream.alias("OutputKeymapSwitch",OutputKeymapSwitch.class);
         globalStream.alias("OutputMouse",OutputMouse.class);
-        globalStream.alias("DeviceList",DeviceList.class);
-        globalStream.alias("DevicePackage",DevicePackage.class);
-        globalStream.alias("Device",Device.class);
         globalStream.alias("DeviceInformation",DeviceInformation.class);
         globalStream.alias("MetaData",MetaData.class);
         globalStream.alias("DeviceState",DeviceState.class);
+        globalStream.alias("Device",Device.class);
+        globalStream.omitField(Device.class, "deviceInformation");
+        globalStream.omitField(Device.class, "inputMaps");
+        globalStream.omitField(Device.class, "codeToJFX");
+        globalStream.omitField(App.class, "profiles");
         globalAccountFile = new File(globalAccountFileName);
     }
 
@@ -133,8 +152,7 @@ public class XStreamManager {
         if(metaData != null){
             metaData.rev = "update";
         }
-        // metadata
-        return write(globalStream,filename,rootManager);
+        return write(rootStream,filename,rootManager);
     }
 
     /**
@@ -144,7 +162,7 @@ public class XStreamManager {
      * @return the root manager or null on error.
      */
     public RootManager readRootManager(String filename){
-        RootManager rootManager = (RootManager)read(globalStream,filename);
+        RootManager rootManager = (RootManager)read(rootStream,filename);
         if(rootManager == null){
             return new RootManager();
         }

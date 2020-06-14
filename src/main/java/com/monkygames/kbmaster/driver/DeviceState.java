@@ -1,12 +1,12 @@
 package com.monkygames.kbmaster.driver;
 
+import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.Profile;
 
 /**
  * Contains the state of the device.
  */
 public class DeviceState {
-
     /**
      * The default profile.
      */
@@ -24,7 +24,7 @@ public class DeviceState {
      */
     private String packageName;
 
-    public DeviceState(Profile profile, boolean isConnected, 
+    public DeviceState(Profile profile, boolean isConnected,
         boolean isEnabled, String packageName){
 
         this.profile = profile;

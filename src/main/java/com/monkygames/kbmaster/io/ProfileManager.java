@@ -79,10 +79,8 @@ public class ProfileManager{
      * @para profile the profile to update.
      */
     public void updateProfile(Profile profile){
-
+		//XStreamManager.getStreamManager().writeProfile(databaseFilename, profile);
 		XStreamManager.getStreamManager().writeRootManager(databaseFilename, rootManager);
-		//loadRoots();
-   		//XStreamManager.getStreamManager().writeProfile(databaseFilename, profile);
     }
 
     /**

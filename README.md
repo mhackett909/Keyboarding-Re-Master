@@ -1,4 +1,4 @@
-# Keyboarding Master
+# Keyboarding (Re)Master
 
 ## Introduction
 The keyboard master provides its users with the ability to custom configure their input devices for specific applications within a unified configuration environment. The main unique feature for input devices is the keymap concept. Each application can utilize 8 unique keymaps in which the user can toggle through via user assigned shortcuts. This enables a user to maintain a more ergonomic hand position when one hand is required for other duties such as mouse or tablet. 

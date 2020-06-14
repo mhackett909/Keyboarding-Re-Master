@@ -580,7 +580,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 						hardwareManager.startPollingDevice(device, null);
 					}
     			}
-    			globalAccount.updateDeviceState(device.getDeviceState());
+    		//	globalAccount.updateDeviceState(device.getDeviceState());
     		 	deviceList.add(new DeviceEntry(device));
 		}
     }

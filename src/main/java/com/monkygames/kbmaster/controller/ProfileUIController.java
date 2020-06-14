@@ -258,8 +258,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		if(app == null) return;
 		selectedProfile = (Profile)profileCB.getSelectionModel().getSelectedItem();
 		if(selectedProfile != null){
-			//saveProfile();
-			liteSave();
+			saveProfile();
 	   	 	currentProfile = selectedProfile;
 			device.setProfile(currentProfile);
 	    	keymapUIManager.setProfile(currentProfile);
@@ -343,15 +342,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		profileManager.updateProfile(currentProfile);
 		deviceMenuController.setActiveProfile(device, currentProfile);
     }
-	/**
-	 * Saves the current only to the global account. Used for temporary saving while switching between keymaps.
-	 */
-	public void liteSave() {
-		if (currentProfile != null) currentProfile.setDefaultKeymap(keymapTabPane.getSelectionModel().getSelectedIndex());
-		device.setProfile(currentProfile);
-		//profileManager.updateProfile(currentProfile);
-		deviceMenuController.setActiveProfile(device, currentProfile);
-	}
+
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
     /**

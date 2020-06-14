@@ -19,12 +19,19 @@ public class DevicePackage{
     /**
      * The device information represented by this class.
      */
-    private DeviceState deviceState;
+  //  private DeviceState deviceState;
     /**
      * True if this device has been downloaded and available locally or false
      * otherwise.
      */
     private boolean isDownloaded;
+
+    /**
+     * The device associated with this package.
+     *
+     * @param deviceState
+     */
+     private Device device;
     
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
@@ -34,16 +41,18 @@ public class DevicePackage{
 // ============= Static Methods ============== //
 
     // ============= Constructors ============== //
-    public DevicePackage(DeviceState deviceState){
-	this.deviceState = deviceState;
+    public DevicePackage(Device device){
+    this.device = device;
+   // deviceState = device.getDeviceState();
+	//this.deviceState = deviceState;
 	isDownloaded = false;
     }
     // ============= Public Methods ============== //
-    public DeviceState getDeviceState(){
-	return deviceState;
-    }
+    // public DeviceState getDeviceState(){	return deviceState; }
 
-    public void setDeviceState(DeviceState deviceState) { this.deviceState = deviceState; }
+    public Device getDevice() { return device; }
+
+   // public void setDeviceState(DeviceState deviceState) { this.deviceState = deviceState; }
 
     public boolean isIsDownloaded() {
 	return isDownloaded;
