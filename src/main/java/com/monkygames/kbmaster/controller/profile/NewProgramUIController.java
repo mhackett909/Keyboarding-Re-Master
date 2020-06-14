@@ -94,7 +94,7 @@ public class NewProgramUIController extends PopupController{
 	    PopupManager.getPopupManager().showError("App name already exists");
 	}
 	reset();
-	notifyOK(appName);
+	notifyOK("App:"+appName);
     }
     public void cancelEventFired(ActionEvent evt){
 	reset();
@@ -129,8 +129,9 @@ public class NewProgramUIController extends PopupController{
 		Logger.getLogger(NewProgramUIController.class.getName()).log(Level.SEVERE, null, ex);
 	    }
 	}
-
     }
+	public void setAppType(int index) { typeCB.getSelectionModel().select(index); }
+
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
     /**
@@ -154,7 +155,7 @@ public class NewProgramUIController extends PopupController{
     public void initialize(URL url, ResourceBundle rb) {
 	typeCB.setItems(FXCollections.observableArrayList(ProfileTypeNames.getProfileTypeName(AppType.GAME),
 							  ProfileTypeNames.getProfileTypeName(AppType.APPLICATION)));
-	typeCB.getSelectionModel().selectFirst();
+
 	fileChooser = new FileChooser();
 	// only allow PNG files
 	FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG files (*.png)","*.png");

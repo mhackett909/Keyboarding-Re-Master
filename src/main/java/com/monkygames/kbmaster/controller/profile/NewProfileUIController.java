@@ -100,7 +100,7 @@ public class NewProfileUIController extends PopupController implements ChangeLis
 	    device.setDefaultKeymaps(profile);
 	    // save the profile
 	    profileManager.addProfile(profile);
-	    notifyOK(profileName);
+	    notifyOK("Profile:"+profileName);
 	} finally{
 	    reset();
 	}
@@ -109,6 +109,8 @@ public class NewProfileUIController extends PopupController implements ChangeLis
 	reset();
 	notifyCancel(null);
     }
+	public void setAppType(int index) { typeCB.getSelectionModel().select(index); }
+	public void setApp(int index) { programCB.getSelectionModel().select(index); }
 // ============= Private Methods ============== //
     /**
      * Reset to the defaults.

@@ -36,15 +36,15 @@ public class DeleteProfileUIController extends PopupController {
     }
     public void setProfile(Profile profile){
 	this.profile = profile;
-	typeL.setText(ProfileTypeNames.getProfileTypeName(profile.getApp().getAppType()));
-	programL.setText(profile.getApp().getName());
+	typeL.setText(ProfileTypeNames.getProfileTypeName(profile.getAppInfo().getAppType()));
+	programL.setText(profile.getAppInfo().getName());
 	profileL.setText(profile.getProfileName());
     }
     public void okEventFired(ActionEvent evt){
 	try{
 	    if(profile != null){
 		profileManager.removeProfile(profile);
-		notifyOK(profile.getProfileName());
+		notifyOK("DelProfile:"+profile.getProfileName());
 	    }else{
 		PopupManager.getPopupManager().showError("Invalid Profile");
 	    }

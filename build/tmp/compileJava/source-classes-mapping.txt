@@ -144,6 +144,8 @@ com/monkygames/kbmaster/input/Keymap.java
  com.monkygames.kbmaster.input.Keymap
 com/monkygames/kbmaster/controller/NewDeviceUIController.java
  com.monkygames.kbmaster.controller.NewDeviceUIController
+com/monkygames/kbmaster/profiles/AppInfo.java
+ com.monkygames.kbmaster.profiles.AppInfo
 com/monkygames/kbmaster/controller/profile/DeleteProgramUIController.java
  com.monkygames.kbmaster.controller.profile.DeleteProgramUIController
 com/monkygames/kbmaster/controller/SetDescriptionUIController.java

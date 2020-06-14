@@ -40,7 +40,7 @@ public class DeleteProgramUIController extends PopupController {
 	try{
 	    if(app != null){
 		profileManager.removeApp(app);
-		notifyOK(app.getName());
+		notifyOK("DelApp:"+app.getName());
 	    }else{
 		PopupManager.getPopupManager().showError("Invalid App");
 	    }

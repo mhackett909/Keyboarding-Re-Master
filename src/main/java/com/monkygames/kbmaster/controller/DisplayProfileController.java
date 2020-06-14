@@ -92,14 +92,14 @@ public class DisplayProfileController implements Initializable{
      * Display the device's information including profile and keymaps.
      * @param device the device to display.
      */
-    public void displayDevice(Device device){
+    public void displayDevice(Device device, App app){
 	Profile profile = device.getProfile();
 	if(profile == null){
         PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
 	    return;
 	}
 	displayKeymap(profile.getKeymaps(),0);
-	displayProfile(profile);
+	displayProfile(profile, app);
 	deviceIV.setImage(new javafx.scene.image.Image(device.getDeviceInformation().getDeviceIcon()));
     }
 
@@ -107,8 +107,7 @@ public class DisplayProfileController implements Initializable{
      * Display profile information.
      * @param profile the profile to display.
      */
-    private void displayProfile(Profile profile){
-	App app = profile.getApp();
+    private void displayProfile(Profile profile, App app){
 	profileNameL.setText(profile.getProfileName());
 	typeL.setText(app.getAppType().name());
 	appL.setText(app.getName());

@@ -489,7 +489,9 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	// get device
 	GenerateBindingsImage generator = new GenerateBindingsImage(deviceEntry.getDevice());
 	displayProfileController.setGenerateBindingsImage(generator);
-	displayProfileController.displayDevice(deviceEntry.getDevice());
+	displayProfileController.displayDevice(deviceEntry.getDevice(),
+		configureDeviceController.getAppByName(deviceEntry.getDevice().getProfile().getAppInfo().appName)
+	);
     }
 // ============= Implemented Methods ============== //
     @Override
@@ -580,7 +582,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 						hardwareManager.startPollingDevice(device, null);
 					}
     			}
-    		//	globalAccount.updateDeviceState(device.getDeviceState());
     		 	deviceList.add(new DeviceEntry(device));
 		}
     }

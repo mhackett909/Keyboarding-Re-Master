@@ -7,7 +7,6 @@ package com.monkygames.kbmaster.profiles;
 
 import com.monkygames.kbmaster.input.Keymap;
 
-//import com.monkygames.jnostromo.io.Mapper;
 
 /**
  * Contains the configuration for all the keymaps.
@@ -19,7 +18,7 @@ public class Profile{
     /**
      * The app this profile is classified under.
      */
-    private App app;
+    private AppInfo appInfo;
     /**
      * The name of the profile.
      */
@@ -53,13 +52,14 @@ public class Profile{
 	this(app,profileName,"","",0,0);
     }
     public Profile(App app, String profileName, String author, String info, long lastUpdatedDate, int defaultMap){
-	this.app = app;
+
 	this.profileName = profileName;
 	this.author = author;
 	this.info = info;
 	this.lastUpdatedDate = lastUpdatedDate;
 	keymaps = new Keymap[8];
 	this.defaultMap = defaultMap;
+	setAppInfo(app);
 	//TODO need to populate this profile based on the device!
 	/*
 	for(int i = 0; i < keymaps.length; i++){
@@ -77,12 +77,12 @@ public class Profile{
 	}
     }
 
-    public App getApp(){
-	return app;
+    public AppInfo getAppInfo(){
+	return appInfo;
     }
 
-    public void setApp(App app){
-	this.app = app;
+    public void setAppInfo(App app){
+	this.appInfo = new AppInfo(app);
     }
 
     public String getProfileName() {
@@ -150,7 +150,7 @@ public class Profile{
      * Note, this is a deep clone.
      * @param newName the new name of the clone.
      * @return the cloned profile.
-     */
+
     public Profile cloneProfile(String newName){
 	Profile newProfile = new Profile(app,newName);
 	for(int i = 0; i < 8; i++){
@@ -158,16 +158,10 @@ public class Profile{
 	}
 	return newProfile;
     }
-
-    /**
-     * Removes references to data structures for a clean gc removal.
      */
-    public void unlink(){
-	app = null;
-    }
 
     public void printString(){
-	String out = "Profile "+app.getAppType()+"->"+app.getName()+"->"+profileName+"[\n";
+	String out = "Profile "+appInfo.getAppType()+"->"+appInfo.getName()+"->"+profileName+"[\n";
 	for(int i = 0; i < 8; i++){
 	    out += keymaps[i].toStringFormatted()+"\n";
 	}

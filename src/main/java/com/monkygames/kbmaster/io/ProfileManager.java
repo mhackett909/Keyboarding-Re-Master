@@ -6,6 +6,7 @@ package com.monkygames.kbmaster.io;
 // === java imports === //
 import java.io.File;
 // === kbmaster imports === //
+import com.monkygames.kbmaster.controller.ProfileUIController;
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.Profile;
 import com.monkygames.kbmaster.profiles.AppType;
@@ -21,6 +22,7 @@ public class ProfileManager{
 // ============= Class variables ============== //
     private RootManager rootManager;
     private String databaseFilename;
+    private ProfileUIController profileUIController;
 // ============= Constructors ============== //
     /**
      * Create a new profile manager where the specified string is the location
@@ -56,14 +58,15 @@ public class ProfileManager{
      */
     public boolean doesProfileNameExists(App app, String profileName){
 	for(Profile profile: app.getProfiles()){
-	    if(profile.getApp().getAppType() == app.getAppType() && 
-	       profile.getApp().getName().equals(app.getName()) && 
+	    if(profile.getAppInfo().getAppType() == app.getAppType() &&
+	       profile.getAppInfo().getName().equals(app.getName()) &&
 	       profile.getProfileName().equals(profileName)){
 		return true;
 	    }
 	}
 	return false;
     }
+
     /**
      * Adds the profile to the app and stores to the database.
      * @param profile the profile to be added.
@@ -88,10 +91,24 @@ public class ProfileManager{
      * @param profile the profile to remove.
      */
     public void removeProfile(Profile profile){
-	rootManager.removeProfile(profile);
-	// save to xml
-	XStreamManager.getStreamManager().writeRootManager(databaseFilename, rootManager);
+    	App app = profileUIController.getAppByName(profile.getAppInfo().getName());
+    	int index;
+    	if (profile.getAppInfo().getAppType() == AppType.APPLICATION) {
+    		index = getAppsRoot().getList().indexOf(app);
+    		getAppsRoot().getList().get(index).removeProfile(profile);
+		}
+    	else {
+			index = getGamesRoot().getList().indexOf(app);
+			getGamesRoot().getList().get(index).removeProfile(profile);
+		}
+		XStreamManager.getStreamManager().writeRootManager(databaseFilename, rootManager);
     }
+	/**
+	 * Sets the UI Controller
+	 */
+	 public void setUIController(ProfileUIController profileUIController) {
+	 	this.profileUIController = profileUIController;
+	 }
     /**
      * Removes the app from the list.
      * Note, if there are any profiles in this app, those profiles

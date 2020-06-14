@@ -58,7 +58,7 @@ public class DeviceEntry{
 	if(profile == null){
 	    return "None Selected";
 	}
-	return profile.getApp().getName()+":"+profile.getProfileName();
+	return profile.getAppInfo().getName()+":"+profile.getProfileName();
     }
     /**
      * Returns a string representation if the device is connected.

@@ -6,6 +6,7 @@ package com.monkygames.kbmaster.controller;
 // === kbmaster imports === //
 import com.monkygames.kbmaster.driver.Device;
 
+import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.util.PopupManager;
 // === java imports === //
 import java.io.IOException;
@@ -98,6 +99,7 @@ public class ConfigureDeviceUIController implements Initializable, PopupNotifyIn
 	    }
 	}
     }
+    public App getAppByName(String appName) { return profileUIController.getAppByName(appName); }
     
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
@@ -128,8 +130,7 @@ public class ConfigureDeviceUIController implements Initializable, PopupNotifyIn
 // ============= Implemented Methods ============== //
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-	try {
+		try {
 	    URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/ProfileUI.fxml");
 	    FXMLLoader fxmlLoader = new FXMLLoader(location);
 	    fxmlLoader.setLocation(location);

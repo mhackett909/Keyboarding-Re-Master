@@ -183,7 +183,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	isNewDevice = true;
 	String deviceName = device.getDeviceInformation().getProfileName();
 	profileManager = new ProfileManager(profileDir+File.separator+deviceName);
-
+	profileManager.setUIController(this);
 	if(newProfileUIController != null){
 	    newProfileUIController.setProfileManager(profileManager);
 	    newProfileUIController.setDevice(device);
@@ -194,7 +194,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 							  ProfileTypeNames.getProfileTypeName(AppType.APPLICATION)));
 	if (currentProfile == null)	typeCB.getSelectionModel().selectFirst();
 	else {
-		switch (currentProfile.getApp().getAppType()) {
+		switch (currentProfile.getAppInfo().getAppType()) {
 			case GAME:
 				typeCB.getSelectionModel().select(0);
 				break;
@@ -294,7 +294,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		updateAppUIInfo(app);
 		profileCB.valueProperty().removeListener(profileChangeListener);
 		profiles = FXCollections.observableArrayList(app.getProfiles());
-		if(profiles.size() > 0){ //might see a null ptr exception here
+		if(profiles.size() > 0){
 			profileCB.setItems(profiles);
 			profileCB.getSelectionModel().selectFirst();
 		}
@@ -349,25 +349,35 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	}
 	apps = FXCollections.observableArrayList(root.getList());
 	appsCB.valueProperty().removeListener(appChangeListener);
-	if(apps.size() > 0){ //null ptr here?
+
+	if(apps.size() > 0){
 		appsCB.setItems(apps);
-		int selectedIndex = 0;
-		if (currentProfile != null) selectedIndex = apps.indexOf(currentProfile.getApp());
+		int selectedIndex = -1;
+		if (currentProfile != null) {
+			for (int tracker = 0; tracker < apps.size(); tracker++)
+				if (apps.get(tracker).getName().equals(currentProfile.getAppInfo().getName())) {
+					selectedIndex = tracker;
+					break;
+				}
+		}
 		if (selectedIndex == -1) {
 			currentProfile = null;
 			selectedIndex = 0;
 		}
+		appsCB.valueProperty().addListener(appChangeListener);
 		appsCB.getSelectionModel().select(selectedIndex);
-		profiles = FXCollections.observableArrayList(apps.get(selectedIndex).getProfiles());
-	    updateAppUIInfo((App)appsCB.getSelectionModel().getSelectedItem());
-	}else{
-	    resetAppUIInfo();
-	    resetProfileUIInfo();
-	    profileSelected();
-	    return;
+	}else {
+		resetAppUIInfo();
+		resetProfileUIInfo();
+		profileSelected();
+		return;
 	}
+	/**
 	profileCB.valueProperty().removeListener(profileChangeListener);
-	if(profiles.size() == 0) resetProfileUIInfo(); //null ptr here?
+	if(profiles.size() == 0) {
+		resetAppUIInfo();
+		resetProfileUIInfo();
+	}
 	else{
 		profileCB.setItems(profiles);
 		if (currentProfile == null) profileCB.getSelectionModel().selectFirst();
@@ -375,8 +385,10 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	}
 	profileSelected();
 	profileCB.valueProperty().addListener(profileChangeListener);
-	appsCB.valueProperty().addListener(appChangeListener);
+
+	 */
     }
+
     /**
      * Sets the tool tip with the string by the specified information.
      * @param button the button to set the tooltip.
@@ -410,6 +422,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	}
 	newProgramUIController.setProfileManager(profileManager);
 	newProgramUIController.showStage();
+	newProgramUIController.setAppType(typeCB.getSelectionModel().getSelectedIndex());
 
     }
     /**
@@ -428,6 +441,8 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	newProfileUIController.setDevice(device);
 	newProfileUIController.setProfileManager(profileManager);
 	newProfileUIController.showStage();
+	newProfileUIController.setAppType(typeCB.getSelectionModel().getSelectedIndex());
+	newProfileUIController.setApp(appsCB.getSelectionModel().getSelectedIndex());
     }
     private void openCloneProfilePopup(){
 	if(!checkDevice()) return;
@@ -453,7 +468,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	File file = pdfChooser.showSaveDialog(null);
 	if(file != null){
 	    GenerateBindingsImage generator = new GenerateBindingsImage(device);
-	    String header = profile.getApp().getName() + " / " + profile.getProfileName();
+	    String header = profile.getAppInfo().getName() + " / " + profile.getProfileName();
 	    String footer = device.getDeviceInformation().getMake()+" "+
 			    device.getDeviceInformation().getModel();
 	    BindingPDFWriter pdfWriter = new BindingPDFWriter(generator.generateImages(profile),
@@ -609,6 +624,16 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	    PopupManager.getPopupManager().showError("Import failed: can't find file");
 	}
     }
+	/**
+	 * Finds and returns an application. Null if no matching application found.
+	 *
+	 */
+	 public App getAppByName(String appName) {
+	 	for (Object app : appsCB.getItems())
+	 		if (((App) app).getName().equals(appName))
+	 			return (App) app;
+		return null;
+	 }
 // ============= Implemented Methods ============== //
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -656,26 +681,29 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 
     @Override
     public void onOK(Object src, String message) {
-	if(message != null && message.equals("Save")){
-	    // save the profile
-		saveProfile();
-	}else if( (src instanceof DeleteProfileUIController || 
-		    src instanceof DeleteProgramUIController) 
-		    && message != null){
-	    currentProfile = null;
-	    // update device manager
-	    deviceMenuController.setActiveProfile(device, null);
-	    updateComboBoxes();
-	}else {
-		// includes a notification from New Porgram UI Controller
-		updateComboBoxes();
-		int index = 0;
-		for (; index < profileCB.getItems().size(); index++)
-			if (profileCB.getItems().get(index).toString().equals(message))
-				break;
-	    profileCB.getSelectionModel().select(index);
-		saveProfile();
-	}
+		int delimiter = message.indexOf(':'), index = 0;
+		String objectName = message.substring(delimiter + 1);
+		if (message.equals("Save")) saveProfile();
+		else if (message.substring(index, delimiter).equals("App")) {
+			updateComboBoxes();
+			for (; index < appsCB.getItems().size(); index++)
+				if (appsCB.getItems().get(index).toString().equals(objectName))
+					break;
+			appsCB.getSelectionModel().select(index);
+		} else if (message.substring(index, delimiter).equals("Profile")) {
+			updateProfilesComboBox();
+			for (; index < profileCB.getItems().size(); index++)
+				if (profileCB.getItems().get(index).toString().equals(objectName))
+					break;
+			profileCB.getSelectionModel().select(index);
+		} else if (message.substring(index, delimiter).equals("DelApp")) {
+			updateComboBoxes();
+			appsCB.getSelectionModel().select(index);
+		} else if (message.substring(index, delimiter).equals("DelProfile")) {
+			updateProfilesComboBox();
+			profileCB.getSelectionModel().select(index);
+		}
+		else System.out.println("OK " + message + " : " + objectName);
     }
 
     @Override

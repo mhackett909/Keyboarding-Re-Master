@@ -66,7 +66,7 @@ public class RootManager implements SyncMetaData{
      */
     public boolean addProfile(Profile profile){
         Root root;
-        if(profile.getApp().getAppType() == AppType.APPLICATION){
+        if(profile.getAppInfo().getAppType() == AppType.APPLICATION){
             root = appsRoot;
         }else{
             root = gamesRoot;
@@ -74,7 +74,7 @@ public class RootManager implements SyncMetaData{
         // find the app
         App app = null;
         for(App tmpApp: root.getList()){
-            if(tmpApp.getName().equals(profile.getApp().getName())){
+            if(tmpApp.getName().equals(profile.getAppInfo().getName())){
                 app = tmpApp;
                 break;
             }
@@ -89,15 +89,6 @@ public class RootManager implements SyncMetaData{
             app.addProfile(profile);
         }
         return true;
-    }
-
-    /**
-     * Removes the profile from the app.
-     * @param profile the profile to remove (note it has a reference to app).
-     */
-    public void removeProfile(Profile profile){
-	profile.getApp().removeProfile(profile);
-	profile.unlink();
     }
 
     /**
