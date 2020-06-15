@@ -85,8 +85,7 @@ public class GlobalAccount{
      * downloaded than returns false).
      */
     public boolean downloadDevice(String devicePackageName){
-	// first check if the device is already added 
-
+	// first check if the device is already added
 	for(DevicePackage devicePackage: deviceList.getList()){
 	    if(devicePackage.getDevice().getDeviceState().getPackageName().equals(devicePackageName)){
 		// already added
@@ -143,7 +142,6 @@ public class GlobalAccount{
 	ArrayList<Device> devices = new ArrayList<>();
 
 	for(DevicePackage devicePackage: deviceList.getList()){
-
 	    if(devicePackage.isIsDownloaded()){
 		devices.add(driverManager.getDeviceByPackageName(devicePackage.getDevice().getDeviceState().getPackageName()));
 	    }

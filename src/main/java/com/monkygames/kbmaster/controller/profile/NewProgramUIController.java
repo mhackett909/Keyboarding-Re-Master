@@ -86,15 +86,21 @@ public class NewProgramUIController extends PopupController{
 	    notifyCancel(null);
 	    return;
 	}
+	//For using ` as delimiter
+	char[] charArr = appName.toCharArray();
+	for (int index = 0; index < charArr.length; index++)
+		if (charArr[index] == '`') charArr[index] = '\'';
+	appName = new String(charArr);
 	if(!profileManager.addApp(new App(appInfoTA.getText(),
 					  appLogoPath,
 					  devLogoPath,
 					  appName,
 					  type))){
 	    PopupManager.getPopupManager().showError("App name already exists");
+	    return;
 	}
+	notifyOK("AddApp`"+typeCB.getSelectionModel().getSelectedItem().toString()+"`"+appName);
 	reset();
-	notifyOK("App:"+appName);
     }
     public void cancelEventFired(ActionEvent evt){
 	reset();

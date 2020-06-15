@@ -170,6 +170,7 @@ public class ScanHardware implements Runnable{
     public static void main(String[] args){
 	boolean doPoll = true;
 	String deviceName = null;
+	System.out.println("Args "+args[0]);
 	if(args.length == 0){
 	    doPoll = false;
 	}else{

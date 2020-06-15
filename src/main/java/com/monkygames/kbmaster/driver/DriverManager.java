@@ -121,28 +121,29 @@ public class DriverManager{
      * Includes mice and keyboards.
      */
     private void createRazerDrivers(){
-	addDevice(new com.monkygames.kbmaster.driver.razer.nostromo.Nostromo());
-	addDevice(new com.monkygames.kbmaster.driver.razer.tartarus.Tartarus());
-	addDevice(new com.monkygames.kbmaster.driver.razer.tartarus_v2.TartarusV2());
-	addDevice(new com.monkygames.kbmaster.driver.razer.tartaruschroma.TartarusChroma());
-	addDevice(new com.monkygames.kbmaster.driver.razer.orbweaver.Orbweaver());
-	addDevice(new com.monkygames.kbmaster.driver.razer.orbweaverchroma.OrbweaverChroma());
-	addDevice(new com.monkygames.kbmaster.driver.razer.naga.Naga());
-	addDevice(new com.monkygames.kbmaster.driver.razer.taipan.Taipan());
-	addDevice(new com.monkygames.kbmaster.driver.razer.marauder.Marauder());
+	addDevice(new com.monkygames.kbmaster.driver.devices.razer.nostromo.Nostromo());
+	addDevice(new com.monkygames.kbmaster.driver.devices.razer.tartarus.Tartarus());
+	addDevice(new com.monkygames.kbmaster.driver.devices.razer.tartarus_v2.TartarusV2());
+	addDevice(new com.monkygames.kbmaster.driver.devices.razer.tartaruschroma.TartarusChroma());
+	addDevice(new com.monkygames.kbmaster.driver.devices.razer.orbweaver.Orbweaver());
+	addDevice(new com.monkygames.kbmaster.driver.devices.razer.orbweaverchroma.OrbweaverChroma());
+	addDevice(new com.monkygames.kbmaster.driver.devices.razer.naga.Naga());
+	addDevice(new com.monkygames.kbmaster.driver.devices.razer.taipan.Taipan());
+	addDevice(new com.monkygames.kbmaster.driver.devices.razer.marauder.Marauder());
     }
     /**
      * Creates all Belkin devices.
      */
     private void createBelkinDrivers(){
-	addDevice(new com.monkygames.kbmaster.driver.belkin.n52.N52());
-	addDevice(new com.monkygames.kbmaster.driver.belkin.n52te.N52TE());
+	addDevice(new com.monkygames.kbmaster.driver.devices.belkin.n52.N52());
+	addDevice(new com.monkygames.kbmaster.driver.devices.belkin.n52te.N52TE());
     }
 
     private void createOtherDrivers(){
-	addDevice(new com.monkygames.kbmaster.driver.lacunary_limited.ipv6buddy.IPV6Buddy());
-	addDevice(new com.monkygames.kbmaster.driver.digitus.numpad.Numpad());
-	addDevice(new com.monkygames.kbmaster.driver.generic.mouse.gspy.GSpyUsbGamingMouseRH1900());
+	addDevice(new com.monkygames.kbmaster.driver.devices.lacunary_limited.ipv6buddy.IPV6Buddy());
+	addDevice(new com.monkygames.kbmaster.driver.devices.digitus.numpad.Numpad());
+	addDevice(new com.monkygames.kbmaster.driver.devices.generic.mouse.gspy.GSpyUsbGamingMouseRH1900());
+	addDevice(new com.monkygames.kbmaster.driver.devices.logitech.LogitechG502());
     }
 // ============= Implemented Methods ============== //
 // ============= Extended Methods ============== //

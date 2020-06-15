@@ -629,9 +629,10 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	 *
 	 */
 	 public App getAppByName(String appName) {
-	 	for (Object app : appsCB.getItems())
-	 		if (((App) app).getName().equals(appName))
-	 			return (App) app;
+	 	for (Object app : appsCB.getItems()) {
+			if (((App) app).getName().equals(appName))
+				return (App) app;
+		}
 		return null;
 	 }
 // ============= Implemented Methods ============== //
@@ -681,29 +682,59 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 
     @Override
     public void onOK(Object src, String message) {
-		int delimiter = message.indexOf(':'), index = 0;
-		String objectName = message.substring(delimiter + 1);
-		if (message.equals("Save")) saveProfile();
-		else if (message.substring(index, delimiter).equals("App")) {
+		int index = 0;
+		String[] objectNames = message.split("`");
+		if (objectNames[0].equals("Save")) saveProfile();
+		else if (objectNames[0].equals("AddApp")) {
 			updateComboBoxes();
+			String currentAppType = typeCB.getSelectionModel().getSelectedItem().toString().toLowerCase();
+			if (!objectNames[1].toLowerCase().equals(currentAppType)) {
+				switch (typeCB.getSelectionModel().getSelectedIndex()) {
+					case 0:
+						typeCB.getSelectionModel().select(1);
+						break;
+					default:
+						typeCB.getSelectionModel().select(0);
+				}
+			}
+			App appName = getAppByName(objectNames[2]);
 			for (; index < appsCB.getItems().size(); index++)
-				if (appsCB.getItems().get(index).toString().equals(objectName))
+				if (appsCB.getItems().get(index) == appName)
 					break;
 			appsCB.getSelectionModel().select(index);
-		} else if (message.substring(index, delimiter).equals("Profile")) {
+		} else if (objectNames[0].equals("AddProfile")) {
 			updateProfilesComboBox();
+			String currentAppType = typeCB.getSelectionModel().getSelectedItem().toString().toLowerCase();
+			if (!objectNames[1].toLowerCase().equals(currentAppType)) {
+				switch (typeCB.getSelectionModel().getSelectedIndex()) {
+					case 0:
+						typeCB.getSelectionModel().select(1);
+						break;
+					default:
+						typeCB.getSelectionModel().select(0);
+				}
+			}
+			App currentApp = (App) appsCB.getSelectionModel().getSelectedItem();
+			App appName = getAppByName(objectNames[2]);
+			if (currentApp != appName) {
+				for (; index < appsCB.getItems().size(); index++)
+					if (appsCB.getItems().get(index) == appName)
+						break;
+				appsCB.getSelectionModel().select(index);
+			}
+			index = 0;
 			for (; index < profileCB.getItems().size(); index++)
-				if (profileCB.getItems().get(index).toString().equals(objectName))
+				if (profileCB.getItems().get(index).toString().equals(objectNames[3]))
 					break;
 			profileCB.getSelectionModel().select(index);
-		} else if (message.substring(index, delimiter).equals("DelApp")) {
+		} else if (objectNames[0].equals("DelApp")) {
 			updateComboBoxes();
 			appsCB.getSelectionModel().select(index);
-		} else if (message.substring(index, delimiter).equals("DelProfile")) {
+		} else if (objectNames[0].equals("DelProfile")) {
 			updateProfilesComboBox();
 			profileCB.getSelectionModel().select(index);
 		}
-		else System.out.println("OK " + message + " : " + objectName);
+		else System.out.println("OK " + message + " : " + objectNames[0]);
     }
 
     @Override

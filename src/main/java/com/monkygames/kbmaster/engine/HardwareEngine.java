@@ -245,7 +245,8 @@ public class HardwareEngine implements Runnable{
 	Keyboard keyboard;
 	this.keyboardEventQueues.clear();
 	for(Controller controller: controllers){
-	    if(controller.getType() == Controller.Type.KEYBOARD && 
+		//System.out.println("Controller: "+controller);
+	    if(controller.getType() == Controller.Type.KEYBOARD &&
 	       controller.getName().equals(device.getDeviceInformation().getJinputName())){
 		keyboard = (Keyboard)controller;
 		keyboards.add((Keyboard)controller);
@@ -390,38 +391,11 @@ public class HardwareEngine implements Runnable{
 			float rel = component.getPollData();
 			float x = point.x + rel;
 			robot.mouseMove((int)x, point.y);
-			//System.out.println("X: rel = "+rel);
-			/*
-			// note, have to modify the relative
-			float pol_dat = component.getPollData();
-			float rel = component.getPollData() * unit_width;
-			// between (0, 1)
-			if(rel > 0 && rel < 1){
-			    rel = 1;
-			// between (-1, 0)
-			}else if(rel < 0 && rel > -1){
-			    rel = -1;
-			}
-			float x = point.x + rel;
-			robot.mouseMove((int)x, point.y);
-			*/
-			//System.out.println("Mouse Move: [pol,rel,x_o,x_n,x_i] ["+pol_dat+","+rel+","+point.x+","+x+","+(int)x);
 		    }else if(component.getIdentifier() == Axis.Y){
 			Point point = MouseInfo.getPointerInfo().getLocation();
 			float rel = component.getPollData();
 			float y = point.y + rel;
 			robot.mouseMove(point.x, (int)y);
-			/*
-			float rel = component.getPollData() * unit_height;
-			if(rel > 0 && rel < 1){
-			    rel = 1;
-			// between (-1, 0)
-			}else if(rel < 0 && rel > -1){
-			    rel = -1;
-			}
-			float y = point.y + rel;
-			robot.mouseMove(point.x, (int)y);
-			*/
 		    }else if(component.getIdentifier() == Axis.Z && event.getValue() >= 1){
 			mapping = keymap.getzUpWheelMapping();
 			if(mapping.getOutput() instanceof OutputKey || mapping.getOutput() instanceof OutputKeymapSwitch){

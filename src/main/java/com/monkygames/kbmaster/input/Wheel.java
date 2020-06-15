@@ -4,6 +4,7 @@
 package com.monkygames.kbmaster.input;
 
 // === jinput imports === //
+import net.java.games.input.Component;
 import net.java.games.input.Component.Identifier.Axis;
 
 /**
@@ -17,12 +18,17 @@ public class Wheel extends Hardware{
 // ============= Constructors ============== //
     public Wheel(int id){
 	super(id,"");
-	if(id == 1 || id == 2){
-	    inputString = Axis.Z.getName();
-	}else{
-	    inputString = net.java.games.input.Component.Identifier.Button.MIDDLE.getName();
-	}
-
+	switch (id) {
+        case 1:
+        case 2:
+            inputString = Axis.Z.getName();
+            break;
+   //     case 3:
+       //     inputString = Axis.SLIDER.getName();
+      //      break;
+        default:
+            inputString = net.java.games.input.Component.Identifier.Button.MIDDLE.getName();
+    }
     }
 // ============= Public Methods ============== //
 // ============= Protected Methods ============== //

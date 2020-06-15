@@ -81,6 +81,11 @@ public class NewProfileUIController extends PopupController implements ChangeLis
 		PopupManager.getPopupManager().showError("Invalid profile name");
 		return;
 	    }
+	    //For using ` as delimiter
+		char[] charArr = profileName.toCharArray();
+		for (int index = 0; index < charArr.length; index++)
+			if (charArr[index] == '`') charArr[index] = '\'';
+		profileName = new String(charArr);
 	    // check for existing profile names
 	    if(profileManager.doesProfileNameExists(app, profileName)){
 		PopupManager.getPopupManager().showError("Profile name already exists");
@@ -100,7 +105,7 @@ public class NewProfileUIController extends PopupController implements ChangeLis
 	    device.setDefaultKeymaps(profile);
 	    // save the profile
 	    profileManager.addProfile(profile);
-	    notifyOK("Profile:"+profileName);
+	    notifyOK("AddProfile`"+profile.getAppInfo().getAppType().toString()+"`"+profile.getAppInfo().getName()+"`"+profileName);
 	} finally{
 	    reset();
 	}

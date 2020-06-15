@@ -68,9 +68,7 @@ public class Keymap{
     }
     */
 
-    public WheelMapping getzDownWheelMapping() {
-	return zDownWheelMapping;
-    }
+    public WheelMapping getzDownWheelMapping() { return zDownWheelMapping;  }
 
     public void setzDownWheelMapping(WheelMapping zDownWheelMapping) {
 	this.zDownWheelMapping = zDownWheelMapping;

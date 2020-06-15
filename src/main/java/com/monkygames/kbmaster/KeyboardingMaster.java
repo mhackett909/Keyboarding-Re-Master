@@ -107,8 +107,9 @@ public class KeyboardingMaster extends Application {
         } catch (IOException ex) {
             Logger.getLogger(KeyboardingMaster.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        // test user settings
+        controller.showDeviceMenuFromLogin(null,false);
+        //TODO finish cloud account code and test user settings
+        /**
         if(userSettings.isRemember){
             switch(userSettings.loginMethod){
                 case LoginUIController.LOGIN_LOCAL:
@@ -126,6 +127,7 @@ public class KeyboardingMaster extends Application {
         }else{
             controller.showStage();
         }
+        */
     }
 
     /**
