@@ -169,6 +169,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	// first clear everything
 
 	if (this.device == device) return;
+	this.device = device;
 	resetAppUIInfo();
 	resetProfileUIInfo();
 	appsCB.valueProperty().removeListener(appChangeListener);
@@ -177,10 +178,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	profileCB.setItems(FXCollections.observableArrayList());
 	appsCB.valueProperty().addListener(appChangeListener);
 	profileCB.valueProperty().addListener(profileChangeListener);
-
-	this.device = device;
 	currentProfile = device.getProfile();
-	isNewDevice = true;
 	String deviceName = device.getDeviceInformation().getProfileName();
 	profileManager = new ProfileManager(profileDir+File.separator+deviceName);
 	profileManager.setUIController(this);
@@ -271,6 +269,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
     public void profileSelected(){
 		Profile selectedProfile;
 		selectedProfile = (Profile)profileCB.getSelectionModel().getSelectedItem();
+
 		if (selectedProfile != currentProfile) saveProfile();
 	   	currentProfile = selectedProfile;
 		device.setProfile(currentProfile);

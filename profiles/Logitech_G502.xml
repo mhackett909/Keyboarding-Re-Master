@@ -618,11 +618,12 @@
                         <id>6</id>
                         <inputString>Side</inputString>
                       </inputHardware>
-                      <output class="com.monkygames.kbmaster.input.OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
+                      <output class="OutputMouse">
+                        <name>Scroll Down</name>
+                        <keycode>1</keycode>
                         <modifier>0</modifier>
                         <description></description>
+                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -651,11 +652,12 @@
                         <id>7</id>
                         <inputString>Extra</inputString>
                       </inputHardware>
-                      <output class="com.monkygames.kbmaster.input.OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
+                      <output class="OutputMouse">
+                        <name>Scroll Up</name>
+                        <keycode>-1</keycode>
                         <modifier>0</modifier>
                         <description></description>
+                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -963,7 +965,7 @@
             <author></author>
             <lastUpdatedDate>1592254306494</lastUpdatedDate>
             <info></info>
-            <defaultMap>0</defaultMap>
+            <defaultMap>5</defaultMap>
           </Profile>
         </profiles>
       </App>

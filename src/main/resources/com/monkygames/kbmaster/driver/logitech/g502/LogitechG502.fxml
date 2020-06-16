@@ -15,13 +15,12 @@
         <Image preserveRatio="false" smooth="false" url="@resources/LogitechG502.png" />
       </image>
     </ImageView>
-    <Label layoutX="380.0" layoutY="200.0" text="Left Side" />
-    <Button layoutX="146.0" layoutY="97.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="4" />  
-    <Button layoutX="146.0" layoutY="111.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="3" />
-    <Button layoutX="146.0" layoutY="125.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="5" />
-    <Button layoutX="106.0" layoutY="67.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="1" />
-    <Button layoutX="186.0" layoutY="67.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="2" />
-    <Button layoutX="365.0" layoutY="320.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="7" />
-    <Button layoutX="390.0" layoutY="326.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="6" />      
+    <Button layoutX="145.0" layoutY="205.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="4" />
+    <Button layoutX="170.0" layoutY="165.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="3" />
+    <Button layoutX="215.0" layoutY="148.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="5" />
+    <Button layoutX="80.0" layoutY="230.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="1" />
+    <Button layoutX="180.0" layoutY="250.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="2" />
+    <Button layoutX="390.0" layoutY="225.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="7" />
+    <Button layoutX="450.0" layoutY="180.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="6" />
   </children>
 </AnchorPane>

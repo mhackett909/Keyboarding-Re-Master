@@ -11,7 +11,6 @@ import net.java.games.input.Component;
 // === kbmaster imports === //
 
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 
 public class LogitechG502 extends Device {
     public LogitechG502() {
