@@ -132,15 +132,10 @@ public class App implements Comparable{
 	return appType;
     }
 
-    public void setAppType(AppType appType) {
-	this.appType = appType;
-    }
     public void addProfile(Profile profile){
 	profiles.add(profile);
     }
-    public void removeProfile(Profile profile){
-	profiles.remove(profile);
-    }
+    public void removeProfile(Profile profile){ profiles.remove(profile); }
     public ArrayList<Profile> getProfiles(){
 	return profiles;
     }

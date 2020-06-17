@@ -10,15 +10,15 @@
     <apps>
       <App>
         <info></info>
-        <name>app&apos;&apos;nmer</name>
+        <name>WoW</name>
         <appType>GAME</appType>
         <profiles>
           <Profile>
             <appInfo>
-              <appName>app&apos;&apos;nmer</appName>
+              <appName>WoW</appName>
               <appType>GAME</appType>
             </appInfo>
-            <profileName>profiles&apos;&apos;name</profileName>
+            <profileName>Mouse</profileName>
             <keymaps>
               <Keymap>
                 <id>1</id>
@@ -31,11 +31,11 @@
                         <inputString>Side</inputString>
                       </inputHardware>
                       <output class="OutputMouse">
-                        <name>Click</name>
-                        <keycode>16</keycode>
+                        <name>Scroll Down</name>
+                        <keycode>1</keycode>
                         <modifier>0</modifier>
                         <description></description>
-                        <mouseType>MouseClick</mouseType>
+                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -64,13 +64,12 @@
                         <id>7</id>
                         <inputString>Extra</inputString>
                       </inputHardware>
-                      <output class="com.monkygames.kbmaster.input.OutputKeymapSwitch">
-                        <name>Keymap 6</name>
-                        <keycode>6</keycode>
+                      <output class="OutputMouse">
+                        <name>Scroll Up</name>
+                        <keycode>-1</keycode>
                         <modifier>0</modifier>
-                        <description>gggggg</description>
-                        <isSwitchOnRelease>false</isSwitchOnRelease>
-                        <originalName>Keymap 6</originalName>
+                        <description></description>
+                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -618,12 +617,11 @@
                         <id>6</id>
                         <inputString>Side</inputString>
                       </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Scroll Down</name>
-                        <keycode>1</keycode>
+                      <output class="com.monkygames.kbmaster.input.OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
                         <modifier>0</modifier>
                         <description></description>
-                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -652,12 +650,11 @@
                         <id>7</id>
                         <inputString>Extra</inputString>
                       </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Scroll Up</name>
-                        <keycode>-1</keycode>
+                      <output class="com.monkygames.kbmaster.input.OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
                         <modifier>0</modifier>
                         <description></description>
-                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -963,9 +960,9 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592254306494</lastUpdatedDate>
+            <lastUpdatedDate>1592379483744</lastUpdatedDate>
             <info></info>
-            <defaultMap>5</defaultMap>
+            <defaultMap>0</defaultMap>
           </Profile>
         </profiles>
       </App>

@@ -144,11 +144,8 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	    return;
 	}
 
-	// Update device table!
-	//deviceTV.getItems().setAll(getDeviceEntryList(true));
 	updateDeviceEntryList(true);
 
-	// save
 	globalAccount.save();
     }
     /**
@@ -159,47 +156,26 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	    PopupManager.getPopupManager().showError("Unable to remove device.");
 	    return;
 	}
-
-	//remove device from hardware manager!!!!!!
 	hardwareManager.removeDevice(device);
-
-	// Update device table!
-	//deviceTV.getItems().setAll(getDeviceEntryList(true));
 	updateDeviceEntryList(true);
-
-	// save
 	globalAccount.save();
     }
     /**
      * Sets the active profile for the specified device.
      */
     public void setActiveProfile(Device device, Profile profile){
-
-	if(profile == null){
-	    hardwareManager.deviceProfileRemoved(device);
-	    updateDevices();
-	    globalAccount.save();
-	    return;
-	}
-
-	for(DeviceEntry deviceEntry: deviceTV.getItems()){
-	    if(deviceEntry.getDevice() == device){
-		// repopulate ---- NOOOOOOO
-		// This causes a concurency problem!
-		//deviceTV.getItems().setAll(getDeviceEntryList(false));
-		// update hardware manager
-		if(deviceEntry.isEnabled()){
-		    hardwareManager.startPollingDevice(device, profile);
-		}
-	    }
-	}
-	// repopulate -
-	//deviceTV.getItems().setAll(getDeviceEntryList(false));
-	//updateDeviceEntryList(false);
-	updateDeviceEntryList(false);
-	globalAccount.save();
+		device.setProfile(profile);
+		updateDevices();
+		//if(profile == null) hardwareManager.disableDevice(device);
+		//if (profile == null) hardwareManager.stopPollingDevice(device);
+		//else
+		hardwareManager.startPollingDevice(device, profile);
     }
-    /**
+	/**
+	 * Returns the global account. Used in saving.
+	 */
+	 public GlobalAccount getGlobalAccount() { return globalAccount; }
+	/**
      * Prepares the gui and databases to populate device list.
      * @param userSettings the settings for this menu
      */
@@ -489,8 +465,13 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	// get device
 	GenerateBindingsImage generator = new GenerateBindingsImage(deviceEntry.getDevice());
 	displayProfileController.setGenerateBindingsImage(generator);
-	displayProfileController.displayDevice(deviceEntry.getDevice(),
-		configureDeviceController.getAppByName(deviceEntry.getDevice().getProfile().getAppInfo().appName)
+
+	displayProfileController.displayDevice(
+		deviceEntry.getDevice(),
+		configureDeviceController.getAppByName(
+			deviceEntry.getDevice().getProfile().getAppInfo().appType.toString(),
+			deviceEntry.getDevice().getProfile().getAppInfo().appName
+		)
 	);
     }
 // ============= Implemented Methods ============== //
@@ -645,20 +626,14 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	    device.setIsEnabled(false);
 	    deviceEntry.setEnabled(false);
 	    checkBox.selectedProperty().set(false);
-
-	    //hardwareManager.stopPollingDevice(device);
-	    device.setIsEnabled(false);
+		hardwareManager.disableDevice(device);
 	    return;
 	}
-	//if(!device.isEnabled()){
 	if(!deviceEntry.isEnabled()){
 	    device.setIsEnabled(true);
-	    //deviceEntry.setEnabled(true);
 	    hardwareManager.startPollingDevice(device, device.getProfile());
 	}else{
-	    //hardwareManager.stopPollingDevice(device);
 	    device.setIsEnabled(false);
-	    //deviceEntry.setEnabled(false);
 	    hardwareManager.disableDevice(device);
 	}
 	// something has changed

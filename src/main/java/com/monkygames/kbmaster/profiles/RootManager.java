@@ -79,15 +79,8 @@ public class RootManager implements SyncMetaData{
                 break;
             }
         }
-
-        if(app == null){
-            // add app to root
-            // at this point, done since app has a reference to profile
-            root.addApp(app);
-        }else{
-            // add profile to app
-            app.addProfile(profile);
-        }
+        if (app == null) return false;
+        app.addProfile(profile);
         return true;
     }
 

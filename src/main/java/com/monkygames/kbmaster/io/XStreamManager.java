@@ -193,7 +193,7 @@ public class XStreamManager {
      * @return true on success and false otherwise.
      */
     public boolean writeGlobalAccount(DeviceList deviceList){
-       // System.out.println("Writing global account.");
+        System.out.println("Writing global account.");
         return write(globalStream,globalAccountFile.getAbsolutePath(),deviceList);
     }
 

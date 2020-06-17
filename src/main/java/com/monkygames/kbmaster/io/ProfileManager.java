@@ -35,19 +35,7 @@ public class ProfileManager{
     }
 // ============= Public Methods ============== //
     public void close(){
-		updateProfile(null);
-    }
-    /**
-     * Adds an app to the list if it doesn't already exist.
-     * @param app the app to add to the list.
-     * @return true on success and false if the name already exists.
-     */
-    public boolean addApp(App app){
-	if(rootManager.addApp(app)){
-	    // save
-	    return XStreamManager.getStreamManager().writeRootManager(databaseFilename, rootManager);
-	}
-	return false;
+		saveProfile();
     }
 
     /**
@@ -66,42 +54,37 @@ public class ProfileManager{
 	}
 	return false;
     }
-
+	/**
+	 * Adds an app to the list if it doesn't already exist.
+	 * @param app the app to add to the list.
+	 * @return true on success and false if the name already exists.
+	 */
+	public boolean addApp(App app){ return rootManager.addApp(app); }
+	/**
+	 * Removes the app from the list.
+	 * Note, if there are any profiles in this app, those profiles
+	 * will also be removed.
+	 */
+	public void removeApp(App app){ rootManager.removeApp(app); }
     /**
      * Adds the profile to the app and stores to the database.
      * @param profile the profile to be added.
      */
-    public void addProfile(Profile profile){
-	if(rootManager.addProfile(profile)){
-	    XStreamManager.getStreamManager().writeRootManager(databaseFilename, rootManager);
-	}
-    }
-    
+    public void addProfile(Profile profile) { rootManager.addProfile(profile); }
     /**
-     * Updates the profile and saves back into the database.
-     * @para profile the profile to update.
+     * Saves the profile to the database.
      */
-    public void updateProfile(Profile profile){
-		//XStreamManager.getStreamManager().writeProfile(databaseFilename, profile);
-		XStreamManager.getStreamManager().writeRootManager(databaseFilename, rootManager);
-    }
+    public void saveProfile(){ XStreamManager.getStreamManager().writeRootManager(databaseFilename, rootManager); }
 
     /**
      * Removes the profile from the database and updates the list.
      * @param profile the profile to remove.
      */
     public void removeProfile(Profile profile){
-    	App app = profileUIController.getAppByName(profile.getAppInfo().getName());
-    	int index;
-    	if (profile.getAppInfo().getAppType() == AppType.APPLICATION) {
-    		index = getAppsRoot().getList().indexOf(app);
-    		getAppsRoot().getList().get(index).removeProfile(profile);
-		}
-    	else {
-			index = getGamesRoot().getList().indexOf(app);
-			getGamesRoot().getList().get(index).removeProfile(profile);
-		}
-		XStreamManager.getStreamManager().writeRootManager(databaseFilename, rootManager);
+    	App app = profileUIController.getAppByName(profile.getAppInfo().getAppType().toString(), profile.getAppInfo().getName());
+    	AppType appType = profile.getAppInfo().getAppType();
+    	int index = getRoot(appType).getList().indexOf(app);
+    	getRoot(appType).getList().get(index).removeProfile(profile);
     }
 	/**
 	 * Sets the UI Controller
@@ -109,17 +92,6 @@ public class ProfileManager{
 	 public void setUIController(ProfileUIController profileUIController) {
 	 	this.profileUIController = profileUIController;
 	 }
-    /**
-     * Removes the app from the list.
-     * Note, if there are any profiles in this app, those profiles
-     * will also be removed.
-     */
-    public void removeApp(App app){
-	if(rootManager.removeApp(app)){
-	    // save
-	    XStreamManager.getStreamManager().writeRootManager(databaseFilename, rootManager);
-	}
-    }
 
     /**
      * Export the profile to a unique file location.

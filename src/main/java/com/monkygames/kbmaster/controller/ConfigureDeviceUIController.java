@@ -99,7 +99,7 @@ public class ConfigureDeviceUIController implements Initializable, PopupNotifyIn
 	    }
 	}
     }
-    public App getAppByName(String appName) { return profileUIController.getAppByName(appName); }
+    public App getAppByName(String appType, String appName) { return profileUIController.getAppByName(appType, appName); }
     
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //

@@ -70,13 +70,11 @@ public class NewProgramUIController extends PopupController{
     }
     public void okEventFired(ActionEvent evt){
 	AppType type;
-	List <App> programs;
+
 	if(typeCB.getSelectionModel().getSelectedIndex() == 0){
 	    type = AppType.GAME;
-	    programs = profileManager.getGamesRoot().getList();
 	}else{
 	    type = AppType.APPLICATION;
-	    programs = profileManager.getAppsRoot().getList();
 	}
 	String appName = programTF.getText();
 	// check for a valid program name

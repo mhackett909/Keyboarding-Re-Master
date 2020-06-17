@@ -111,11 +111,6 @@ public class ProfileUIController implements Initializable, ChangeListener<String
      * The currently used profile.
      */
     private Profile currentProfile;
-    /**
-     * True if its the first time a new device has been set.
-     * Used to not re-initialize the device GUI.
-     */
-    private boolean isNewDevice = true;
     private DeviceMenuUIController deviceMenuController;
     private ChangeListener<App> appChangeListener;
     private ChangeListener<Profile> profileChangeListener;
@@ -165,52 +160,46 @@ public class ProfileUIController implements Initializable, ChangeListener<String
      * popups for creating profiles.
      * @param device the device to be set.
      */
-    public void setDevice(Device device){
-	// first clear everything
-
-	if (this.device == device) return;
-	this.device = device;
-	resetAppUIInfo();
-	resetProfileUIInfo();
-	appsCB.valueProperty().removeListener(appChangeListener);
-	appsCB.setItems(FXCollections.observableArrayList());
-	profileCB.valueProperty().removeListener(profileChangeListener);
-	profileCB.setItems(FXCollections.observableArrayList());
-	appsCB.valueProperty().addListener(appChangeListener);
-	profileCB.valueProperty().addListener(profileChangeListener);
-	currentProfile = device.getProfile();
-	String deviceName = device.getDeviceInformation().getProfileName();
-	profileManager = new ProfileManager(profileDir+File.separator+deviceName);
-	profileManager.setUIController(this);
-	if(newProfileUIController != null){
-	    newProfileUIController.setProfileManager(profileManager);
-	    newProfileUIController.setDevice(device);
-	}
-
-	typeCB.valueProperty().removeListener(this);
-	typeCB.setItems(FXCollections.observableArrayList(ProfileTypeNames.getProfileTypeName(AppType.GAME),
-							  ProfileTypeNames.getProfileTypeName(AppType.APPLICATION)));
-	if (currentProfile == null)	typeCB.getSelectionModel().selectFirst();
-	else {
-		switch (currentProfile.getAppInfo().getAppType()) {
-			case GAME:
-				typeCB.getSelectionModel().select(0);
-				break;
-			default:
-				typeCB.getSelectionModel().select(1);
+    public void setDevice(Device device) {
+		if (this.device == device) return;
+		this.device = device;
+		currentProfile = device.getProfile();
+		keymapUIManager.setDevice(device);
+		keymapUIManager.initializeTabs();
+		keymapUIManager.setProfile(currentProfile);
+		keymapUIManager.setProfileUIController(this);
+		keymapUIManager.addSaveNotification(this);
+		String deviceName = device.getDeviceInformation().getProfileName();
+		profileManager = new ProfileManager(profileDir+File.separator+deviceName);
+		profileManager.setUIController(this);
+		if(newProfileUIController != null){
+	    	newProfileUIController.setProfileManager(profileManager);
+	    	newProfileUIController.setDevice(device);
 		}
-	}
-	typeCB.valueProperty().addListener(this);
-
-	//  set profile on the keymaps
-	// set device is required before calling initialize tabs.
-
-	keymapUIManager.setDevice(device);
-	keymapUIManager.initializeTabs();
-	keymapUIManager.setProfile(currentProfile);
-	keymapUIManager.setProfileUIController(this);
-	keymapUIManager.addSaveNotification(this);
-	updateComboBoxes();
+		typeCB.valueProperty().removeListener(this);
+		typeCB.setItems(FXCollections.observableArrayList(ProfileTypeNames.getProfileTypeName(AppType.GAME),
+							  ProfileTypeNames.getProfileTypeName(AppType.APPLICATION)));
+		typeCB.valueProperty().addListener(this);
+		resetAppUIInfo();
+		resetProfileUIInfo();
+		AppType appType;
+		typeCB.valueProperty().removeListener(this);
+		if (currentProfile == null) {
+			typeCB.getSelectionModel().selectFirst();
+			appType = AppType.GAME;
+		}
+		else {
+		 	appType = currentProfile.getAppInfo().getAppType();
+			switch (appType) {
+				case GAME:
+					typeCB.getSelectionModel().select(0);
+					break;
+				default:
+					typeCB.getSelectionModel().select(1);
+			}
+		}
+		typeCB.valueProperty().addListener(this);
+		updateComboBoxes(appType);
     }
     /**
      * Set the description label for keymaps.
@@ -226,6 +215,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		if(currentProfile != null){
 			currentProfile.getKeymap(keymapID).setDescription(description);
 			keymapUIManager.setDescriptionText(description);
+			saveProfile();
 		}
 		else PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
 	}
@@ -264,130 +254,65 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		this.deviceMenuController = deviceMenuController;
 	}
 	/**
-	 * The profiles combo box selected a new profile.
+	 * Returns the selected application type.
 	 */
-    public void profileSelected(){
-		Profile selectedProfile;
-		selectedProfile = (Profile)profileCB.getSelectionModel().getSelectedItem();
-
-		if (selectedProfile != currentProfile) saveProfile();
-	   	currentProfile = selectedProfile;
-		device.setProfile(currentProfile);
-	    keymapUIManager.setProfile(currentProfile);
-	    updateProfileUIInfo(currentProfile);
-		deviceMenuController.setActiveProfile(device, currentProfile);
-    }
-	/**
-	 * Updates only the profile ComboBox.
-	 */
-	public void updateProfilesComboBox(){
-		App app;
-		ObservableList<Profile> profiles;
-		app = (App)appsCB.getSelectionModel().getSelectedItem();
-		if(app == null) {
-			resetAppUIInfo();
-			resetProfileUIInfo();
-			profileSelected();
-			return;
-		}
-		updateAppUIInfo(app);
-		profileCB.valueProperty().removeListener(profileChangeListener);
-		profiles = FXCollections.observableArrayList(app.getProfiles());
-		if(profiles.size() > 0){
-			profileCB.setItems(profiles);
-			profileCB.getSelectionModel().selectFirst();
-		}
-		else resetProfileUIInfo();
-		profileSelected();
-		profileCB.valueProperty().addListener(profileChangeListener);
+	public AppType getAppType(){
+		if(typeCB.getSelectionModel().getSelectedIndex() == 0) return AppType.GAME;
+		else return AppType.APPLICATION;
 	}
-    /**
-     * Updates the type, programs, and profiles combo boxes.
-     */
-    public void updateComboBoxes(){
-		if(typeCB.getSelectionModel().getSelectedIndex() == 0){
-	    	updateComboBoxesOnType(AppType.GAME);
-		}else{
-	   	 	updateComboBoxesOnType(AppType.APPLICATION);
-		}
-    }
-
 	/**
 	 * Saves the current profile to disk.
 	 */
 	public void saveProfile() {
 		if (currentProfile != null) currentProfile.setDefaultKeymap(keymapTabPane.getSelectionModel().getSelectedIndex());
-		device.setProfile(currentProfile);
-		profileManager.updateProfile(currentProfile);
-		deviceMenuController.setActiveProfile(device, currentProfile);
+		profileManager.saveProfile();
+		deviceMenuController.getGlobalAccount().save();
+
+	}
+	/**
+	 * The profiles combo box selected a new profile.
+	 */
+    public void profileSelected(Profile selectedProfile){
+		if (selectedProfile != currentProfile) saveProfile();
+	   	currentProfile = selectedProfile;
+	    keymapUIManager.setProfile(selectedProfile);
+		deviceMenuController.setActiveProfile(device, selectedProfile);
     }
 
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
     /**
-     * Updates the combo box by type and always selects the first program
-     * to populate the profiles list.
+     * Repopulates and updates the combo boxes.
+     *
      * @param type the type of profile to sort on.
      */
-    private void updateComboBoxesOnType(AppType type){
-	ObservableList<App> apps;
-	ObservableList<Profile> profiles;
-	Root root = profileManager.getRoot(type);
-	if(root.getList().isEmpty()){
-	    // clear the apps combo box
-	    appsCB.valueProperty().removeListener(appChangeListener);
-	    appsCB.setItems(FXCollections.observableArrayList());
-	    profileCB.valueProperty().removeListener(profileChangeListener);
-	    profileCB.setItems(FXCollections.observableArrayList());
-	    profileCB.valueProperty().addListener(profileChangeListener);
-	    appsCB.valueProperty().addListener(appChangeListener);
-	    resetAppUIInfo();
-	    resetProfileUIInfo();
-	    profileSelected();
-	    return;
-	}
-	apps = FXCollections.observableArrayList(root.getList());
-	appsCB.valueProperty().removeListener(appChangeListener);
-
-	if(apps.size() > 0){
+    private void updateComboBoxes(AppType type){
+		Root root = profileManager.getRoot(type);
+		if(root.getList().isEmpty()){
+	   		resetAppUIInfo();
+	    	resetProfileUIInfo();
+	    	return;
+		}
+		ObservableList<App> apps = FXCollections.observableArrayList(root.getList());
+		appsCB.valueProperty().removeListener(appChangeListener);
 		appsCB.setItems(apps);
-		int selectedIndex = -1;
-		if (currentProfile != null) {
-			for (int tracker = 0; tracker < apps.size(); tracker++)
-				if (apps.get(tracker).getName().equals(currentProfile.getAppInfo().getName())) {
-					selectedIndex = tracker;
-					break;
-				}
-		}
-		if (selectedIndex == -1) {
-			currentProfile = null;
-			selectedIndex = 0;
-		}
+		App app;
+		if (currentProfile != null) app = getAppByName(currentProfile.getAppInfo().getAppType().toString(), currentProfile.getAppInfo().getName());
+		else app = (App) appsCB.getItems().get(0);
+		updateAppUIInfo(app);
+		appsCB.getSelectionModel().select(app);
 		appsCB.valueProperty().addListener(appChangeListener);
-		appsCB.getSelectionModel().select(selectedIndex);
-	}else {
-		resetAppUIInfo();
-		resetProfileUIInfo();
-		profileSelected();
-		return;
-	}
-	/**
-	profileCB.valueProperty().removeListener(profileChangeListener);
-	if(profiles.size() == 0) {
-		resetAppUIInfo();
-		resetProfileUIInfo();
-	}
-	else{
-		profileCB.setItems(profiles);
-		if (currentProfile == null) profileCB.getSelectionModel().selectFirst();
-		else profileCB.getSelectionModel().select(currentProfile);
-	}
-	profileSelected();
-	profileCB.valueProperty().addListener(profileChangeListener);
-
-	 */
+		ObservableList<Profile> profiles;
+		updateProfileUIInfo(currentProfile);
+		try {
+			profileCB.valueProperty().removeListener(profileChangeListener);
+			profiles = FXCollections.observableArrayList(app.getProfiles());
+			profileCB.setItems(profiles);
+			profileCB.getSelectionModel().select(currentProfile);
+			profileCB.valueProperty().addListener(profileChangeListener);
+		}
+		catch (NullPointerException e) { }
     }
-
     /**
      * Sets the tool tip with the string by the specified information.
      * @param button the button to set the tooltip.
@@ -534,19 +459,13 @@ public class ProfileUIController implements Initializable, ChangeListener<String
      * @param app the app to be updated.
      */
     private void updateAppUIInfo(App app){
-	if(app != null){
-	    appInfoTA.setText(app.getInfo());
-	    if(app.getAppLogo() == null){
-		appLogoIV.setImage(defaultAppLogoImage);
-	    }else{
-		appLogoIV.setImage(app.getAppLogo());
-	    }
-	    if(app.getDevLogo() == null){
-		devLogoIV.setImage(defaultDevLogoImage);
-	    }else{
-		devLogoIV.setImage(app.getDevLogo());
-	    }
-	}
+		if(app != null){
+	   		appInfoTA.setText(app.getInfo());
+	    	if(app.getAppLogo() == null) appLogoIV.setImage(defaultAppLogoImage);
+	    	else appLogoIV.setImage(app.getAppLogo());
+	    	if(app.getDevLogo() == null) devLogoIV.setImage(defaultDevLogoImage);
+	    	else devLogoIV.setImage(app.getDevLogo());
+		}else resetAppUIInfo();
     }
     /**
      * Resets the app ui information.
@@ -555,24 +474,25 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		appInfoTA.setText("");
 		appLogoIV.setImage(defaultAppLogoImage);
 		devLogoIV.setImage(defaultDevLogoImage);
+		appsCB.valueProperty().removeListener(appChangeListener);
 		appsCB.setItems(FXCollections.observableArrayList());
 		appsCB.getSelectionModel().select(null);
+		appsCB.valueProperty().addListener(appChangeListener);
     }
     /**
      * Updates the UI with the profile information.
      * @param profile the information to update the UI with.
      */
     private void updateProfileUIInfo(Profile profile){
-    	if (profile == null) {
-    		resetProfileUIInfo();
-    		return;
+    	if (profile == null) resetProfileUIInfo();
+   		else {
+			infoTA.setText(profile.getInfo());
+			authorL.setText(profile.getAuthor());
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(profile.getLastUpdatedDate());
+			SimpleDateFormat date_format = new SimpleDateFormat("yyyy/MM/dd");
+			updatedL.setText(date_format.format(cal.getTime()));
 		}
-		infoTA.setText(profile.getInfo());
-		authorL.setText(profile.getAuthor());
-		Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(profile.getLastUpdatedDate());
-		SimpleDateFormat date_format = new SimpleDateFormat("yyyy/MM/dd");
-		updatedL.setText(date_format.format(cal.getTime()));
     }
     /**
      * Resets the profile information.
@@ -581,22 +501,44 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		infoTA.setText("");
 		authorL.setText("");
 		updatedL.setText("");
+		keymapUIManager.setDescriptionText("");
+		profileCB.valueProperty().removeListener(profileChangeListener);
 		profileCB.setItems(FXCollections.observableArrayList());
 		profileCB.getSelectionModel().select(null);
-		keymapUIManager.setDescriptionText("");
-
+		profileCB.valueProperty().addListener(profileChangeListener);
     }
     private void createChangeListeners(){
 	appChangeListener = (ov, previousValue, newValue) -> {
-		if(ov == appsCB.valueProperty()) updateProfilesComboBox();
+		if(ov == appsCB.valueProperty()) {
+			Profile getProf = null;
+			try { getProf = ((App) appsCB.getSelectionModel().getSelectedItem()).getProfiles().get(0); }
+			catch (Exception e) { }
+			profileSelected(getProf);
+			updateComboBoxes(getAppType());
+		}
 	};
 	profileChangeListener = (ov, previousValue, newValue) -> {
-		if(ov == profileCB.valueProperty()) profileSelected();
+		if(ov == profileCB.valueProperty()) {
+			Profile getProf = null;
+			try { getProf = (Profile) profileCB.getSelectionModel().getSelectedItem(); }
+			catch (Exception e) { }
+			profileSelected(getProf);
+			updateComboBoxes(getAppType());
+		}
 	};
     }
 	@Override
 	public void changed(ObservableValue<? extends String> ov,  String previousValue, String newValue) {
-		if(ov == typeCB.valueProperty()) updateComboBoxes();
+		if(ov == typeCB.valueProperty()) {
+			Profile getProf = null;
+			try {
+				if (getAppType() == AppType.APPLICATION) getProf = profileManager.getAppsRoot().getList().get(0).getProfiles().get(0);
+				else getProf = profileManager.getGamesRoot().getList().get(0).getProfiles().get(0);
+			}
+			catch (Exception e) { }
+			profileSelected(getProf);
+			updateComboBoxes(getAppType());
+		}
 	}
     /**
      * Opens a file selector and writes the profile out.
@@ -618,7 +560,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		PopupManager.getPopupManager().showError("Import failed");
 	    }
 	    // update comboboxes
-	    updateComboBoxes();
+	    updateComboBoxes(getAppType());
 	}else{
 	    PopupManager.getPopupManager().showError("Import failed: can't find file");
 	}
@@ -627,11 +569,17 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	 * Finds and returns an application. Null if no matching application found.
 	 *
 	 */
-	 public App getAppByName(String appName) {
-	 	for (Object app : appsCB.getItems()) {
-			if (((App) app).getName().equals(appName))
-				return (App) app;
+	 public App getAppByName(String appTypeString, String appName) {
+	 	AppType appType;
+	 	switch (appTypeString.toLowerCase()) {
+			case "game":
+			appType = AppType.GAME;
+			break;
+			default:
+			appType = AppType.APPLICATION;
 		}
+		for (App app : profileManager.getRoot(appType).getList())
+			if (app.toString().equals(appName)) return app;
 		return null;
 	 }
 // ============= Implemented Methods ============== //
@@ -681,59 +629,56 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 
     @Override
     public void onOK(Object src, String message) {
-		int index = 0;
 		String[] objectNames = message.split("`");
-		if (objectNames[0].equals("Save")) saveProfile();
-		else if (objectNames[0].equals("AddApp")) {
-			updateComboBoxes();
-			String currentAppType = typeCB.getSelectionModel().getSelectedItem().toString().toLowerCase();
-			if (!objectNames[1].toLowerCase().equals(currentAppType)) {
-				switch (typeCB.getSelectionModel().getSelectedIndex()) {
-					case 0:
-						typeCB.getSelectionModel().select(1);
-						break;
-					default:
-						typeCB.getSelectionModel().select(0);
-				}
-			}
-			App appName = getAppByName(objectNames[2]);
-			for (; index < appsCB.getItems().size(); index++)
-				if (appsCB.getItems().get(index) == appName)
-					break;
-			appsCB.getSelectionModel().select(index);
+		if (objectNames[0].equals("AddApp")) {
+			profileSelected(null);
+			App appName = getAppByName(objectNames[1],objectNames[2]);
+			AppType appType = appName.getAppType(), currentAppType = getAppType();
+			if (appType != currentAppType)
+				typeCB.getSelectionModel().select(typeCB.getSelectionModel().getSelectedIndex() == 0 ? 1 : 0);
+			else updateComboBoxes(currentAppType);
+			appsCB.valueProperty().removeListener(appChangeListener);
+			appsCB.getSelectionModel().select(appName);
+			appsCB.valueProperty().addListener(appChangeListener);
+			updateAppUIInfo(appName);
 		} else if (objectNames[0].equals("AddProfile")) {
-			updateProfilesComboBox();
-			String currentAppType = typeCB.getSelectionModel().getSelectedItem().toString().toLowerCase();
-			if (!objectNames[1].toLowerCase().equals(currentAppType)) {
-				switch (typeCB.getSelectionModel().getSelectedIndex()) {
-					case 0:
-						typeCB.getSelectionModel().select(1);
-						break;
-					default:
-						typeCB.getSelectionModel().select(0);
+			App appName = getAppByName(objectNames[1], objectNames[2]), currentApp = (App) appsCB.getSelectionModel().getSelectedItem();
+			AppType appType = appName.getAppType(), currentAppType = getAppType();
+			Profile getProf = null;
+			int appIndex = profileManager.getRoot(appType).getList().indexOf(appName);
+			for (Profile profile : profileManager.getRoot(appType).getList().get(appIndex).getProfiles()) {
+				if (profile.toString().equals(objectNames[3])) {
+					getProf = profile;
+					break;
 				}
 			}
-			App currentApp = (App) appsCB.getSelectionModel().getSelectedItem();
-			App appName = getAppByName(objectNames[2]);
+			profileSelected(getProf);
+			if (appType != currentAppType)
+				typeCB.getSelectionModel().select(typeCB.getSelectionModel().getSelectedIndex() == 0 ? 1 : 0);
+			else updateComboBoxes(currentAppType);
 			if (currentApp != appName) {
-				for (; index < appsCB.getItems().size(); index++)
-					if (appsCB.getItems().get(index) == appName)
-						break;
-				appsCB.getSelectionModel().select(index);
+				appsCB.valueProperty().removeListener(appChangeListener);
+				appsCB.getSelectionModel().select(appName);
+				appsCB.valueProperty().addListener(appChangeListener);
+				updateAppUIInfo(appName);
 			}
-			index = 0;
-			for (; index < profileCB.getItems().size(); index++)
-				if (profileCB.getItems().get(index).toString().equals(objectNames[3]))
-					break;
-			profileCB.getSelectionModel().select(index);
+			profileCB.valueProperty().removeListener(profileChangeListener);
+			profileCB.getSelectionModel().select(getProf);
+			profileCB.valueProperty().addListener(profileChangeListener);
+			updateProfileUIInfo(getProf);
 		} else if (objectNames[0].equals("DelApp")) {
-			updateComboBoxes();
-			appsCB.getSelectionModel().select(index);
+			profileSelected(null);
+			updateComboBoxes(getAppType());
 		} else if (objectNames[0].equals("DelProfile")) {
-			updateProfilesComboBox();
-			profileCB.getSelectionModel().select(index);
+			profileSelected(null);
+			updateComboBoxes(getAppType());
+			appsCB.valueProperty().removeListener(appChangeListener);
+			App app = getAppByName(objectNames[1],objectNames[2]);
+			appsCB.getSelectionModel().select(app);
+			appsCB.valueProperty().addListener(appChangeListener);
 		}
-		else System.out.println("OK " + message + " : " + objectNames[0]);
+		else if (objectNames[0].equals("Save")) saveProfile();
+		else System.out.println("OK "+objectNames[0]);
     }
 
     @Override
