@@ -98,7 +98,7 @@ public class DisplayProfileController implements Initializable{
         PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
 	    return;
 	}
-	displayKeymap(profile.getKeymaps(),0);
+	displayKeymap(profile.getKeymaps(),profile.getDefaultKeymap());
 	displayProfile(profile, app);
 	deviceIV.setImage(new javafx.scene.image.Image(device.getDeviceInformation().getDeviceIcon()));
     }

@@ -315,8 +315,8 @@
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>J</name>
-                        <keycode>74</keycode>
+                        <name>F</name>
+                        <keycode>70</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>
@@ -464,7 +464,7 @@
                   </output>
                   <hasMapping>true</hasMapping>
                 </zDownWheelMapping>
-                <description>Keymap 1</description>
+                <description>FX</description>
               </Keymap>
               <Keymap>
                 <id>2</id>
@@ -3625,7 +3625,7 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592379217503</lastUpdatedDate>
+            <lastUpdatedDate>1592430310626</lastUpdatedDate>
             <info></info>
             <defaultMap>0</defaultMap>
           </Profile>
@@ -7242,13 +7242,13 @@
                   </output>
                   <hasMapping>true</hasMapping>
                 </zDownWheelMapping>
-                <description>Keymap 8</description>
+                <description></description>
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592379242754</lastUpdatedDate>
+            <lastUpdatedDate>1592430324932</lastUpdatedDate>
             <info></info>
-            <defaultMap>7</defaultMap>
+            <defaultMap>0</defaultMap>
           </Profile>
         </profiles>
       </App>
@@ -7570,8 +7570,8 @@
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>M</name>
-                        <keycode>77</keycode>
+                        <name>1</name>
+                        <keycode>49</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>
@@ -8472,8 +8472,8 @@
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>1</name>
-                        <keycode>49</keycode>
+                        <name>Q</name>
+                        <keycode>81</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>
@@ -8621,7 +8621,7 @@
                   </output>
                   <hasMapping>true</hasMapping>
                 </zDownWheelMapping>
-                <description></description>
+                <description>Three</description>
               </Keymap>
               <Keymap>
                 <id>4</id>
@@ -10880,9 +10880,9 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592379757729</lastUpdatedDate>
+            <lastUpdatedDate>1592430274362</lastUpdatedDate>
             <info></info>
-            <defaultMap>0</defaultMap>
+            <defaultMap>2</defaultMap>
           </Profile>
           <Profile>
             <appInfo>
@@ -11191,8 +11191,8 @@
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>R</name>
-                        <keycode>82</keycode>
+                        <name>1</name>
+                        <keycode>49</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>
@@ -13897,8 +13897,8 @@
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>1</name>
-                        <keycode>49</keycode>
+                        <name>R</name>
+                        <keycode>82</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>
@@ -14046,7 +14046,7 @@
                   </output>
                   <hasMapping>true</hasMapping>
                 </zDownWheelMapping>
-                <description></description>
+                <description>Ret</description>
               </Keymap>
               <Keymap>
                 <id>8</id>
@@ -14501,9 +14501,9 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592379769736</lastUpdatedDate>
+            <lastUpdatedDate>1592430291966</lastUpdatedDate>
             <info></info>
-            <defaultMap>0</defaultMap>
+            <defaultMap>6</defaultMap>
           </Profile>
         </profiles>
       </App>

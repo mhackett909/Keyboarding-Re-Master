@@ -161,7 +161,10 @@ public class ProfileUIController implements Initializable, ChangeListener<String
      * @param device the device to be set.
      */
     public void setDevice(Device device) {
-		if (this.device == device) return;
+		if (this.device == device) {
+			if (currentProfile == device.getProfile()) return;
+		 	else saveProfile();
+		}
 		this.device = device;
 		currentProfile = device.getProfile();
 		keymapUIManager.setDevice(device);

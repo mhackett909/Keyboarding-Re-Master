@@ -6,10 +6,10 @@
         <deviceState>
           <profile>
             <appInfo>
-              <appName>World of Warcraft</appName>
-              <appType>GAME</appType>
+              <appName>IntelliJ</appName>
+              <appType>APPLICATION</appType>
             </appInfo>
-            <profileName>Retail</profileName>
+            <profileName>Java</profileName>
             <keymaps>
               <Keymap>
                 <id>1</id>
@@ -311,8 +311,8 @@
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>R</name>
-                        <keycode>82</keycode>
+                        <name>F</name>
+                        <keycode>70</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>
@@ -460,7 +460,7 @@
                   </output>
                   <hasMapping>true</hasMapping>
                 </zDownWheelMapping>
-                <description></description>
+                <description>FX</description>
               </Keymap>
               <Keymap>
                 <id>2</id>
@@ -3621,7 +3621,7 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592379769736</lastUpdatedDate>
+            <lastUpdatedDate>1592430310626</lastUpdatedDate>
             <info></info>
             <defaultMap>0</defaultMap>
           </profile>
@@ -3637,10 +3637,10 @@
         <deviceState>
           <profile>
             <appInfo>
-              <appName>b</appName>
+              <appName>WoW</appName>
               <appType>GAME</appType>
             </appInfo>
-            <profileName>b</profileName>
+            <profileName>Mouse</profileName>
             <keymaps>
               <Keymap>
                 <id>1</id>
@@ -3878,474 +3878,6 @@
               </Keymap>
               <Keymap>
                 <id>3</id>
-                <buttonMappings>
-                  <entry>
-                    <string>Side</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>6</id>
-                        <inputString>Side</inputString>
-                      </inputHardware>
-                      <output class="OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Left</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>1</id>
-                        <inputString>Left</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Left</name>
-                        <keycode>16</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Extra</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>7</id>
-                        <inputString>Extra</inputString>
-                      </inputHardware>
-                      <output class="OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Right</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>2</id>
-                        <inputString>Right</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Right</name>
-                        <keycode>4</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Middle</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>3</id>
-                        <inputString>Middle</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Middle</name>
-                        <keycode>8</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                </buttonMappings>
-                <zUpWheelMapping>
-                  <inputHardware class="Wheel">
-                    <id>4</id>
-                    <inputString>Middle</inputString>
-                  </inputHardware>
-                  <output class="OutputMouse">
-                    <name>Scroll Up</name>
-                    <keycode>-1</keycode>
-                    <modifier>0</modifier>
-                    <description></description>
-                    <mouseType>MouseWheel</mouseType>
-                  </output>
-                  <hasMapping>true</hasMapping>
-                </zUpWheelMapping>
-                <zDownWheelMapping>
-                  <inputHardware class="Wheel">
-                    <id>5</id>
-                    <inputString>Middle</inputString>
-                  </inputHardware>
-                  <output class="OutputMouse">
-                    <name>Scroll Down</name>
-                    <keycode>1</keycode>
-                    <modifier>0</modifier>
-                    <description></description>
-                    <mouseType>MouseWheel</mouseType>
-                  </output>
-                  <hasMapping>true</hasMapping>
-                </zDownWheelMapping>
-                <description></description>
-              </Keymap>
-              <Keymap>
-                <id>4</id>
-                <buttonMappings>
-                  <entry>
-                    <string>Side</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>6</id>
-                        <inputString>Side</inputString>
-                      </inputHardware>
-                      <output class="OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Left</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>1</id>
-                        <inputString>Left</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Left</name>
-                        <keycode>16</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Extra</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>7</id>
-                        <inputString>Extra</inputString>
-                      </inputHardware>
-                      <output class="OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Right</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>2</id>
-                        <inputString>Right</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Right</name>
-                        <keycode>4</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Middle</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>3</id>
-                        <inputString>Middle</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Middle</name>
-                        <keycode>8</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                </buttonMappings>
-                <zUpWheelMapping>
-                  <inputHardware class="Wheel">
-                    <id>4</id>
-                    <inputString>Middle</inputString>
-                  </inputHardware>
-                  <output class="OutputMouse">
-                    <name>Scroll Up</name>
-                    <keycode>-1</keycode>
-                    <modifier>0</modifier>
-                    <description></description>
-                    <mouseType>MouseWheel</mouseType>
-                  </output>
-                  <hasMapping>true</hasMapping>
-                </zUpWheelMapping>
-                <zDownWheelMapping>
-                  <inputHardware class="Wheel">
-                    <id>5</id>
-                    <inputString>Middle</inputString>
-                  </inputHardware>
-                  <output class="OutputMouse">
-                    <name>Scroll Down</name>
-                    <keycode>1</keycode>
-                    <modifier>0</modifier>
-                    <description></description>
-                    <mouseType>MouseWheel</mouseType>
-                  </output>
-                  <hasMapping>true</hasMapping>
-                </zDownWheelMapping>
-                <description></description>
-              </Keymap>
-              <Keymap>
-                <id>5</id>
-                <buttonMappings>
-                  <entry>
-                    <string>Side</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>6</id>
-                        <inputString>Side</inputString>
-                      </inputHardware>
-                      <output class="OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Left</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>1</id>
-                        <inputString>Left</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Left</name>
-                        <keycode>16</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Extra</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>7</id>
-                        <inputString>Extra</inputString>
-                      </inputHardware>
-                      <output class="OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Right</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>2</id>
-                        <inputString>Right</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Right</name>
-                        <keycode>4</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Middle</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>3</id>
-                        <inputString>Middle</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Middle</name>
-                        <keycode>8</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                </buttonMappings>
-                <zUpWheelMapping>
-                  <inputHardware class="Wheel">
-                    <id>4</id>
-                    <inputString>Middle</inputString>
-                  </inputHardware>
-                  <output class="OutputMouse">
-                    <name>Scroll Up</name>
-                    <keycode>-1</keycode>
-                    <modifier>0</modifier>
-                    <description></description>
-                    <mouseType>MouseWheel</mouseType>
-                  </output>
-                  <hasMapping>true</hasMapping>
-                </zUpWheelMapping>
-                <zDownWheelMapping>
-                  <inputHardware class="Wheel">
-                    <id>5</id>
-                    <inputString>Middle</inputString>
-                  </inputHardware>
-                  <output class="OutputMouse">
-                    <name>Scroll Down</name>
-                    <keycode>1</keycode>
-                    <modifier>0</modifier>
-                    <description></description>
-                    <mouseType>MouseWheel</mouseType>
-                  </output>
-                  <hasMapping>true</hasMapping>
-                </zDownWheelMapping>
-                <description></description>
-              </Keymap>
-              <Keymap>
-                <id>6</id>
-                <buttonMappings>
-                  <entry>
-                    <string>Side</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>6</id>
-                        <inputString>Side</inputString>
-                      </inputHardware>
-                      <output class="OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Left</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>1</id>
-                        <inputString>Left</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Left</name>
-                        <keycode>16</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Extra</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>7</id>
-                        <inputString>Extra</inputString>
-                      </inputHardware>
-                      <output class="OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Right</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>2</id>
-                        <inputString>Right</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Right</name>
-                        <keycode>4</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                  <entry>
-                    <string>Middle</string>
-                    <ButtonMapping>
-                      <inputHardware class="Button">
-                        <id>3</id>
-                        <inputString>Middle</inputString>
-                      </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Middle</name>
-                        <keycode>8</keycode>
-                        <modifier>0</modifier>
-                        <description></description>
-                        <mouseType>MouseClick</mouseType>
-                      </output>
-                      <hasMapping>true</hasMapping>
-                    </ButtonMapping>
-                  </entry>
-                </buttonMappings>
-                <zUpWheelMapping>
-                  <inputHardware class="Wheel">
-                    <id>4</id>
-                    <inputString>Middle</inputString>
-                  </inputHardware>
-                  <output class="OutputMouse">
-                    <name>Scroll Up</name>
-                    <keycode>-1</keycode>
-                    <modifier>0</modifier>
-                    <description></description>
-                    <mouseType>MouseWheel</mouseType>
-                  </output>
-                  <hasMapping>true</hasMapping>
-                </zUpWheelMapping>
-                <zDownWheelMapping>
-                  <inputHardware class="Wheel">
-                    <id>5</id>
-                    <inputString>Middle</inputString>
-                  </inputHardware>
-                  <output class="OutputMouse">
-                    <name>Scroll Down</name>
-                    <keycode>1</keycode>
-                    <modifier>0</modifier>
-                    <description></description>
-                    <mouseType>MouseWheel</mouseType>
-                  </output>
-                  <hasMapping>true</hasMapping>
-                </zDownWheelMapping>
-                <description></description>
-              </Keymap>
-              <Keymap>
-                <id>7</id>
                 <buttonMappings>
                   <entry>
                     <string>Side</string>
@@ -4461,6 +3993,474 @@
                   </output>
                   <hasMapping>true</hasMapping>
                 </zDownWheelMapping>
+                <description>mouse</description>
+              </Keymap>
+              <Keymap>
+                <id>4</id>
+                <buttonMappings>
+                  <entry>
+                    <string>Side</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>6</id>
+                        <inputString>Side</inputString>
+                      </inputHardware>
+                      <output class="OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Left</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>1</id>
+                        <inputString>Left</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Left</name>
+                        <keycode>16</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Extra</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>7</id>
+                        <inputString>Extra</inputString>
+                      </inputHardware>
+                      <output class="OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Right</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>2</id>
+                        <inputString>Right</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Right</name>
+                        <keycode>4</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Middle</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>3</id>
+                        <inputString>Middle</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Middle</name>
+                        <keycode>8</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                </buttonMappings>
+                <zUpWheelMapping>
+                  <inputHardware class="Wheel">
+                    <id>4</id>
+                    <inputString>Middle</inputString>
+                  </inputHardware>
+                  <output class="OutputMouse">
+                    <name>Scroll Up</name>
+                    <keycode>-1</keycode>
+                    <modifier>0</modifier>
+                    <description></description>
+                    <mouseType>MouseWheel</mouseType>
+                  </output>
+                  <hasMapping>true</hasMapping>
+                </zUpWheelMapping>
+                <zDownWheelMapping>
+                  <inputHardware class="Wheel">
+                    <id>5</id>
+                    <inputString>Middle</inputString>
+                  </inputHardware>
+                  <output class="OutputMouse">
+                    <name>Scroll Down</name>
+                    <keycode>1</keycode>
+                    <modifier>0</modifier>
+                    <description></description>
+                    <mouseType>MouseWheel</mouseType>
+                  </output>
+                  <hasMapping>true</hasMapping>
+                </zDownWheelMapping>
+                <description></description>
+              </Keymap>
+              <Keymap>
+                <id>5</id>
+                <buttonMappings>
+                  <entry>
+                    <string>Side</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>6</id>
+                        <inputString>Side</inputString>
+                      </inputHardware>
+                      <output class="OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Left</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>1</id>
+                        <inputString>Left</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Left</name>
+                        <keycode>16</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Extra</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>7</id>
+                        <inputString>Extra</inputString>
+                      </inputHardware>
+                      <output class="OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Right</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>2</id>
+                        <inputString>Right</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Right</name>
+                        <keycode>4</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Middle</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>3</id>
+                        <inputString>Middle</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Middle</name>
+                        <keycode>8</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                </buttonMappings>
+                <zUpWheelMapping>
+                  <inputHardware class="Wheel">
+                    <id>4</id>
+                    <inputString>Middle</inputString>
+                  </inputHardware>
+                  <output class="OutputMouse">
+                    <name>Scroll Up</name>
+                    <keycode>-1</keycode>
+                    <modifier>0</modifier>
+                    <description></description>
+                    <mouseType>MouseWheel</mouseType>
+                  </output>
+                  <hasMapping>true</hasMapping>
+                </zUpWheelMapping>
+                <zDownWheelMapping>
+                  <inputHardware class="Wheel">
+                    <id>5</id>
+                    <inputString>Middle</inputString>
+                  </inputHardware>
+                  <output class="OutputMouse">
+                    <name>Scroll Down</name>
+                    <keycode>1</keycode>
+                    <modifier>0</modifier>
+                    <description></description>
+                    <mouseType>MouseWheel</mouseType>
+                  </output>
+                  <hasMapping>true</hasMapping>
+                </zDownWheelMapping>
+                <description></description>
+              </Keymap>
+              <Keymap>
+                <id>6</id>
+                <buttonMappings>
+                  <entry>
+                    <string>Side</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>6</id>
+                        <inputString>Side</inputString>
+                      </inputHardware>
+                      <output class="OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Left</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>1</id>
+                        <inputString>Left</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Left</name>
+                        <keycode>16</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Extra</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>7</id>
+                        <inputString>Extra</inputString>
+                      </inputHardware>
+                      <output class="OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Right</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>2</id>
+                        <inputString>Right</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Right</name>
+                        <keycode>4</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Middle</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>3</id>
+                        <inputString>Middle</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Middle</name>
+                        <keycode>8</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                </buttonMappings>
+                <zUpWheelMapping>
+                  <inputHardware class="Wheel">
+                    <id>4</id>
+                    <inputString>Middle</inputString>
+                  </inputHardware>
+                  <output class="OutputMouse">
+                    <name>Scroll Up</name>
+                    <keycode>-1</keycode>
+                    <modifier>0</modifier>
+                    <description></description>
+                    <mouseType>MouseWheel</mouseType>
+                  </output>
+                  <hasMapping>true</hasMapping>
+                </zUpWheelMapping>
+                <zDownWheelMapping>
+                  <inputHardware class="Wheel">
+                    <id>5</id>
+                    <inputString>Middle</inputString>
+                  </inputHardware>
+                  <output class="OutputMouse">
+                    <name>Scroll Down</name>
+                    <keycode>1</keycode>
+                    <modifier>0</modifier>
+                    <description></description>
+                    <mouseType>MouseWheel</mouseType>
+                  </output>
+                  <hasMapping>true</hasMapping>
+                </zDownWheelMapping>
+                <description></description>
+              </Keymap>
+              <Keymap>
+                <id>7</id>
+                <buttonMappings>
+                  <entry>
+                    <string>Side</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>6</id>
+                        <inputString>Side</inputString>
+                      </inputHardware>
+                      <output class="OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Left</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>1</id>
+                        <inputString>Left</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Left</name>
+                        <keycode>16</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Extra</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>7</id>
+                        <inputString>Extra</inputString>
+                      </inputHardware>
+                      <output class="OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Right</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>2</id>
+                        <inputString>Right</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Right</name>
+                        <keycode>4</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                  <entry>
+                    <string>Middle</string>
+                    <ButtonMapping>
+                      <inputHardware class="Button">
+                        <id>3</id>
+                        <inputString>Middle</inputString>
+                      </inputHardware>
+                      <output class="OutputMouse">
+                        <name>Middle</name>
+                        <keycode>8</keycode>
+                        <modifier>0</modifier>
+                        <description></description>
+                        <mouseType>MouseClick</mouseType>
+                      </output>
+                      <hasMapping>true</hasMapping>
+                    </ButtonMapping>
+                  </entry>
+                </buttonMappings>
+                <zUpWheelMapping>
+                  <inputHardware class="Wheel">
+                    <id>4</id>
+                    <inputString>Middle</inputString>
+                  </inputHardware>
+                  <output class="OutputMouse">
+                    <name>Scroll Up</name>
+                    <keycode>-1</keycode>
+                    <modifier>0</modifier>
+                    <description></description>
+                    <mouseType>MouseWheel</mouseType>
+                  </output>
+                  <hasMapping>true</hasMapping>
+                </zUpWheelMapping>
+                <zDownWheelMapping>
+                  <inputHardware class="Wheel">
+                    <id>5</id>
+                    <inputString>Middle</inputString>
+                  </inputHardware>
+                  <output class="OutputMouse">
+                    <name>Scroll Down</name>
+                    <keycode>1</keycode>
+                    <modifier>0</modifier>
+                    <description></description>
+                    <mouseType>MouseWheel</mouseType>
+                  </output>
+                  <hasMapping>true</hasMapping>
+                </zDownWheelMapping>
                 <description></description>
               </Keymap>
               <Keymap>
@@ -4582,43 +4582,13 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592422774291</lastUpdatedDate>
+            <lastUpdatedDate>1592430359593</lastUpdatedDate>
             <info></info>
-            <defaultMap>6</defaultMap>
+            <defaultMap>2</defaultMap>
           </profile>
           <isConnected>true</isConnected>
           <isEnabled>true</isEnabled>
           <packageName>com.monkygames.kbmaster.driver.devices.logitech.LogitechG502</packageName>
-        </deviceState>
-      </device>
-    </DevicePackage>
-    <DevicePackage>
-      <isDownloaded>true</isDownloaded>
-      <device class="com.monkygames.kbmaster.driver.devices.razer.orbweaverchroma.OrbweaverChroma">
-        <deviceState>
-          <isConnected>false</isConnected>
-          <isEnabled>false</isEnabled>
-          <packageName>com.monkygames.kbmaster.driver.devices.razer.orbweaverchroma.OrbweaverChroma</packageName>
-        </deviceState>
-      </device>
-    </DevicePackage>
-    <DevicePackage>
-      <isDownloaded>true</isDownloaded>
-      <device class="com.monkygames.kbmaster.driver.devices.razer.tartaruschroma.TartarusChroma">
-        <deviceState>
-          <isConnected>false</isConnected>
-          <isEnabled>false</isEnabled>
-          <packageName>com.monkygames.kbmaster.driver.devices.razer.tartaruschroma.TartarusChroma</packageName>
-        </deviceState>
-      </device>
-    </DevicePackage>
-    <DevicePackage>
-      <isDownloaded>true</isDownloaded>
-      <device class="com.monkygames.kbmaster.driver.devices.razer.tartarus.Tartarus">
-        <deviceState>
-          <isConnected>false</isConnected>
-          <isEnabled>false</isEnabled>
-          <packageName>com.monkygames.kbmaster.driver.devices.razer.tartarus.Tartarus</packageName>
         </deviceState>
       </device>
     </DevicePackage>

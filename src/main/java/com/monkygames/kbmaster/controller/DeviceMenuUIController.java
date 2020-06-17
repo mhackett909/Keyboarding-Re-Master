@@ -12,12 +12,17 @@ import com.monkygames.kbmaster.controller.login.LoginUIController;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.engine.HardwareManager;
 import com.monkygames.kbmaster.io.GenerateBindingsImage;
+import com.monkygames.kbmaster.io.ProfileManager;
+import com.monkygames.kbmaster.profiles.App;
+import com.monkygames.kbmaster.profiles.AppType;
 import com.monkygames.kbmaster.profiles.Profile;
 import com.monkygames.kbmaster.util.DeviceEntry;
 import com.monkygames.kbmaster.util.KBMSystemTray;
 import com.monkygames.kbmaster.util.PopupManager;
 import com.monkygames.kbmaster.util.RepeatManager;
 import com.monkygames.kbmaster.util.WindowUtil;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -462,14 +467,26 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	// get device
 	GenerateBindingsImage generator = new GenerateBindingsImage(deviceEntry.getDevice());
 	displayProfileController.setGenerateBindingsImage(generator);
-
-	displayProfileController.displayDevice(
-		deviceEntry.getDevice(),
-		configureDeviceController.getAppByName(
-			deviceEntry.getDevice().getProfile().getAppInfo().appType.toString(),
-			deviceEntry.getDevice().getProfile().getAppInfo().appName
-		)
+	System.out.println("um "+displayProfileController);
+	ProfileManager profileManager = new ProfileManager(
+		ProfileUIController.profileDirS+File.separator+deviceEntry.getDevice().getDeviceInformation().getProfileName()
 	);
+	ObservableList<App> apps;
+	if (deviceEntry.getDevice().getProfile() == null) {
+		PopupManager.getPopupManager().showError("No profile selected");
+		return;
+	}
+	if (deviceEntry.getDevice().getProfile().getAppInfo().getAppType() == AppType.APPLICATION)
+		apps = FXCollections.observableArrayList(profileManager.getAppsRoot().getList());
+	else apps = FXCollections.observableArrayList(profileManager.getGamesRoot().getList());
+	App appName = null;
+	for (App app : apps) {
+		if (app.toString().equals(deviceEntry.getDevice().getProfile().getAppInfo().appName)) {
+			appName = app;
+			break;
+		}
+	}
+	displayProfileController.displayDevice(deviceEntry.getDevice(),appName);
     }
 // ============= Implemented Methods ============== //
     @Override

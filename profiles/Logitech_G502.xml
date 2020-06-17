@@ -10,15 +10,15 @@
     <apps>
       <App>
         <info></info>
-        <name>b</name>
+        <name>WoW</name>
         <appType>GAME</appType>
         <profiles>
           <Profile>
             <appInfo>
-              <appName>b</appName>
+              <appName>WoW</appName>
               <appType>GAME</appType>
             </appInfo>
-            <profileName>b</profileName>
+            <profileName>Mouse</profileName>
             <keymaps>
               <Keymap>
                 <id>1</id>
@@ -264,11 +264,12 @@
                         <id>6</id>
                         <inputString>Side</inputString>
                       </inputHardware>
-                      <output class="com.monkygames.kbmaster.input.OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
+                      <output class="OutputMouse">
+                        <name>Scroll Down</name>
+                        <keycode>1</keycode>
                         <modifier>0</modifier>
                         <description></description>
+                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -297,11 +298,12 @@
                         <id>7</id>
                         <inputString>Extra</inputString>
                       </inputHardware>
-                      <output class="com.monkygames.kbmaster.input.OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
+                      <output class="OutputMouse">
+                        <name>Scroll Up</name>
+                        <keycode>-1</keycode>
                         <modifier>0</modifier>
                         <description></description>
+                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -369,7 +371,7 @@
                   </output>
                   <hasMapping>true</hasMapping>
                 </zDownWheelMapping>
-                <description></description>
+                <description>mouse</description>
               </Keymap>
               <Keymap>
                 <id>4</id>
@@ -958,9 +960,9 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592422774291</lastUpdatedDate>
+            <lastUpdatedDate>1592430359593</lastUpdatedDate>
             <info></info>
-            <defaultMap>6</defaultMap>
+            <defaultMap>2</defaultMap>
           </Profile>
         </profiles>
       </App>

@@ -203,10 +203,10 @@ public class SelectProfileUIController implements Initializable, ChangeListener<
 	profileCB.setItems(profiles);
 	profileCB.getSelectionModel().selectFirst();
 	if(profiles.size() > 0 ){
-	    currentProfile = profiles.get(0);
+		if (device.getProfile() != null) currentProfile = device.getProfile();
+	    else currentProfile = profiles.get(0);
 	    updateProfileUIInfo(currentProfile);
 	}
-	//device.setProfile(currentProfile);
     }
     /**
      * The profiles combo box selected a new profile.
@@ -217,13 +217,13 @@ public class SelectProfileUIController implements Initializable, ChangeListener<
 	if(app == null){
 	    return;
 	}
-
 	selectedProfile = (Profile)profileCB.getSelectionModel().getSelectedItem();
-	if(selectedProfile != null){
+		System.out.println(currentProfile+" : "+selectedProfile);
+
+	if(selectedProfile != null && selectedProfile != currentProfile){
 	    currentProfile = selectedProfile;
-	    //set the profile to the keymap controller
-	    //device.setProfile(currentProfile);
 	    updateProfileUIInfo(selectedProfile);
+		deviceMenuController.setActiveProfile(device, selectedProfile);
 	}
     }
     /**
@@ -269,17 +269,14 @@ public class SelectProfileUIController implements Initializable, ChangeListener<
 	// handle the description button action
 	if(obj == okB){
 	    //set the profile to the keymap controller
-	    deviceMenuController.setActiveProfile(device, currentProfile);
-	    device.setProfile(currentProfile);
+	    profileSelected();
 	    stage.hide();
 	}else if(obj == cancelB){
 	    stage.hide();
 	}
 	// free up profile manager
-	if(profileManager != null){
+	if(profileManager != null) profileManager.close();
 
-	    profileManager.close();
-	}
     }
 
     @Override
