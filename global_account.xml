@@ -311,8 +311,8 @@
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>1</name>
-                        <keycode>49</keycode>
+                        <name>R</name>
+                        <keycode>82</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>
@@ -3637,10 +3637,10 @@
         <deviceState>
           <profile>
             <appInfo>
-              <appName>WoW</appName>
+              <appName>b</appName>
               <appType>GAME</appType>
             </appInfo>
-            <profileName>Mouse</profileName>
+            <profileName>b</profileName>
             <keymaps>
               <Keymap>
                 <id>1</id>
@@ -3652,12 +3652,11 @@
                         <id>6</id>
                         <inputString>Side</inputString>
                       </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Scroll Down</name>
-                        <keycode>1</keycode>
+                      <output class="OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
                         <modifier>0</modifier>
                         <description></description>
-                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -3686,12 +3685,11 @@
                         <id>7</id>
                         <inputString>Extra</inputString>
                       </inputHardware>
-                      <output class="OutputMouse">
-                        <name>Scroll Up</name>
-                        <keycode>-1</keycode>
+                      <output class="OutputDisabled">
+                        <name>Disabled</name>
+                        <keycode>0</keycode>
                         <modifier>0</modifier>
                         <description></description>
-                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -4356,11 +4354,12 @@
                         <id>6</id>
                         <inputString>Side</inputString>
                       </inputHardware>
-                      <output class="OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
+                      <output class="OutputMouse">
+                        <name>Scroll Down</name>
+                        <keycode>1</keycode>
                         <modifier>0</modifier>
                         <description></description>
+                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -4389,11 +4388,12 @@
                         <id>7</id>
                         <inputString>Extra</inputString>
                       </inputHardware>
-                      <output class="OutputDisabled">
-                        <name>Disabled</name>
-                        <keycode>0</keycode>
+                      <output class="OutputMouse">
+                        <name>Scroll Up</name>
+                        <keycode>-1</keycode>
                         <modifier>0</modifier>
                         <description></description>
+                        <mouseType>MouseWheel</mouseType>
                       </output>
                       <hasMapping>true</hasMapping>
                     </ButtonMapping>
@@ -4582,13 +4582,43 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592379483744</lastUpdatedDate>
+            <lastUpdatedDate>1592422774291</lastUpdatedDate>
             <info></info>
-            <defaultMap>0</defaultMap>
+            <defaultMap>6</defaultMap>
           </profile>
           <isConnected>true</isConnected>
           <isEnabled>true</isEnabled>
           <packageName>com.monkygames.kbmaster.driver.devices.logitech.LogitechG502</packageName>
+        </deviceState>
+      </device>
+    </DevicePackage>
+    <DevicePackage>
+      <isDownloaded>true</isDownloaded>
+      <device class="com.monkygames.kbmaster.driver.devices.razer.orbweaverchroma.OrbweaverChroma">
+        <deviceState>
+          <isConnected>false</isConnected>
+          <isEnabled>false</isEnabled>
+          <packageName>com.monkygames.kbmaster.driver.devices.razer.orbweaverchroma.OrbweaverChroma</packageName>
+        </deviceState>
+      </device>
+    </DevicePackage>
+    <DevicePackage>
+      <isDownloaded>true</isDownloaded>
+      <device class="com.monkygames.kbmaster.driver.devices.razer.tartaruschroma.TartarusChroma">
+        <deviceState>
+          <isConnected>false</isConnected>
+          <isEnabled>false</isEnabled>
+          <packageName>com.monkygames.kbmaster.driver.devices.razer.tartaruschroma.TartarusChroma</packageName>
+        </deviceState>
+      </device>
+    </DevicePackage>
+    <DevicePackage>
+      <isDownloaded>true</isDownloaded>
+      <device class="com.monkygames.kbmaster.driver.devices.razer.tartarus.Tartarus">
+        <deviceState>
+          <isConnected>false</isConnected>
+          <isEnabled>false</isEnabled>
+          <packageName>com.monkygames.kbmaster.driver.devices.razer.tartarus.Tartarus</packageName>
         </deviceState>
       </device>
     </DevicePackage>

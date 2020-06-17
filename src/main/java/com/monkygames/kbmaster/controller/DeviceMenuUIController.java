@@ -138,27 +138,27 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      * @param device the device to be added.
      */
     public void addDevice(Device device){
-	// update global account
-	if(!globalAccount.downloadDevice(device.getDeviceInformation().getPackageName())){
-	    PopupManager.getPopupManager().showError("Unable to add device. Is it already added?");
-	    return;
-	}
-
-	updateDeviceEntryList(true);
-
-	globalAccount.save();
+		// update global account
+		if(!globalAccount.downloadDevice(device.getDeviceInformation().getPackageName())){
+	    	PopupManager.getPopupManager().showError("Unable to add device. Is it already added?");
+	   		 return;
+		}
+		updateDeviceEntryList(true);
+		globalAccount.save();
     }
     /**
      * Removes the device and updates the table.
      */
     public void removeDevice(Device device){
-	if(!globalAccount.removeDownloadedDevice(device)){
-	    PopupManager.getPopupManager().showError("Unable to remove device.");
-	    return;
-	}
-	hardwareManager.removeDevice(device);
-	updateDeviceEntryList(true);
-	globalAccount.save();
+		if(!globalAccount.removeDownloadedDevice(device)){
+	    	PopupManager.getPopupManager().showError("Unable to remove device.");
+	   	 	return;
+		}
+		if (configureDeviceController != null)
+			configureDeviceController.getProfileUIController().deviceRemoved(device);
+		hardwareManager.removeDevice(device);
+		updateDeviceEntryList(true);
+		globalAccount.save();
     }
     /**
      * Sets the active profile for the specified device.
@@ -166,9 +166,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
     public void setActiveProfile(Device device, Profile profile){
 		device.setProfile(profile);
 		updateDevices();
-		//if(profile == null) hardwareManager.disableDevice(device);
-		//if (profile == null) hardwareManager.stopPollingDevice(device);
-		//else
 		hardwareManager.startPollingDevice(device, profile);
     }
 	/**
@@ -547,21 +544,12 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      */
     private void updateDeviceEntryList(boolean pollDeviceState) {
 		deviceList.clear();
-		// parse and construct User datamodel deviceList by looping your ResultSet rs
-		// and return the deviceList
 		for (Device device : globalAccount.getInstalledDevices()) {
-	   	 	// initialize devices if not already initialized
 				if(pollDeviceState){
-					if(!hardwareManager.isDeviceManaged(device)) {
+					if(!hardwareManager.isDeviceManaged(device))
 						hardwareManager.addManagedDevice(device);
-					}
 					hardwareManager.updateConnectionState(device);
-					// check if this device needs to be enabled
-					if (device.isEnabled()) {
-						hardwareManager.startPollingDevice(device, device.getProfile());
-					} else {
-						hardwareManager.startPollingDevice(device, null);
-					}
+					hardwareManager.startPollingDevice(device, device.getProfile());
     			}
     		 	deviceList.add(new DeviceEntry(device));
 		}

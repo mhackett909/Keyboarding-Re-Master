@@ -267,7 +267,6 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		if (currentProfile != null) currentProfile.setDefaultKeymap(keymapTabPane.getSelectionModel().getSelectedIndex());
 		profileManager.saveProfile();
 		deviceMenuController.getGlobalAccount().save();
-
 	}
 	/**
 	 * The profiles combo box selected a new profile.
@@ -278,6 +277,12 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	    keymapUIManager.setProfile(selectedProfile);
 		deviceMenuController.setActiveProfile(device, selectedProfile);
     }
+	/**
+	 * Resets the UI if the removed device's profile is loaded.
+	 */
+	 public void deviceRemoved(Device device) {
+	 	if (currentProfile == device.getProfile()) this.device = null;
+	 }
 
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
@@ -308,7 +313,11 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 			profileCB.valueProperty().removeListener(profileChangeListener);
 			profiles = FXCollections.observableArrayList(app.getProfiles());
 			profileCB.setItems(profiles);
-			profileCB.getSelectionModel().select(currentProfile);
+			int index = 0;
+			for (; index < profiles.size(); index++) {
+				if (profiles.get(index).getProfileName().equals(currentProfile.getProfileName())) break;
+			}
+			profileCB.getSelectionModel().select(index);
 			profileCB.valueProperty().addListener(profileChangeListener);
 		}
 		catch (NullPointerException e) { }

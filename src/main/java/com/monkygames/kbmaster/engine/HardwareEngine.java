@@ -172,6 +172,7 @@ public class HardwareEngine implements Runnable{
 			startPolling(profileSwitch);
 		}
 	}
+	public boolean isEnabled() { return isEnabled; }
 	public boolean isEditMode(){
 		return isEditMode;
 	}
@@ -214,9 +215,7 @@ public class HardwareEngine implements Runnable{
 		thread = new Thread(this);
 		thread.start();
 	}
-	public void stopPolling(){
-		poll = false;
-	}
+	public void stopPolling(){ poll = false; }
 	public void addHardwareListener(HardwareListener listener){
 		hardwareListeners.add(listener);
 	}
@@ -332,6 +331,7 @@ public class HardwareEngine implements Runnable{
 				Thread.sleep(sleepTime);
 			}catch(Exception e){}
 			if(!doesHardwareExist){
+				//System.out.println("Hardware does not exist. Rescanning.");
 				doesHardwareExist = rescanHardware();
 				if(doesHardwareExist){
 					hardwareConnected();
@@ -511,7 +511,7 @@ public class HardwareEngine implements Runnable{
 	 * Checks for mouse, keyboard, or keymap events.
 	 * @param name the name of the input component.
 	 * @param output the output to process.
-	 * @param the event's value.
+	 * @param eventValue the event's value.
 	 */
 	private void processOutput(String name, Output output, float eventValue){
 		// test for a release on a switch on release keymap event.

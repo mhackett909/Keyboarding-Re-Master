@@ -19,7 +19,8 @@ import com.monkygames.kbmaster.input.WheelMapping;
 import java.awt.Rectangle;
 
 /**
- * Contains information about a specific device.
+ * Contributed by David Ferreira (FZ)
+ *
  * @version 1.0
  */
 public class GSpyUsbGamingMouseRH1900 extends Device{

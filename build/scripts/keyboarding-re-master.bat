@@ -82,7 +82,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\keyboarding-re-master.jar;%APP_HOME%\lib\xstream-1.4.9.jar;%APP_HOME%\lib\itextpdf-5.0.6.jar;%APP_HOME%\lib\dropbox-core-sdk-2.1.1.jar;%APP_HOME%\lib\jinput.jar;%APP_HOME%\lib\xmlpull-1.1.3.1.jar;%APP_HOME%\lib\xpp3_min-1.1.4c.jar;%APP_HOME%\lib\bctsp-jdk14-1.38.jar;%APP_HOME%\lib\bcmail-jdk14-1.38.jar;%APP_HOME%\lib\bcprov-jdk14-1.38.jar;%APP_HOME%\lib\jackson-core-2.7.4.jar
+set CLASSPATH=%APP_HOME%\lib\keyboarding-re-master.jar;%APP_HOME%\lib\xstream-1.4.12.jar;%APP_HOME%\lib\itextpdf-5.0.6.jar;%APP_HOME%\lib\dropbox-core-sdk-2.1.1.jar;%APP_HOME%\lib\jinput.jar;%APP_HOME%\lib\xmlpull-1.1.3.1.jar;%APP_HOME%\lib\xpp3_min-1.1.4c.jar;%APP_HOME%\lib\bctsp-jdk14-1.38.jar;%APP_HOME%\lib\bcmail-jdk14-1.38.jar;%APP_HOME%\lib\bcprov-jdk14-1.38.jar;%APP_HOME%\lib\jackson-core-2.7.4.jar
 
 
 @rem Execute keyboarding-re-master

@@ -1,0 +1,12 @@
+<RootManager>
+  <appsRoot>
+    <name>Application</name>
+    <appType>APPLICATION</appType>
+    <apps/>
+  </appsRoot>
+  <gamesRoot>
+    <name>Game</name>
+    <appType>GAME</appType>
+    <apps/>
+  </gamesRoot>
+</RootManager>

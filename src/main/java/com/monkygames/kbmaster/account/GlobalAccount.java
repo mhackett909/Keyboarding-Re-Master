@@ -5,6 +5,7 @@ package com.monkygames.kbmaster.account;
 
 // === java imports === //
 import com.monkygames.kbmaster.account.dropbox.MetaData;
+import com.monkygames.kbmaster.controller.ProfileUIController;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.driver.DeviceState;
 import com.monkygames.kbmaster.driver.DriverManager;
@@ -14,6 +15,7 @@ import com.monkygames.kbmaster.util.DeviceEntry;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -124,14 +126,17 @@ public class GlobalAccount{
      * @return true if the device was successfully removed and false otherwise.
      */
     public boolean removeDownloadedDevice(Device device){
-	String devicePackageName = device.getDeviceInformation().getPackageName();
-	for(DevicePackage devicePackage: deviceList.getList()){
-	    if(devicePackage.getDevice().getDeviceState().getPackageName().equals(devicePackageName)){
-		deviceList.getList().remove(devicePackage);
-		// save
-		return save();
-	    }
-	}
+		String devicePackageName = device.getDeviceInformation().getPackageName();
+		for(DevicePackage devicePackage: deviceList.getList()){
+	    	if(devicePackage.getDevice().getDeviceState().getPackageName().equals(devicePackageName)){
+	    		File deviceFile = new File(ProfileUIController.profileDirS+File.separator+device.getDeviceInformation().getProfileName());
+				deviceFile.delete();
+				int deviceIndex = driverManager.getDevices().indexOf(device);
+				driverManager.getDevices().get(deviceIndex).resetDevice();
+				deviceList.getList().remove(devicePackage);
+				return true;
+	   		}
+		}
 	return false;
     }
     /**

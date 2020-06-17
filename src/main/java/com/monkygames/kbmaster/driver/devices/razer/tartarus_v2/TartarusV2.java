@@ -192,11 +192,11 @@ public class TartarusV2 extends Device{
 		break;
 		case 26:
 		pos[0] = 632;
-		pos[1] = 145;
+		pos[1] = 141;
 		break;
 		case 27:
 		pos[0] = 632;
-		pos[1] = 260;
+		pos[1] = 263;
 		break;
 		case 28:
 		pos[0] = 632;

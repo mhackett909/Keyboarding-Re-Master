@@ -7570,8 +7570,8 @@
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>1</name>
-                        <keycode>49</keycode>
+                        <name>M</name>
+                        <keycode>77</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>
@@ -11191,8 +11191,8 @@
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>1</name>
-                        <keycode>49</keycode>
+                        <name>R</name>
+                        <keycode>82</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>

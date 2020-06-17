@@ -70,6 +70,7 @@ public class XStreamManager {
     public static final String globalAccountFileName = "global_account.xml";
 
     public XStreamManager(){
+
         // user settings
         userSettingsStream = new XStream(new DomDriver());
         userSettingsStream.alias("UserSettings", UserSettings.class);
@@ -118,6 +119,7 @@ public class XStreamManager {
         globalStream.omitField(Device.class, "codeToJFX");
         globalStream.omitField(App.class, "profiles");
         globalAccountFile = new File(globalAccountFileName);
+
     }
 
     // === Public Methods === //

@@ -122,6 +122,12 @@ public abstract class Device implements Mapper{
 	this.deviceState = deviceState;
     }
 
+    public void resetDevice() {
+    	setIsEnabled(false);
+    	setIsConnected(false);
+    	setProfile(null);
+    }
+
     /**
      * Add a new button mapping to the keymap.
      * @param keymap they keymap to add the button mapping.

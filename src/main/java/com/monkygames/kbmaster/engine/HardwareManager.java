@@ -79,6 +79,7 @@ public class HardwareManager implements HardwareListener{
 	public boolean removeDevice(Device device){
 		disableDevice(device);
 		HardwareEngine engine = engines.remove(device.getDeviceInformation().getJinputName());
+		engine.stopPolling();
 		if(engine != null){
 			return true;
 		}
@@ -93,10 +94,12 @@ public class HardwareManager implements HardwareListener{
 	public boolean startPollingDevice(Device device,Profile profile){
 		HardwareEngine engine = engines.get(device.getDeviceInformation().getJinputName());
 		if(engine == null || !device.isConnected() || !device.isEnabled()) return false;
-		if(profile != null) engine.setEnabled(true);
-		else engine.setEnabled(false);
-		engine.startPolling(profile);
-		return true;
+		if(profile != null) {
+			engine.setEnabled(true);
+			engine.startPolling(profile);
+			return true;
+		}
+		else return false;
 	}
 	/**
 	 * Stops polling the specified device.
@@ -105,11 +108,8 @@ public class HardwareManager implements HardwareListener{
 	 */
 	public boolean stopPollingDevice(Device device){
 		HardwareEngine engine = engines.get(device.getDeviceInformation().getJinputName());
-		if(engine == null){
-			return false;
-		}
+		if(engine == null) return false;
 		engine.stopPolling();
-		engine.setEnabled(false);
 		return true;
 	}
 	/**
