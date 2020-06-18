@@ -46,6 +46,7 @@ public class KeymapUIManager implements ChangeListener{
      * @param message the text to set.
      */
     public void setDescriptionText(String message){ keymapDescription.setText(message); }
+    public int getSelectedIndex() { return tabPane.getSelectionModel().getSelectedIndex(); }
     public void setLabel(Label keymapDescription){ this.keymapDescription = keymapDescription; }
     /**
      * Sets the device to be used for the keymap and all of the DriverUIControllers.
@@ -64,7 +65,7 @@ public class KeymapUIManager implements ChangeListener{
 			tabPane.getSelectionModel().select(0);
 			return;
 		}
-		if (tabPane.getSelectionModel().getSelectedIndex()==profile.getDefaultKeymap()) changedEvent();
+		if (tabPane.getSelectionModel().getSelectedIndex() == profile.getDefaultKeymap()) changedEvent();
 		else tabPane.getSelectionModel().select(profile.getDefaultKeymap());
 		for(int i = 0; i < driverUIController.length; i++){
 			driverUIController[i].setSelectedKeymap(profile.getKeymap(i));

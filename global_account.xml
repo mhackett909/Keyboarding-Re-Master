@@ -6,10 +6,10 @@
         <deviceState>
           <profile>
             <appInfo>
-              <appName>IntelliJ</appName>
+              <appName>Chromium</appName>
               <appType>APPLICATION</appType>
             </appInfo>
-            <profileName>Java</profileName>
+            <profileName>wowcl0jn3</profileName>
             <keymaps>
               <Keymap>
                 <id>1</id>
@@ -311,8 +311,8 @@
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>F</name>
-                        <keycode>70</keycode>
+                        <name>1</name>
+                        <keycode>49</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>
@@ -460,7 +460,7 @@
                   </output>
                   <hasMapping>true</hasMapping>
                 </zDownWheelMapping>
-                <description>FX</description>
+                <description></description>
               </Keymap>
               <Keymap>
                 <id>2</id>
@@ -1213,8 +1213,8 @@
                         <inputString>1</inputString>
                       </inputHardware>
                       <output class="OutputKey">
-                        <name>1</name>
-                        <keycode>49</keycode>
+                        <name>Q</name>
+                        <keycode>81</keycode>
                         <modifier>0</modifier>
                         <description></description>
                       </output>
@@ -1362,7 +1362,7 @@
                   </output>
                   <hasMapping>true</hasMapping>
                 </zDownWheelMapping>
-                <description></description>
+                <description>Three</description>
               </Keymap>
               <Keymap>
                 <id>4</id>
@@ -3621,9 +3621,9 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592430310626</lastUpdatedDate>
+            <lastUpdatedDate>1592430274362</lastUpdatedDate>
             <info></info>
-            <defaultMap>0</defaultMap>
+            <defaultMap>2</defaultMap>
           </profile>
           <isConnected>true</isConnected>
           <isEnabled>true</isEnabled>

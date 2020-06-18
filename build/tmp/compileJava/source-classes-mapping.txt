@@ -2,8 +2,14 @@ com/monkygames/kbmaster/engine/package-info.java
  com.monkygames.kbmaster.engine.package-info
 com/monkygames/kbmaster/profiles/App.java
  com.monkygames.kbmaster.profiles.App
-com/monkygames/kbmaster/driver/devices/razer/taipan/Taipan.java
- com.monkygames.kbmaster.driver.devices.razer.taipan.Taipan
+com/monkygames/kbmaster/controller/DeviceMenuUIController.java
+ com.monkygames.kbmaster.controller.DeviceMenuUIController
+ com.monkygames.kbmaster.controller.DeviceMenuUIController$1
+ com.monkygames.kbmaster.controller.DeviceMenuUIController$2
+ com.monkygames.kbmaster.controller.DeviceMenuUIController$2$1
+ com.monkygames.kbmaster.controller.DeviceMenuUIController$CheckboxCallback
+ com.monkygames.kbmaster.controller.DeviceMenuUIController$CheckboxCallback$1
+ com.monkygames.kbmaster.controller.DeviceMenuUIController$CheckboxValueCallback
 com/monkygames/kbmaster/util/about/AboutProgram.java
  com.monkygames.kbmaster.util.about.AboutProgram
 com/monkygames/kbmaster/util/thread/DropboxSyncTask.java
@@ -36,8 +42,8 @@ com/monkygames/kbmaster/util/WindowUtil.java
  com.monkygames.kbmaster.util.WindowUtil
 com/monkygames/kbmaster/input/Wheel.java
  com.monkygames.kbmaster.input.Wheel
-com/monkygames/kbmaster/driver/DeviceType.java
- com.monkygames.kbmaster.driver.DeviceType
+com/monkygames/kbmaster/controller/DeleteDeviceUIController.java
+ com.monkygames.kbmaster.controller.DeleteDeviceUIController
 com/monkygames/kbmaster/util/about/AboutLinuxGamer.java
  com.monkygames.kbmaster.util.about.AboutLinuxGamer
 com/monkygames/kbmaster/driver/package-info.java
@@ -54,8 +60,8 @@ com/monkygames/kbmaster/driver/devices/razer/orbweaverchroma/package-info.java
  com.monkygames.kbmaster.driver.devices.razer.orbweaverchroma.package-info
 com/monkygames/kbmaster/driver/DeviceInformation.java
  com.monkygames.kbmaster.driver.DeviceInformation
-com/monkygames/kbmaster/driver/devices/lacunary_limited/ipv6buddy/IPV6Buddy.java
- com.monkygames.kbmaster.driver.devices.lacunary_limited.ipv6buddy.IPV6Buddy
+com/monkygames/kbmaster/engine/HardwareManager.java
+ com.monkygames.kbmaster.engine.HardwareManager
 com/monkygames/kbmaster/controller/driver/SingleKeyController.java
  com.monkygames.kbmaster.controller.driver.SingleKeyController
 com/monkygames/kbmaster/profiles/Profile.java
@@ -66,8 +72,9 @@ com/monkygames/kbmaster/driver/devices/razer/tartarus_v2/TartarusV2.java
  com.monkygames.kbmaster.driver.devices.razer.tartarus_v2.TartarusV2
 com/monkygames/kbmaster/account/dropbox/MetaData.java
  com.monkygames.kbmaster.account.dropbox.MetaData
-com/monkygames/kbmaster/engine/HardwareListener.java
- com.monkygames.kbmaster.engine.HardwareListener
+com/monkygames/kbmaster/controller/SelectProfileUIController.java
+ com.monkygames.kbmaster.controller.SelectProfileUIController
+ com.monkygames.kbmaster.controller.SelectProfileUIController$1
 com/monkygames/kbmaster/controller/AboutUIController.java
  com.monkygames.kbmaster.controller.AboutUIController
  com.monkygames.kbmaster.controller.AboutUIController$1
@@ -130,22 +137,22 @@ com/monkygames/kbmaster/driver/DriverManager.java
  com.monkygames.kbmaster.driver.DriverManager
 com/monkygames/kbmaster/account/DropBoxApp.java
  com.monkygames.kbmaster.account.DropBoxApp
-com/monkygames/kbmaster/driver/devices/razer/nostromo/package-info.java
- com.monkygames.kbmaster.driver.devices.razer.nostromo.package-info
+com/monkygames/kbmaster/driver/DeviceType.java
+ com.monkygames.kbmaster.driver.DeviceType
 com/monkygames/kbmaster/driver/devices/generic/mouse/gspy/GSpyUsbGamingMouseRH1900.java
  com.monkygames.kbmaster.driver.devices.generic.mouse.gspy.GSpyUsbGamingMouseRH1900
 com/monkygames/kbmaster/input/Keymap.java
  com.monkygames.kbmaster.input.Keymap
-com/monkygames/kbmaster/driver/devices/digitus/numpad/Numpad.java
- com.monkygames.kbmaster.driver.devices.digitus.numpad.Numpad
+com/monkygames/kbmaster/controller/NewDeviceUIController.java
+ com.monkygames.kbmaster.controller.NewDeviceUIController
 com/monkygames/kbmaster/profiles/AppInfo.java
  com.monkygames.kbmaster.profiles.AppInfo
-com/monkygames/kbmaster/driver/devices/razer/tartaruschroma/package-info.java
- com.monkygames.kbmaster.driver.devices.razer.tartaruschroma.package-info
+com/monkygames/kbmaster/controller/profile/DeleteProgramUIController.java
+ com.monkygames.kbmaster.controller.profile.DeleteProgramUIController
 com/monkygames/kbmaster/controller/SetDescriptionUIController.java
  com.monkygames.kbmaster.controller.SetDescriptionUIController
-com/monkygames/kbmaster/input/OutputDisabled.java
- com.monkygames.kbmaster.input.OutputDisabled
+com/monkygames/kbmaster/util/KBMSystemTray.java
+ com.monkygames.kbmaster.util.KBMSystemTray
 com/monkygames/kbmaster/util/thread/SyncEventOnExitHandler.java
  com.monkygames.kbmaster.util.thread.SyncEventOnExitHandler
 com/monkygames/kbmaster/driver/devices/razer/naga/Naga.java
@@ -179,8 +186,10 @@ com/monkygames/kbmaster/util/ScanHardware.java
  com.monkygames.kbmaster.util.ScanHardware$EventMapping
 com/monkygames/kbmaster/account/dropbox/SyncMetaData.java
  com.monkygames.kbmaster.account.dropbox.SyncMetaData
-com/monkygames/kbmaster/io/ProfileFileFilter.java
- com.monkygames.kbmaster.io.ProfileFileFilter
+com/monkygames/kbmaster/controller/login/LoginUIController.java
+ com.monkygames.kbmaster.controller.login.LoginUIController
+ com.monkygames.kbmaster.controller.login.LoginUIController$1
+ com.monkygames.kbmaster.controller.login.LoginUIController$2
 com/monkygames/kbmaster/util/about/AboutJava.java
  com.monkygames.kbmaster.util.about.AboutJava
 com/monkygames/kbmaster/input/OutputKey.java
@@ -199,10 +208,10 @@ com/monkygames/kbmaster/controller/DisplayKeymapUIController.java
  com.monkygames.kbmaster.controller.DisplayKeymapUIController
 com/monkygames/kbmaster/controller/driver/MouseButtonController.java
  com.monkygames.kbmaster.controller.driver.MouseButtonController
-com/monkygames/kbmaster/profiles/RootManager.java
- com.monkygames.kbmaster.profiles.RootManager
-com/monkygames/kbmaster/driver/devices/razer/orbweaver/Orbweaver.java
- com.monkygames.kbmaster.driver.devices.razer.orbweaver.Orbweaver
+com/monkygames/kbmaster/controller/profile/NewProfileUIController.java
+ com.monkygames.kbmaster.controller.profile.NewProfileUIController
+com/monkygames/kbmaster/util/KeymapUIManager.java
+ com.monkygames.kbmaster.util.KeymapUIManager
 com/monkygames/kbmaster/util/about/AboutInstallBuilder.java
  com.monkygames.kbmaster.util.about.AboutInstallBuilder
 com/monkygames/kbmaster/util/thread/SyncEventHandler.java
@@ -211,14 +220,15 @@ com/monkygames/kbmaster/driver/devices/razer/tartarus/Tartarus.java
  com.monkygames.kbmaster.driver.devices.razer.tartarus.Tartarus
 com/monkygames/kbmaster/input/OutputKeymapSwitch.java
  com.monkygames.kbmaster.input.OutputKeymapSwitch
-com/monkygames/kbmaster/input/KeymapSwitchMapping.java
- com.monkygames.kbmaster.input.KeymapSwitchMapping
+com/monkygames/kbmaster/controller/ConfigureDeviceUIController.java
+ com.monkygames.kbmaster.controller.ConfigureDeviceUIController
+ com.monkygames.kbmaster.controller.ConfigureDeviceUIController$1
 com/monkygames/kbmaster/io/PdfFileFilter.java
  com.monkygames.kbmaster.io.PdfFileFilter
 com/monkygames/kbmaster/controller/DisplayProfileController.java
  com.monkygames.kbmaster.controller.DisplayProfileController
-com/monkygames/kbmaster/driver/devices/razer/tartaruschroma/TartarusChroma.java
- com.monkygames.kbmaster.driver.devices.razer.tartaruschroma.TartarusChroma
+com/monkygames/kbmaster/io/ProfileManager.java
+ com.monkygames.kbmaster.io.ProfileManager
 com/monkygames/kbmaster/driver/DeviceState.java
  com.monkygames.kbmaster.driver.DeviceState
 com/monkygames/kbmaster/controller/ListCellImage.java
@@ -227,46 +237,36 @@ com/monkygames/kbmaster/controller/ErrorUIController.java
  com.monkygames.kbmaster.controller.ErrorUIController
 com/monkygames/kbmaster/util/thread/package-info.java
  com.monkygames.kbmaster.util.thread.package-info
-com/monkygames/kbmaster/controller/DeleteDeviceUIController.java
- com.monkygames.kbmaster.controller.DeleteDeviceUIController
-com/monkygames/kbmaster/controller/DeviceMenuUIController.java
- com.monkygames.kbmaster.controller.DeviceMenuUIController
- com.monkygames.kbmaster.controller.DeviceMenuUIController$1
- com.monkygames.kbmaster.controller.DeviceMenuUIController$2
- com.monkygames.kbmaster.controller.DeviceMenuUIController$2$1
- com.monkygames.kbmaster.controller.DeviceMenuUIController$CheckboxCallback
- com.monkygames.kbmaster.controller.DeviceMenuUIController$CheckboxCallback$1
- com.monkygames.kbmaster.controller.DeviceMenuUIController$CheckboxValueCallback
-com/monkygames/kbmaster/controller/ProfileUIController.java
- com.monkygames.kbmaster.controller.ProfileUIController
- com.monkygames.kbmaster.controller.ProfileUIController$1
-com/monkygames/kbmaster/controller/profile/NewProfileUIController.java
- com.monkygames.kbmaster.controller.profile.NewProfileUIController
-com/monkygames/kbmaster/util/KeymapUIManager.java
- com.monkygames.kbmaster.util.KeymapUIManager
-com/monkygames/kbmaster/controller/NewDeviceUIController.java
- com.monkygames.kbmaster.controller.NewDeviceUIController
-com/monkygames/kbmaster/controller/profile/DeleteProgramUIController.java
- com.monkygames.kbmaster.controller.profile.DeleteProgramUIController
-com/monkygames/kbmaster/controller/profile/CloneProfileUIController.java
- com.monkygames.kbmaster.controller.profile.CloneProfileUIController
-com/monkygames/kbmaster/controller/login/LoginUIController.java
- com.monkygames.kbmaster.controller.login.LoginUIController
- com.monkygames.kbmaster.controller.login.LoginUIController$1
- com.monkygames.kbmaster.controller.login.LoginUIController$2
-com/monkygames/kbmaster/util/KBMSystemTray.java
- com.monkygames.kbmaster.util.KBMSystemTray
-com/monkygames/kbmaster/engine/HardwareManager.java
- com.monkygames.kbmaster.engine.HardwareManager
-com/monkygames/kbmaster/controller/ConfigureDeviceUIController.java
- com.monkygames.kbmaster.controller.ConfigureDeviceUIController
- com.monkygames.kbmaster.controller.ConfigureDeviceUIController$1
-com/monkygames/kbmaster/io/ProfileManager.java
- com.monkygames.kbmaster.io.ProfileManager
+com/monkygames/kbmaster/engine/HardwareListener.java
+ com.monkygames.kbmaster.engine.HardwareListener
+com/monkygames/kbmaster/driver/devices/razer/nostromo/package-info.java
+ com.monkygames.kbmaster.driver.devices.razer.nostromo.package-info
+com/monkygames/kbmaster/profiles/RootManager.java
+ com.monkygames.kbmaster.profiles.RootManager
+com/monkygames/kbmaster/driver/devices/razer/tartaruschroma/TartarusChroma.java
+ com.monkygames.kbmaster.driver.devices.razer.tartaruschroma.TartarusChroma
+com/monkygames/kbmaster/input/KeymapSwitchMapping.java
+ com.monkygames.kbmaster.input.KeymapSwitchMapping
+com/monkygames/kbmaster/driver/devices/lacunary_limited/ipv6buddy/IPV6Buddy.java
+ com.monkygames.kbmaster.driver.devices.lacunary_limited.ipv6buddy.IPV6Buddy
+com/monkygames/kbmaster/input/OutputDisabled.java
+ com.monkygames.kbmaster.input.OutputDisabled
+com/monkygames/kbmaster/io/ProfileFileFilter.java
+ com.monkygames.kbmaster.io.ProfileFileFilter
+com/monkygames/kbmaster/driver/devices/razer/taipan/Taipan.java
+ com.monkygames.kbmaster.driver.devices.razer.taipan.Taipan
+com/monkygames/kbmaster/driver/devices/razer/tartaruschroma/package-info.java
+ com.monkygames.kbmaster.driver.devices.razer.tartaruschroma.package-info
+com/monkygames/kbmaster/driver/devices/digitus/numpad/Numpad.java
+ com.monkygames.kbmaster.driver.devices.digitus.numpad.Numpad
+com/monkygames/kbmaster/driver/devices/razer/orbweaver/Orbweaver.java
+ com.monkygames.kbmaster.driver.devices.razer.orbweaver.Orbweaver
 com/monkygames/kbmaster/controller/profile/DeleteProfileUIController.java
  com.monkygames.kbmaster.controller.profile.DeleteProfileUIController
 com/monkygames/kbmaster/controller/profile/NewProgramUIController.java
  com.monkygames.kbmaster.controller.profile.NewProgramUIController
-com/monkygames/kbmaster/controller/SelectProfileUIController.java
- com.monkygames.kbmaster.controller.SelectProfileUIController
- com.monkygames.kbmaster.controller.SelectProfileUIController$1
+com/monkygames/kbmaster/controller/ProfileUIController.java
+ com.monkygames.kbmaster.controller.ProfileUIController
+ com.monkygames.kbmaster.controller.ProfileUIController$1
+com/monkygames/kbmaster/controller/profile/CloneProfileUIController.java
+ com.monkygames.kbmaster.controller.profile.CloneProfileUIController

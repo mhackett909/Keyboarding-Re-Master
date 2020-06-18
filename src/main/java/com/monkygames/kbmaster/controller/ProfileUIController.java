@@ -323,7 +323,12 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 			profileCB.getSelectionModel().select(index);
 			profileCB.valueProperty().addListener(profileChangeListener);
 		}
-		catch (NullPointerException e) { }
+		catch (NullPointerException e) {
+			//Must ensure profileChangeListener is not disabled
+			//Remove it first to ensure two listeners are not somehow enabled
+			profileCB.valueProperty().removeListener(profileChangeListener);
+			profileCB.valueProperty().addListener(profileChangeListener);
+		}
     }
     /**
      * Sets the tool tip with the string by the specified information.
@@ -393,7 +398,11 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	}
 	cloneProfileUIController.setDevice(device);
 	cloneProfileUIController.setProfileManager(profileManager);
+	cloneProfileUIController.setLabel(currentProfile.getProfileName());
+	cloneProfileUIController.setAppType(typeCB.getSelectionModel().getSelectedIndex());
+	cloneProfileUIController.setProgram(appsCB.getSelectionModel().getSelectedIndex());
 	cloneProfileUIController.showStage();
+
     }
     private void openPDFPopup(){
 	Profile profile = (Profile)profileCB.getSelectionModel().getSelectedItem();
@@ -504,6 +513,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 			cal.setTimeInMillis(profile.getLastUpdatedDate());
 			SimpleDateFormat date_format = new SimpleDateFormat("yyyy/MM/dd");
 			updatedL.setText(date_format.format(cal.getTime()));
+			keymapUIManager.setDescriptionText(profile.getKeymap(keymapUIManager.getSelectedIndex()).getDescription());
 		}
     }
     /**
@@ -642,57 +652,75 @@ public class ProfileUIController implements Initializable, ChangeListener<String
     @Override
     public void onOK(Object src, String message) {
 		String[] objectNames = message.split("`");
-		if (objectNames[0].equals("AddApp")) {
-			profileSelected(null);
-			App appName = getAppByName(objectNames[1],objectNames[2]);
-			AppType appType = appName.getAppType(), currentAppType = getAppType();
-			if (appType != currentAppType)
-				typeCB.getSelectionModel().select(typeCB.getSelectionModel().getSelectedIndex() == 0 ? 1 : 0);
-			else updateComboBoxes(currentAppType);
-			appsCB.valueProperty().removeListener(appChangeListener);
-			appsCB.getSelectionModel().select(appName);
-			appsCB.valueProperty().addListener(appChangeListener);
-			updateAppUIInfo(appName);
-		} else if (objectNames[0].equals("AddProfile")) {
-			App appName = getAppByName(objectNames[1], objectNames[2]), currentApp = (App) appsCB.getSelectionModel().getSelectedItem();
-			AppType appType = appName.getAppType(), currentAppType = getAppType();
-			Profile getProf = null;
-			int appIndex = profileManager.getRoot(appType).getList().indexOf(appName);
-			for (Profile profile : profileManager.getRoot(appType).getList().get(appIndex).getProfiles()) {
-				if (profile.toString().equals(objectNames[3])) {
-					getProf = profile;
-					break;
+		App appName, currentApp;
+		AppType appType, currentAppType;
+		switch (objectNames[0]) {
+			case "AddApp":
+				profileSelected(null);
+				appName = getAppByName(objectNames[1],objectNames[2]);
+				appType = appName.getAppType();
+				currentAppType = getAppType();
+				if (appType != currentAppType) {
+					typeCB.valueProperty().removeListener(this);
+					typeCB.getSelectionModel().select(typeCB.getSelectionModel().getSelectedIndex() == 0 ? 1 : 0);
+					typeCB.valueProperty().addListener(this);
 				}
-			}
-			profileSelected(getProf);
-			if (appType != currentAppType)
-				typeCB.getSelectionModel().select(typeCB.getSelectionModel().getSelectedIndex() == 0 ? 1 : 0);
-			else updateComboBoxes(currentAppType);
-			if (currentApp != appName) {
+				updateComboBoxes(appType);
 				appsCB.valueProperty().removeListener(appChangeListener);
 				appsCB.getSelectionModel().select(appName);
 				appsCB.valueProperty().addListener(appChangeListener);
 				updateAppUIInfo(appName);
-			}
-			profileCB.valueProperty().removeListener(profileChangeListener);
-			profileCB.getSelectionModel().select(getProf);
-			profileCB.valueProperty().addListener(profileChangeListener);
-			updateProfileUIInfo(getProf);
-		} else if (objectNames[0].equals("DelApp")) {
-			profileSelected(null);
-			updateComboBoxes(getAppType());
-		} else if (objectNames[0].equals("DelProfile")) {
-			profileSelected(null);
-			updateComboBoxes(getAppType());
-			appsCB.valueProperty().removeListener(appChangeListener);
-			App app = getAppByName(objectNames[1],objectNames[2]);
-			appsCB.getSelectionModel().select(app);
-			appsCB.valueProperty().addListener(appChangeListener);
+			break;
+			case "AddProfile":
+				appName = getAppByName(objectNames[1], objectNames[2]);
+				currentApp = (App) appsCB.getSelectionModel().getSelectedItem();
+				appType = appName.getAppType();
+				currentAppType = getAppType();
+				Profile getProf = null;
+				int appIndex = profileManager.getRoot(appType).getList().indexOf(appName);
+				for (Profile profile : profileManager.getRoot(appType).getList().get(appIndex).getProfiles()) {
+					if (profile.toString().equals(objectNames[3])) {
+						getProf = profile;
+						break;
+					}
+				}
+				profileSelected(getProf);
+				if (appType != currentAppType) {
+					typeCB.valueProperty().removeListener(this);
+					typeCB.getSelectionModel().select(typeCB.getSelectionModel().getSelectedIndex() == 0 ? 1 : 0);
+					typeCB.valueProperty().addListener(this);
+				}
+				updateComboBoxes(appType);
+				if (currentApp != appName) {
+					appsCB.valueProperty().removeListener(appChangeListener);
+					appsCB.getSelectionModel().select(appName);
+					appsCB.valueProperty().addListener(appChangeListener);
+					updateAppUIInfo(appName);
+				}
+				profileCB.valueProperty().removeListener(profileChangeListener);
+				profileCB.getSelectionModel().select(getProf);
+				profileCB.valueProperty().addListener(profileChangeListener);
+				updateProfileUIInfo(getProf);
+			break;
+			case "DelApp":
+				profileSelected(null);
+				updateComboBoxes(getAppType());
+			break;
+			case "DelProfile":
+				profileSelected(null);
+				updateComboBoxes(getAppType());
+				App app = getAppByName(objectNames[1],objectNames[2]);
+				appsCB.valueProperty().removeListener(appChangeListener);
+				appsCB.getSelectionModel().select(app);
+				appsCB.valueProperty().addListener(appChangeListener);
+			break;
+			case "Save":
+				saveProfile();
+			break;
+			default:
+				System.out.println("OK "+objectNames[0]);
 		}
-		else if (objectNames[0].equals("Save")) saveProfile();
-		else System.out.println("OK "+objectNames[0]);
     }
-
     @Override
     public void onCancel(Object src, String message) {
 	// do nothing for now

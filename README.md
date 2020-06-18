@@ -14,4 +14,7 @@ Keyboarding Master uses Gradle as the build tool.  Issue the following commands:
 Additional developer documentation is [here](https://kbmaster.atlassian.net/wiki/display/KBM/Developer+Documentation)
 
 ## Issues
-Jira is used to manage the issue tracking. Please [use](https://kbmaster.atlassian.net) the issue tracker for reporting bugs.
+Jira is used to manage the issue tracking. Please [use](https://kbmaster.atlassian.net) the issue tracker for reporting bugs. 
+
+## Support
+Please see keyboarding-master-edits.doc for more information about setting up support for your own device. You may also email me at mhackett909@gmail.com with any questions.

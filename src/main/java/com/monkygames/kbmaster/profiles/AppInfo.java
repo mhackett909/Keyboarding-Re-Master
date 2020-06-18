@@ -11,4 +11,5 @@ public class AppInfo {
 
     public String getName() { return appName; }
     public AppType getAppType() { return appType; }
+
 }

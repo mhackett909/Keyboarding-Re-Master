@@ -146,19 +146,22 @@ public class Profile{
     
 
     /**
-     * Clones this profile and returns the clone with the specified name.
+     * Clones this profile.
      * Note, this is a deep clone.
-     * @param newName the new name of the clone.
+     * @param profile the clone target.
      * @return the cloned profile.
-
-    public Profile cloneProfile(String newName){
-	Profile newProfile = new Profile(app,newName);
-	for(int i = 0; i < 8; i++){
-	    newProfile.setKeymap(i, (Keymap)keymaps[i].clone());
-	}
-	return newProfile;
-    }
      */
+    public Profile cloneProfile(Profile profile, App app){
+        profile.setAppInfo(app);
+	    for(int i = 0; i < 8; i++)
+	        profile.setKeymap(i, (Keymap)keymaps[i].clone());
+	    profile.setDefaultKeymap(this.getDefaultKeymap());
+	    profile.setAuthor(this.author);
+	    profile.setLastUpdatedDate(this.lastUpdatedDate);
+	    profile.setInfo(this.info);
+	    return profile;
+    }
+
 
     public void printString(){
 	String out = "Profile "+appInfo.getAppType()+"->"+appInfo.getName()+"->"+profileName+"[\n";

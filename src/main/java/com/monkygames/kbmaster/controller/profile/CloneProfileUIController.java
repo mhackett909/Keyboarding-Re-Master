@@ -49,7 +49,6 @@ public class CloneProfileUIController extends PopupController implements ChangeL
     private TextField profileTF;
     private ProfileManager profileManager;
     private Device device;
-    private NewProgramUIController newProgramUIController;
 // ============= Constructors ============== //
 // ============= Public Methods ============== //
     public void setProfileManager(ProfileManager profileManager){
@@ -59,14 +58,21 @@ public class CloneProfileUIController extends PopupController implements ChangeL
     public void setDevice(Device device){
 	this.device = device;
     }
+	public void setLabel(String label) { profileNameL.setText(label); }
+	public void setAppType(int i) { typeCB.getSelectionModel().select(i); }
+	public void setProgram(int i) {
+		switch (typeCB.getSelectionModel().getSelectedIndex()) {
+			case 0:
+				updateComboBoxesOnType(AppType.GAME);
+				break;
+			default:
+			updateComboBoxesOnType(AppType.APPLICATION);
+		}
+		programCB.getSelectionModel().select(i);
+	}
     public void okEventFired(ActionEvent evt){
 	try{
 	    AppType type = getProfileType();
-
-	    if(programCB.getSelectionModel().getSelectedIndex() == 0){
-		this.openNewProgramPopup();
-		return;
-	    }
 
 	    // check for a valid app name
 	    App app = (App)programCB.getSelectionModel().getSelectedItem();
@@ -81,7 +87,11 @@ public class CloneProfileUIController extends PopupController implements ChangeL
 		PopupManager.getPopupManager().showError("Invalid profile name");
 		return;
 	    }
-	    
+		//For using ` as delimiter
+		char[] charArr = newProfileName.toCharArray();
+		for (int index = 0; index < charArr.length; index++)
+			if (charArr[index] == '`') charArr[index] = '\'';
+		newProfileName = new String(charArr);
 	    // check for a redundant name
 	    if(profileManager.doesProfileNameExists(app, newProfileName)){
 		PopupManager.getPopupManager().showError("Profile name already exists");
@@ -90,7 +100,9 @@ public class CloneProfileUIController extends PopupController implements ChangeL
 	    Profile profile = new Profile(app,newProfileName);
 	    device.setDefaultKeymaps(profile);
 	    profileManager.addProfile(profile);
-	    notifyOK(newProfileName);
+	    profile = device.getProfile().cloneProfile(profile, app);
+		profile.setAppInfo(app);
+		notifyOK("AddProfile`"+type.toString()+"`"+app.getName()+"`"+newProfileName);
 
 	}finally{
 	    reset();
@@ -105,7 +117,6 @@ public class CloneProfileUIController extends PopupController implements ChangeL
     private void updateComboBoxesOnType(AppType type){
 	ObservableList<App> apps;
 	apps = FXCollections.observableArrayList(profileManager.getRoot(type).getList());
-	apps.add(0, new App("",null,null,"New",AppType.APPLICATION));
 	programCB.setItems(apps);
     }
     private void reset(){
@@ -124,29 +135,6 @@ public class CloneProfileUIController extends PopupController implements ChangeL
 	}
 	return type;
     }
-    private void openNewProgramPopup(){
-	if(newProgramUIController == null){
-	    try {
-		// pop open add new device
-		URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/NewProgramUI.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setLocation(location);
-		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-		Parent root = (Parent)fxmlLoader.load(location.openStream());
-		newProgramUIController = (NewProgramUIController) fxmlLoader.getController();
-		Scene scene = new Scene(root);
-		Stage stage = new Stage();
-		stage.setScene(scene);
-		newProgramUIController.setStage(stage);
-		newProgramUIController.setProfileManager(profileManager);
-		newProgramUIController.addNotification(this);
-	    } catch (IOException ex) {
-		Logger.getLogger(CloneProfileUIController.class.getName()).log(Level.SEVERE, null, ex);
-		return;
-	    }
-	}
-	newProgramUIController.showStage();
-    }
 // ============= Implemented Methods ============== //
 // ============= Extended Methods ============== //
     @Override
@@ -159,7 +147,7 @@ public class CloneProfileUIController extends PopupController implements ChangeL
     }
     @Override
     public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-	if(ov == typeCB){
+	if(ov == typeCB.valueProperty()){
 	    updateComboBoxesOnType(getProfileType());
 	}
     }
@@ -167,24 +155,20 @@ public class CloneProfileUIController extends PopupController implements ChangeL
 // ============= Static Methods ============== //
 
     @Override
-    public void onOK(Object src, String message) {
-	if(src == newProgramUIController){
-	    this.showStage();
-	    if(message != null || !message.equals("")){
-		programCB.getSelectionModel().select(message);
-	    }
-	}
-    }
-
-    @Override
-    public void onCancel(Object src, String message) {
-	// do nothing for now
-    }
-    @Override
     public void showStage(){
 	super.showStage();
 	updateComboBoxesOnType(getProfileType());
     }
+
+	@Override
+	public void onOK(Object src, String message) {
+
+	}
+
+	@Override
+	public void onCancel(Object src, String message) {
+
+	}
 }
 /*
  * Local variables:
