@@ -6,10 +6,10 @@
         <deviceState>
           <profile>
             <appInfo>
-              <appName>Chromium</appName>
-              <appType>APPLICATION</appType>
+              <appName>World of Warcraft</appName>
+              <appType>GAME</appType>
             </appInfo>
-            <profileName>wowcl0jn3</profileName>
+            <profileName>Classic</profileName>
             <keymaps>
               <Keymap>
                 <id>1</id>
