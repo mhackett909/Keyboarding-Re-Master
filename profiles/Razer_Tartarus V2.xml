@@ -3625,8 +3625,8 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592502268582</lastUpdatedDate>
-            <info></info>
+            <lastUpdatedDate>1592762928417</lastUpdatedDate>
+            <info>and another test</info>
             <defaultMap>0</defaultMap>
           </Profile>
           <Profile>
@@ -7259,7 +7259,7 @@
     <appType>GAME</appType>
     <apps>
       <App>
-        <info></info>
+        <info>this test</info>
         <name>World of Warcraft</name>
         <appType>GAME</appType>
         <profiles>
@@ -10880,9 +10880,9 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592430274362</lastUpdatedDate>
-            <info></info>
-            <defaultMap>2</defaultMap>
+            <lastUpdatedDate>1592763511193</lastUpdatedDate>
+            <info>Testing testing.</info>
+            <defaultMap>4</defaultMap>
           </Profile>
           <Profile>
             <appInfo>
@@ -14501,8 +14501,8 @@
               </Keymap>
             </keymaps>
             <author></author>
-            <lastUpdatedDate>1592430291966</lastUpdatedDate>
-            <info></info>
+            <lastUpdatedDate>1592762635352</lastUpdatedDate>
+            <info>test again</info>
             <defaultMap>6</defaultMap>
           </Profile>
         </profiles>

@@ -12,6 +12,7 @@ import com.monkygames.kbmaster.profiles.Profile;
 import com.monkygames.kbmaster.profiles.AppType;
 import com.monkygames.kbmaster.profiles.Root;
 import com.monkygames.kbmaster.profiles.RootManager;
+import com.monkygames.kbmaster.util.PopupManager;
 
 /**
  * Manages saving and loading profiles.
@@ -70,7 +71,7 @@ public class ProfileManager{
      * Adds the profile to the app and stores to the database.
      * @param profile the profile to be added.
      */
-    public void addProfile(Profile profile) { rootManager.addProfile(profile); }
+    public boolean addProfile(Profile profile) { return rootManager.addProfile(profile); }
     /**
      * Saves the profile to the database.
      */
@@ -100,11 +101,13 @@ public class ProfileManager{
      * @return true on success and false otherwise.
      */
     public boolean exportProfile(File file, Profile profile){
-	if(file.exists()){
-	    file.delete();
-	}
-	// export to an xml file only
-	return XStreamManager.getStreamManager().writeProfile(file.getAbsolutePath(), profile);
+    	String fileName = file.getAbsolutePath(), extension = "";
+    	int lastIndex = fileName.lastIndexOf(".");
+    	if (lastIndex > -1) extension = fileName.substring(lastIndex);
+    	// export to an xml file only
+		if (!extension.equals(".xml")) return false;
+		if(file.exists()) file.delete();
+		return XStreamManager.getStreamManager().writeProfile(file.getAbsolutePath(), profile);
     }
 
     /**
@@ -113,22 +116,20 @@ public class ProfileManager{
      * @return false if error and true on success.
      */
     public boolean importProfile(File file){
-	if(!file.exists()){
-	    return false;
-	}
-
-	Profile profile = XStreamManager.getStreamManager().readProfile(file.getAbsolutePath());
-
-	return rootManager.addProfile(profile);
+		if(!file.exists()) return false;
+		try {
+			Profile profile = XStreamManager.getStreamManager().readProfile(file.getAbsolutePath());
+			String appType = profile.getAppInfo().getAppType().toString();
+			String appName = profile.getAppInfo().getName();
+			if (!doesProfileNameExists(profileUIController.getAppByName(appType, appName), profile.getProfileName())) {
+				addProfile(profile);
+				profileUIController.onOK(null, "AddProfile`"+appType+"`"+appName+"`"+profile.getProfileName());
+				return true;
+			}
+			else return false;
+		}catch (Exception e) { return false; }
     }
 
-    public Root getAppsRoot(){
-	return getRoot(AppType.APPLICATION);
-    }
-
-    public Root getGamesRoot(){
-	return getRoot(AppType.GAME);
-    }
     /**
      * Returns the root based on the app type.
      * @return the apps or games type, and defaults to games.
@@ -141,7 +142,8 @@ public class ProfileManager{
 	}
 	return rootManager.getGamesRoot();
     }
-
+	public Root getAppsRoot(){ return getRoot(AppType.APPLICATION);  }
+	public Root getGamesRoot(){ return getRoot(AppType.GAME);  }
     /**
      * Prints the profiles out in a human readable way.
      */

@@ -124,9 +124,7 @@ public class Profile{
 	return info;
     }
 
-    public void setInfo(String info) {
-	this.info = info;
-    }
+    public void setInfo(String info) { this.info = info; }
 
     public int getDefaultKeymap() {
         return defaultMap;

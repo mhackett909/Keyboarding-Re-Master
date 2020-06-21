@@ -267,7 +267,12 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	 * Saves the current profile to disk.
 	 */
 	public void saveProfile() {
-		if (currentProfile != null) currentProfile.setDefaultKeymap(keymapTabPane.getSelectionModel().getSelectedIndex());
+		if (currentProfile != null) {
+			currentProfile.setDefaultKeymap(keymapTabPane.getSelectionModel().getSelectedIndex());
+			currentProfile.setInfo(infoTA.getText());
+			currentProfile.setLastUpdatedDate(Calendar.getInstance().getTimeInMillis());
+		}
+		((App) appsCB.getSelectionModel().getSelectedItem()).setInfo(appInfoTA.getText());
 		profileManager.saveProfile();
 		deviceMenuController.getGlobalAccount().save();
 	}
@@ -568,7 +573,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
     private void exportProfile(){
 	File file = kmpFileChooser.showSaveDialog(null);
 	if(file != null){
-	    profileManager.exportProfile(file, currentProfile);
+	    if (!profileManager.exportProfile(file, currentProfile)) PopupManager.getPopupManager().showError("Export failed. Please save as .xml");
 	}
 
     }
@@ -576,16 +581,12 @@ public class ProfileUIController implements Initializable, ChangeListener<String
      * Opens a file selector for importing a profile.
      */
     private void importProfile(){
-	File file = kmpFileChooser.showOpenDialog(null);
-	if(file != null){
-	    if(!profileManager.importProfile(file)){
-		PopupManager.getPopupManager().showError("Import failed");
-	    }
-	    // update comboboxes
-	    updateComboBoxes(getAppType());
-	}else{
-	    PopupManager.getPopupManager().showError("Import failed: can't find file");
-	}
+		File file = kmpFileChooser.showOpenDialog(null);
+		if(file != null){
+	    	if(!profileManager.importProfile(file)) PopupManager.getPopupManager().showError("Import failed");
+		}else{
+		    PopupManager.getPopupManager().showError("Import failed: can't find file");
+		}
     }
 	/**
 	 * Finds and returns an application. Null if no matching application found.
