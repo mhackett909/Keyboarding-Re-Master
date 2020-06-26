@@ -33,3 +33,6 @@ installer
 /.nb-gradle/
 /gradle/*
 /scripts/.gradle/*
+map.txt
+gradlew*
+Hardware*.log
