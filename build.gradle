@@ -1,22 +1,19 @@
-
-apply plugin: 'java'
-apply plugin: 'application'
-
-mainClassName = "com.monkygames.kbmaster.KeyboardingMaster"
-
+plugins {
+    id 'application'
+}
+application {
+    mainClassName = 'com.monkygames.kbmaster.KeyboardingMaster'
+    applicationDefaultJvmArgs = ['-Djava.library.path=libs/native']
+}
 repositories {
     mavenCentral()
     flatDir {
         dirs 'libs/input' , 'libs/native'
     }
 }
-
 dependencies {
-    compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.12'
-    compile group: 'com.itextpdf', name: 'itextpdf', version: '5.0.6'
-    compile 'com.dropbox.core:dropbox-core-sdk:2.1.1'
-    compile name: 'jinput'
+    implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.12'
+    implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.0.6'
+    implementation 'com.dropbox.core:dropbox-core-sdk:2.1.1'
+    implementation name: 'jinput'
 }
-
-
-applicationDefaultJvmArgs = ["-Djava.library.path=libs/native"]

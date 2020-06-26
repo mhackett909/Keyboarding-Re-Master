@@ -107,6 +107,7 @@ public class ProfileManager{
     	// export to an xml file only
 		if (!extension.equals(".xml")) return false;
 		if(file.exists()) file.delete();
+		profileUIController.saveProfile();
 		return XStreamManager.getStreamManager().writeProfile(file.getAbsolutePath(), profile);
     }
 
@@ -119,11 +120,16 @@ public class ProfileManager{
 		if(!file.exists()) return false;
 		try {
 			Profile profile = XStreamManager.getStreamManager().readProfile(file.getAbsolutePath());
-			String appType = profile.getAppInfo().getAppType().toString();
+			AppType appType = profile.getAppInfo().getAppType();
 			String appName = profile.getAppInfo().getName();
-			if (!doesProfileNameExists(profileUIController.getAppByName(appType, appName), profile.getProfileName())) {
+			App app = profileUIController.getAppByName(appType.toString(), appName);
+			if (app == null) {
+				addApp(new App("", null, null, appName, appType));
+				profileUIController.onOK(null,"AddApp`"+appType.toString()+"`"+appName);
+			}
+			if (!doesProfileNameExists(profileUIController.getAppByName(appType.toString(), appName), profile.getProfileName())) {
 				addProfile(profile);
-				profileUIController.onOK(null, "AddProfile`"+appType+"`"+appName+"`"+profile.getProfileName());
+				profileUIController.onOK(null, "AddProfile`"+appType.toString()+"`"+appName+"`"+profile.getProfileName());
 				return true;
 			}
 			else return false;

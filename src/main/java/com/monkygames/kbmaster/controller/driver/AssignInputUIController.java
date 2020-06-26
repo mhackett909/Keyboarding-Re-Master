@@ -136,7 +136,7 @@ public class AssignInputUIController extends PopupController implements ChangeLi
 	}else if(currentOutput instanceof OutputKeymapSwitch){
 	    currentParent = keymapParent;
 	    OutputKeymapSwitch keymapSwitch = (OutputKeymapSwitch)currentOutput;
-	    // note, we subtrack one from the keycode since the range is valid from 1 - 8 inclusive.
+	    // note, we subtract one from the keycode since the range is valid from 1 - 8 inclusive.
 	    keymapController.setConfiguredOutput(keymapSwitch.getKeycode()-1,keymapSwitch.isIsSwitchOnRelease());
 	    selectionID = 2;
 	}else if(currentOutput instanceof OutputDisabled){
