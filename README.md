@@ -6,7 +6,7 @@ The keyboard master provides its users with the ability to custom configure thei
 Additional documentation can be found [here](https://kbmaster.atlassian.net/wiki/display/KBM/Home)
 
 ## Compiling
-Keyboarding Master uses Gradle as the build tool.  Issue the following commands:
+Keyboarding Master uses Gradle 6.5 as the build tool.  Issue the following commands:
 
 * *gradle build*: Builds The project
 * *gradle run*: Runs the project

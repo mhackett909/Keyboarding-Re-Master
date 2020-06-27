@@ -26,6 +26,7 @@ import com.monkygames.kbmaster.profiles.Root;
 import com.monkygames.kbmaster.profiles.RootManager;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -75,6 +76,8 @@ public class XStreamManager {
         userSettingsStream = new XStream(new DomDriver());
         userSettingsStream.alias("UserSettings", UserSettings.class);
         settingsFile = new File(settingsFileName);
+        XStream.setupDefaultSecurity(userSettingsStream);
+        userSettingsStream.allowTypesByWildcard(new String[] {"com.monkygames.kbmaster.**"});
 
         // root manager
         rootStream = new XStream(new DomDriver());
@@ -88,6 +91,8 @@ public class XStreamManager {
         rootStream.alias("OutputKey",OutputKey.class);
         rootStream.alias("OutputMouse",OutputMouse.class);
         rootStream.alias("Wheel",Wheel.class);
+        XStream.setupDefaultSecurity(rootStream);
+        rootStream.allowTypesByWildcard(new String[] {"com.monkygames.kbmaster.**"});
 
         // global account
         globalStream = new XStream(new DomDriver());
@@ -118,6 +123,8 @@ public class XStreamManager {
         globalStream.omitField(Device.class, "inputMaps");
         globalStream.omitField(Device.class, "codeToJFX");
         globalStream.omitField(App.class, "profiles");
+        XStream.setupDefaultSecurity(globalStream);
+        globalStream.allowTypesByWildcard(new String[] {"com.monkygames.kbmaster.**"});
         globalAccountFile = new File(globalAccountFileName);
 
     }

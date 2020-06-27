@@ -8,7 +8,7 @@ application {
 repositories {
     mavenCentral()
     flatDir {
-        dirs 'libs/input' , 'libs/native'
+        dir 'libs/input'
     }
 }
 dependencies {
