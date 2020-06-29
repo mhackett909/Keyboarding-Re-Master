@@ -227,6 +227,10 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	 */
 	public KeymapUIManager getKeymapUIManager() { return keymapUIManager; }
 	/**
+	 * Returns the current profile. Used by the engine/UI communication process.
+	 */
+	 public Profile getCurrentProfile() { return currentProfile; }
+	/**
 	 * Opens the display keymap popup with the specified keymap id.
 	 * @param keymapID from 0 to 7.
 	 */
@@ -264,6 +268,10 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		else return AppType.APPLICATION;
 	}
 	/**
+	 * Returns the keymap tab pane. Needed for linking engine with UI.
+	 */
+	 public TabPane getKeymapTabPane() { return keymapTabPane; }
+	/**
 	 * Saves the current profile to disk.
 	 */
 	public void saveProfile() {
@@ -272,7 +280,8 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 			currentProfile.setInfo(infoTA.getText());
 			currentProfile.setLastUpdatedDate(Calendar.getInstance().getTimeInMillis());
 		}
-		((App) appsCB.getSelectionModel().getSelectedItem()).setInfo(appInfoTA.getText());
+		App selectedApp = (App) appsCB.getSelectionModel().getSelectedItem();
+		if (selectedApp != null) selectedApp.setInfo(appInfoTA.getText());
 		profileManager.saveProfile();
 		deviceMenuController.getGlobalAccount().save();
 	}

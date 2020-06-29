@@ -37,6 +37,7 @@ public class HardwareManager implements HardwareListener{
 	public boolean addManagedDevice(Device device){
 		HardwareEngine engine = new HardwareEngine(device);
 		engine.addHardwareListener(this);
+		engine.setDeviceMenuUIController(deviceMenuController);
 		engines.put(device.getDeviceInformation().getJinputName(),engine);
 		boolean hardwareExist = engine.hardwareExist();
 		return hardwareExist;

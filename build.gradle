@@ -8,16 +8,11 @@ application {
 }
 javafx {
     version = "11.0.2"
-    modules = [ 'javafx.controls' ,
-                'javafx.fxml' ,
-                'javafx.web' ,
-                'javafx.swing' ]
+    modules = [ 'javafx.controls' , 'javafx.fxml' , 'javafx.web' , 'javafx.swing' ]
 }
 repositories {
     mavenCentral()
-    flatDir {
-        dir 'libs/input'
-    }
+    flatDir { dir 'libs/input' }
 }
 dependencies {
     implementation 'com.thoughtworks.xstream:xstream:1.4.12'

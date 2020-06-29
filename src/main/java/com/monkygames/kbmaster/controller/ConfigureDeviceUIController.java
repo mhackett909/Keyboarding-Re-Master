@@ -99,7 +99,6 @@ public class ConfigureDeviceUIController implements Initializable, PopupNotifyIn
 	    }
 	}
     }
-    
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
     /**

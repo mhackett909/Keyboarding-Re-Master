@@ -36,9 +36,7 @@ public class Output{
 	this.description = "";
     }
 // ============= Public Methods ============== //
-    public int getKeycode() {
-	return keycode;
-    }
+    public int getKeycode() { return keycode; }
 
     public int getModifier() {
 	return modifier;
@@ -52,9 +50,7 @@ public class Output{
 	return description;
     }
 
-    public void setKeycode(int keycode) {
-	this.keycode = keycode;
-    }
+    public void setKeycode(int keycode) { this.keycode = keycode; }
 
     public void setModifier(int modifier) {
 	this.modifier = modifier;

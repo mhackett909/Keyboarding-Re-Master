@@ -4,6 +4,7 @@
 package com.monkygames.kbmaster.engine;
 
 // === jinput imports === //
+import com.monkygames.kbmaster.controller.DeviceMenuUIController;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.input.*;
 import com.monkygames.kbmaster.input.OutputMouse.MouseType;
@@ -16,6 +17,8 @@ import java.awt.Robot;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.thoughtworks.xstream.mapper.Mapper;
 import net.java.games.input.Component;
 import net.java.games.input.Component.Identifier.Axis;
 import net.java.games.input.Controller;
@@ -39,6 +42,7 @@ public class HardwareEngine implements Runnable{
 	private Mouse mouse;
 	private ArrayList<PollEventQueue> keyboardEventQueues;
 	private PollEventQueue mouseEventQueue;
+	private DeviceMenuUIController deviceMenuUIController;
 	/**
 	 * True if polling and false otherwise.
 	 */
@@ -172,6 +176,7 @@ public class HardwareEngine implements Runnable{
 			startPolling(profileSwitch);
 		}
 	}
+	public void setDeviceMenuUIController(DeviceMenuUIController deviceMenuUIController) { this.deviceMenuUIController = deviceMenuUIController; }
 	public boolean isEnabled() { return isEnabled; }
 	public boolean isEditMode(){
 		return isEditMode;
@@ -371,7 +376,6 @@ public class HardwareEngine implements Runnable{
 					Component component = event.getComponent();
 					//System.out.println("component = "+component);
 					String name = component.getIdentifier().getName();
-
 					if (profile.getDefaultKeymap() != keymap.getID()-1) keymap = profile.getKeymap(profile.getDefaultKeymap());
 					ButtonMapping mapping = keymap.getButtonMapping(name);
 					if(mapping != null){
@@ -386,6 +390,7 @@ public class HardwareEngine implements Runnable{
 					Component component = event.getComponent();
 					//System.out.println("component = "+component);
 					String name = component.getIdentifier().getName();
+					if (profile.getDefaultKeymap() != keymap.getID()-1) keymap = profile.getKeymap(profile.getDefaultKeymap());
 					WheelMapping mapping = null;
 					if(component.getIdentifier() == Axis.X){
 						Point point = MouseInfo.getPointerInfo().getLocation();
@@ -515,10 +520,13 @@ public class HardwareEngine implements Runnable{
 	 */
 	private void processOutput(String name, Output output, float eventValue){
 		// test for a release on a switch on release keymap event.
-
 		if(isKeymapOnRelease && name.equals(previousComponentName) && eventValue == 0){
 			isKeymapOnRelease = false;
-			keymap = previousKeymap;
+			profile.setDefaultKeymap(previousKeymap.getID()-1);
+			try{
+				if (deviceMenuUIController.getProfileUIController().getCurrentProfile() == profile)
+					deviceMenuUIController.getProfileUIController().getKeymapTabPane().getSelectionModel().select(previousKeymap.getID()-1);
+			}catch (NullPointerException e) { }
 			return;
 		}
 		if(output instanceof OutputKey){
@@ -569,7 +577,11 @@ public class HardwareEngine implements Runnable{
 							previousKeymap = keymap;
 							previousComponentName = name;
 						}
-						this.keymap = profile.getKeymap(output.getKeycode()-1);
+						profile.setDefaultKeymap(output.getKeycode()-1);
+						try {
+							if (deviceMenuUIController.getProfileUIController().getCurrentProfile() == profile)
+								deviceMenuUIController.getProfileUIController().getKeymapTabPane().getSelectionModel().select(output.getKeycode()-1);
+						}catch (NullPointerException e) { }
 					}
 				}
 			}

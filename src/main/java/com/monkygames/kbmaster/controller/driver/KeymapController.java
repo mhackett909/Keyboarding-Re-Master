@@ -41,8 +41,11 @@ public class KeymapController implements Initializable{
      * @param isSwitchOnRelease true if switch on release and false otherwise.
      */
     public void setConfiguredOutput(int keymapID, boolean isSwitchOnRelease){
-	keymapCB.getSelectionModel().select(keymapID);
+    if (keymapID == -1) keymapCB.getSelectionModel().select(null);
+	else keymapCB.getSelectionModel().select(keymapID);
+	switchBackCB.setSelected(isSwitchOnRelease);
     }
+    public int keymapSelected() { return keymapCB.getSelectionModel().getSelectedIndex(); }
     /**
      * Returns the configured output based on the user's selection
      * or pre-configured selection.

@@ -178,6 +178,12 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	 */
 	 public GlobalAccount getGlobalAccount() { return globalAccount; }
 	/**
+	 * Returns the ProfileUIController. Used to bridge engine to UI.
+	 */
+	 public ProfileUIController getProfileUIController() {
+	 	return configureDeviceController.getProfileUIController();
+	 }
+	/**
      * Prepares the gui and databases to populate device list.
      * @param userSettings the settings for this menu
      */
@@ -230,10 +236,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      */
     public void exitApplication(){
 	cleanUp();
-
-	// save devices
-	// only save when necessary
-	//globalAccount.save();
 
 	if(cloudAccount != null){
 	    loginController.hideDeviceMenu(false);
@@ -603,9 +605,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
     /**
      * Closes all databases and prepares this gui to be closed.
      */
-    private void cleanUp(){
-	hardwareManager.stopPollingAllDevices();
-    }
+    private void cleanUp(){ hardwareManager.stopPollingAllDevices(); }
 // ============= Extended Methods ============== //
     @Override
     public void handle(ActionEvent t) {

@@ -30,7 +30,7 @@
           </items>
         </ComboBox>
         <Label text="Description: " GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <TextField fx:id="descriptionTF" disable="false" onKeyPressed="#handleDescriptionEntered" onMouseClicked="#handleDescriptionClicked" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" prefWidth="279.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="descriptionTF" disable="false" onKeyReleased="#handleDescriptionEntered" onMousePressed="#handleDescriptionClicked" prefWidth="279.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       </children>
       <columnConstraints>
         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />

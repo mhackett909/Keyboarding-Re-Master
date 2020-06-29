@@ -44,8 +44,11 @@ public class MouseButtonController implements Initializable{
 		return;
 	    }
 	}
+	//Blank if no match found
+	buttonCB.getSelectionModel().select(null);
     }
-    /**
+    public int getSelectedMouse() { return buttonCB.getSelectionModel().getSelectedIndex(); }
+	/**
      * Returns the configured output based on the user's selection
      * or pre-configured selection.
      */
@@ -54,6 +57,7 @@ public class MouseButtonController implements Initializable{
 	Output clone = (Output)output.clone();
 	return clone;
     }
+
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
     @FXML

@@ -13,6 +13,8 @@ import java.net.URL;
 import java.sql.Driver;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -142,7 +144,9 @@ public class KeymapUIManager implements ChangeListener{
     public void changedEvent() {
 		int selectedIndex = tabPane.getSelectionModel().getSelectedIndex();
 		profile.setDefaultKeymap(selectedIndex);
-		keymapDescription.setText(profile.getKeymap(selectedIndex).getDescription());
+		String desc = profile.getKeymap(selectedIndex).getDescription();
+		//Platform.runLater() solves a threading issue when hot swapping keymaps
+		Platform.runLater(() -> keymapDescription.setText(desc));
     }
 // ============= Internal Classes ============== //
 // ============= Static Methods ============== //

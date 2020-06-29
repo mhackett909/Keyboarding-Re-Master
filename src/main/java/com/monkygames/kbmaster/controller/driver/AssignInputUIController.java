@@ -70,6 +70,8 @@ public class AssignInputUIController extends PopupController implements ChangeLi
     private static final String MOUSE_BUTTON = "Mouse Button";
     private static final String KEYMAP = "Keymap";
     private static final String DISABLED = "Disabled";
+    private static final int MOUSE_NULL = 0;
+	private static final int KEYMAP_NULL = -1;
 // ============= Constructors ============== //
 // ============= Public Methods ============== //
     public void setDevice(Device device){
@@ -78,10 +80,22 @@ public class AssignInputUIController extends PopupController implements ChangeLi
     public void okEventFired(ActionEvent evt){
 	// set the mapping
 	if(currentParent == singleKeyParent){
+		if (singleKeyController.getConfiguredOutput().getName().equals("Unassigned")) {
+			PopupManager.getPopupManager().showError("No key assigned.");
+			return;
+		}
 	    currentMapping.setOutput(singleKeyController.getConfiguredOutput());
 	}else if(currentParent == mouseButtonParent){
+		if (mouseButtonController.getSelectedMouse() == -1) {
+			PopupManager.getPopupManager().showError("No mouse action selected.");
+			return;
+		}
 	    currentMapping.setOutput(mouseButtonController.getConfiguredOutput());
 	}else if(currentParent == keymapParent){
+		if (keymapController.keymapSelected() == -1) {
+			PopupManager.getPopupManager().showError("No keymap selected.");
+			return;
+		}
 	    currentMapping.setOutput(keymapController.getConfiguredOutput());
 	}else if(currentParent == disabledParent){
 	    currentMapping.setMapping(false);
@@ -143,13 +157,12 @@ public class AssignInputUIController extends PopupController implements ChangeLi
 	    currentParent = disabledParent;
 	    selectionID = 3;
 	}
-
 	if(currentParent != null){
 	    settingsPane.getChildren().add(currentParent);
-
 	    mappingCB.valueProperty().removeListener(this);
 	    mappingCB.getSelectionModel().select(selectionID);
 	    mappingCB.valueProperty().addListener(this);
+	    resetUI(selectionID);
 	}
 	// update the description
 	descriptionTF.setText(currentOutput.getDescription());
@@ -160,6 +173,26 @@ public class AssignInputUIController extends PopupController implements ChangeLi
     private void reset(){
 	hideStage();
     }
+    private void resetUI(int id) {
+    	switch (id) {
+			case 0:
+				mouseButtonController.setSelectedMouse(MOUSE_NULL);
+				keymapController.setConfiguredOutput(KEYMAP_NULL,false);
+				break;
+			case 1:
+				singleKeyController.setConfiguredOutput(new OutputKey("Unassigned",0,0));
+				keymapController.setConfiguredOutput(KEYMAP_NULL,false);
+				break;
+			case 2:
+				singleKeyController.setConfiguredOutput(new OutputKey("Unassigned",0,0));
+				mouseButtonController.setSelectedMouse(MOUSE_NULL);
+				break;
+			default:
+				singleKeyController.setConfiguredOutput(new OutputKey("Unassigned",0,0));
+				keymapController.setConfiguredOutput(KEYMAP_NULL,false);
+				mouseButtonController.setSelectedMouse(MOUSE_NULL);
+		}
+	}
 // ============= Implemented Methods ============== //
 // ============= Extended Methods ============== //
     @Override
@@ -227,18 +260,11 @@ public class AssignInputUIController extends PopupController implements ChangeLi
 	}
 	if(currentParent != null){
 	    settingsPane.getChildren().add(currentParent);
+	    if (!descriptionTF.isFocused()) {
+			descriptionTF.setEditable(false);
+			singleKeyController.setEnabled(true);
+		}
 	}
-    }
-    public void handleMouseEntered(Event event){
-	// the text field is disabled until the user mouses over it.	
-	//descriptionTF.setEditable(true);
-	// disable the single key controller
-	//singleKeyController.setEnabled(false);
-
-    }
-    public void handleMouseExited(Event event){
-	//descriptionTF.setEditable(false);
-	//singleKeyController.setEnabled(true);
     }
     /**
      * Allows the user to edit the description field.
@@ -252,7 +278,8 @@ public class AssignInputUIController extends PopupController implements ChangeLi
      */
     public void handleDescriptionEntered(KeyEvent event){
 	if(event.getCode().equals(KeyCode.ENTER)){
-	    descriptionTF.setEditable(false);
+		descriptionTF.setEditable(false);
+		descriptionTF.deselect();
 	    singleKeyController.setEnabled(true);
 	}
     }
