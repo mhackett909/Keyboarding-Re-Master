@@ -32,7 +32,7 @@ public class KeyboardingMaster extends Application {
 
     // === variables === //
     private LoginUIController controller;
-    public static final String VERSION = "0.4.5";
+    public static final String VERSION = "0.5.0";
 
     /**
      * Reference to this object.

@@ -60,12 +60,6 @@ public class Profile{
 	keymaps = new Keymap[8];
 	this.defaultMap = defaultMap;
 	setAppInfo(app);
-	//TODO need to populate this profile based on the device!
-	/*
-	for(int i = 0; i < keymaps.length; i++){
-	    keymaps[i] = Mapper.generateDefaultKeymap(i+1);
-	}
-	*/
     }
 // ============= Public Methods ============== //
     /**

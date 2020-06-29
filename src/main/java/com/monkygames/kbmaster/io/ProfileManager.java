@@ -75,8 +75,7 @@ public class ProfileManager{
     /**
      * Saves the profile to the database.
      */
-    public void saveProfile(){ XStreamManager.getStreamManager().writeRootManager(databaseFilename, rootManager);
-    }
+    public void saveProfile(){ XStreamManager.getStreamManager().writeRootManager(databaseFilename, rootManager); }
 
     /**
      * Removes the profile from the database and updates the list.

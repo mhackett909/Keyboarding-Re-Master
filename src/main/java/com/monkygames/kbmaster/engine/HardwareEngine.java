@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.thoughtworks.xstream.mapper.Mapper;
 import net.java.games.input.Component;
 import net.java.games.input.Component.Identifier.Axis;
 import net.java.games.input.Controller;

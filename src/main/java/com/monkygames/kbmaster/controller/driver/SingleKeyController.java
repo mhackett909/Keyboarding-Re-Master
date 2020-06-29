@@ -24,7 +24,6 @@ import javafx.stage.Stage;
 
 /**
  * Handles UI Events for the main window.
- * TODO, use jinput to get key presses!
  * @version 1.0
  */
 public class SingleKeyController implements Initializable, EventHandler{
