@@ -16,7 +16,6 @@ import java.awt.Rectangle;
 
 /**
  * Contains information about a specific device.
- * @version 1.0
  */
 public class IPV6Buddy extends Device{
 
@@ -34,7 +33,6 @@ public class IPV6Buddy extends Device{
 	        "* Forward slash for CIDR notation\n" +
 	        "* Double action colon key for zero laden IPs",
 		// === =========== === //
-		"1.0",
 		"com.monkygames.kbmaster.driver.devices.lacunary_limited.ipv6buddy.IPV6Buddy",
 		"/com/monkygames/kbmaster/driver/lacunary_limited/ipv6buddy/IPV6Buddy.fxml",
 		"/com/monkygames/kbmaster/driver/lacunary_limited/ipv6buddy/resources/printable.png",

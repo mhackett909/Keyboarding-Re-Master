@@ -16,7 +16,6 @@ import java.awt.Rectangle;
 
 /**
  * Contains information about a specific device.
- * @version 1.0
  */
 public class Numpad extends Device{
 
@@ -33,7 +32,6 @@ public class Numpad extends Device{
 		"* Retractable cable\n" +
 	        "* Dimension: 13.7 x 9.4 x 2.4 cm",
 		// === =========== === //
-		"1.0",
 		"com.monkygames.kbmaster.driver.devices.digitus.numpad.Numpad",
 		"/com/monkygames/kbmaster/driver/digitus/numpad/Numpad.fxml",
 		"/com/monkygames/kbmaster/driver/digitus/numpad/resources/printable.png",

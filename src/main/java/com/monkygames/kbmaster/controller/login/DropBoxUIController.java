@@ -5,15 +5,14 @@ package com.monkygames.kbmaster.controller.login;
 
 import com.monkygames.kbmaster.KeyboardingMaster;
 import com.monkygames.kbmaster.account.DropBoxAccount;
-import com.monkygames.kbmaster.util.thread.DropboxSyncTask;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

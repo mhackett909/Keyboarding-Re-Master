@@ -16,7 +16,6 @@ import java.awt.Rectangle;
 
 /**
  * Contains information about a specific device.
- * @version 1.0
  */
 public class TartarusChroma extends Device{
 
@@ -40,11 +39,10 @@ public class TartarusChroma extends Device{
 		+ "* Depth: 54.8mm / 2.16\n"
 		+ "* Product weight: 370g / 0.66lbs",
 		// === =========== === //
-		"1.0",
 		"com.monkygames.kbmaster.driver.devices.razer.tartaruschroma.TartarusChroma",
 		"/com/monkygames/kbmaster/driver/razer/tartaruschroma/TartarusChroma.fxml",
 		"/com/monkygames/kbmaster/driver/razer/tartaruschroma/resources/printable.png",
-		"http://www.amazon.com/gp/product/B00EHBKUTE/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00EHBKUTE&linkCode=as2&tag=monkygamescom-20&linkId=BAIC34E3NQE62O44",
+		null,
 		true);
 	// setup input bindings
 	int i = 1;

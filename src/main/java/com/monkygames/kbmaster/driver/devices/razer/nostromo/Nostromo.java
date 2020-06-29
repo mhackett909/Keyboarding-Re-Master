@@ -22,7 +22,6 @@ import java.awt.Rectangle;
 
 /**
  * Contains information about a specific device.
- * @version 1.0
  */
 public class Nostromo extends Device{
 
@@ -31,13 +30,10 @@ public class Nostromo extends Device{
 // ============= Constructors ============== //
     public Nostromo(String make, String model, String jinputName, 
 		   DeviceType deviceType, String deviceIcon,
-		   String deviceDescription, String version,
-		   String packageName, String uiFXMLURL, 
-		   String imageBindingsTemplate,
-		   String amazonLink,
-		   boolean hasMouse){
+		   String deviceDescription, String packageName, String uiFXMLURL,
+		   String imageBindingsTemplate, String amazonLink, boolean hasMouse){
 	super(make,model,jinputName,deviceType,deviceIcon,deviceDescription,
-	    version,packageName,uiFXMLURL,imageBindingsTemplate, amazonLink,hasMouse);
+	packageName,uiFXMLURL,imageBindingsTemplate, amazonLink,hasMouse);
 	// setup input bindings
 	int i = 1;
 	inputMaps.put(i,new InputMap(i++,Key.TAB.getName(),    KeyEvent.VK_TAB));
@@ -77,11 +73,10 @@ public class Nostromo extends Device{
 		+ "* Approximate Size : 183 mm (Width) x 159 mm (Height) x 59 mm (Depth)\n"
 		+ "* Approximate Weight: 297 g\n",
 		// === =========== === //
-		"2.0",
 		"com.monkygames.kbmaster.driver.devices.razer.nostromo.Nostromo",
 		"/com/monkygames/kbmaster/driver/razer/nostromo/Nostromo.fxml",
 		"/com/monkygames/kbmaster/driver/razer/nostromo/resources/printable.png",
-		"http://www.amazon.com/gp/product/B004AM5RB6/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B004AM5RB6&linkCode=as2&tag=monkygamescom-20&linkId=5K2VJULJ4OXZWMRO",
+		"https://www.amazon.com/Razer-Nostromo-PC-Gaming-Keypad/dp/B004AM5RB6/ref=sr_1_3?dchild=1&keywords=%22razer+nostromo%22&qid=1593460520&sr=8-3",
 		true);
 
     }

@@ -72,12 +72,6 @@
     </Label>
     <HBox id="iconImage" fx:id="iconImageHBox" alignment="CENTER" layoutX="55.0" layoutY="174.0" minHeight="68.0" minWidth="69.0" prefHeight="70.0" prefWidth="70.0" styleClass="display-border" />
     <TextArea id="deviceInformationTA" fx:id="deviceDescriptionTA" layoutX="184.0" layoutY="175.0" prefHeight="159.0" prefWidth="348.0" styleClass="textareaLabel" wrapText="true" />
-    <HBox layoutX="21.0" layoutY="256.0" prefHeight="18.0" prefWidth="144.0">
-      <children>
-        <Label text="Driver Version: " />
-        <Label fx:id="driverVersionL" text="x.x.x" />
-      </children>
-    </HBox>
     <HBox layoutX="21.0" layoutY="280.0" prefHeight="18.0" prefWidth="144.0">
       <children>
         <Label text="Status: " />

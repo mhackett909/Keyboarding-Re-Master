@@ -20,7 +20,6 @@ import java.awt.Rectangle;
 
 /**
  * Contains information about a specific device.
- * @version 1.0
  */
 public class Taipan extends Device{
 
@@ -39,12 +38,11 @@ public class Taipan extends Device{
 		+ "* Up to 200 inches per second / 50g acceleration\n"
 		+ "* Approximate size: 124 mm (Length) x 63 mm (Width) x 36 mm (Height)\n"
 		+ "* Approximate Weight: 95g without cable, 132g with cable\n",
-		// ===  
-		"1.0",
+		// ===
 		"com.monkygames.kbmaster.driver.devices.razer.taipan.Taipan",
 		"/com/monkygames/kbmaster/driver/razer/taipan/Taipan.fxml",
 		"/com/monkygames/kbmaster/driver/razer/taipan/resources/taipan_printable.png",
-		"http://www.amazon.com/gp/product/B008BGXYBM/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B008BGXYBM&linkCode=as2&tag=monkygamescom-20&linkId=TNHGSNN5OYZP3VYX",
+		"https://www.amazon.com/Razer-Taipan-Ambidextrous-Gaming-Mouse/dp/B008BGXYBM/ref=sr_1_3?dchild=1&keywords=razer+taipan+ambidextrous+pc+gaming+mouse&qid=1593460961&s=electronics&sr=1-3",
 		true);
     }
 // ============= Public Methods ============== //

@@ -26,7 +26,7 @@
         </HBox>
       </children>
     </VBox>
-    <VBox alignment="CENTER_LEFT" layoutX="144.0" layoutY="38.0" minHeight="53.0" prefHeight="53.0" prefWidth="197.0">
+    <VBox alignment="CENTER_LEFT" layoutX="40.0" layoutY="0" minHeight="53.0" prefHeight="53.0" prefWidth="197.0">
       <children>
         <HBox prefHeight="16.0" prefWidth="137.0">
           <children>
@@ -34,13 +34,6 @@
             <Label id="driverStatus" fx:id="driverStatusL" text="Off" />
           </children>
         </HBox>
-        <HBox prefHeight="16.0" prefWidth="165.0">
-          <children>
-            <Label text="Driver Version: " />
-            <Label id="driverVersion" fx:id="driverVersionL" text="0.0.0" />
-          </children>
-        </HBox>
-        <Hyperlink alignment="CENTER_LEFT" minHeight="17.0" prefHeight="22.0" prefWidth="157.0" text="No Updates Available" textAlignment="LEFT" textFill="WHITE" />
       </children>
     </VBox>
     <Line endX="820.0" endY="-3.0" layoutX="148.0" layoutY="110.0" startX="-120.0" startY="-3.0" stroke="WHITE" strokeLineCap="ROUND" />

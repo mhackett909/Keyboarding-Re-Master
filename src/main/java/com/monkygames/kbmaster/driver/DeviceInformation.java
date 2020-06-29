@@ -35,10 +35,6 @@ public class DeviceInformation {
      */
     private String deviceDescription;
     /**
-     * The version of this device.
-     */
-    private String version;
-    /**
      * The full name of the package.
      */
     private String packageName;
@@ -61,16 +57,15 @@ public class DeviceInformation {
 
 // ============= Constructors ============== //
     public DeviceInformation(String make, String model, String jinputName, 
-		   DeviceType deviceType, String deviceIcon,
-		   String deviceDescription, String version, String packageName,
-		   String uiFXMLURL, String imageBindingsTemplate, String amazonLink, boolean hasMouse){
+		   DeviceType deviceType, String deviceIcon, String deviceDescription,
+		   String packageName, String uiFXMLURL, String imageBindingsTemplate,
+		   String amazonLink, boolean hasMouse){
 	this.make = make;
 	this.model = model;
 	this.jinputName = jinputName;
 	this.deviceType = deviceType;
 	this.deviceIcon = deviceIcon;
 	this.deviceDescription = deviceDescription;
-	this.version = version;
 	this.packageName = packageName;
 	this.uiFXMLURL = uiFXMLURL;
 	this.imageBindingsTemplate = imageBindingsTemplate;
@@ -102,10 +97,6 @@ public class DeviceInformation {
 
     public String getDeviceDescription() {
 	return deviceDescription;
-    }
-
-    public String getVersion() {
-	return version;
     }
 
     public String getPackageName() {
@@ -150,7 +141,6 @@ public class DeviceInformation {
 	DeviceInformation info = (DeviceInformation)deviceInformation;
 	if(info.getMake().equals(make) &&
 	   info.getModel().equals(model) &&
-	   info.getVersion().equals(version) &&
 	   info.getDeviceIcon().equals(deviceIcon) &&
 	   info.getDeviceDescription().equals(deviceDescription) &&
 	   info.getUIFXMLURL().equals(uiFXMLURL) &&
@@ -161,8 +151,7 @@ public class DeviceInformation {
     }
     @Override
     public String toString(){
-	return "DeviceInformation["+deviceType+","+make+","+model+","+
-		version+","+deviceDescription+"]";
+	return "DeviceInformation["+deviceType+","+make+","+model+","+deviceDescription+"]";
     }
     /**
      * Returns the name of this device which is the make+:+model.

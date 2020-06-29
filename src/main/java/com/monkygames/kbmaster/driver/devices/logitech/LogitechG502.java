@@ -17,13 +17,22 @@ public class LogitechG502 extends Device {
             super("Logitech","G502","Logitech Gaming Mouse G502", DeviceType.MOUSE,
                     "/com/monkygames/kbmaster/driver/logitech/g502/resources/icon.png",
                     // === Description === //
-                    "Coming soon...",
+                    "Logitech updated its iconic G502 gaming mouse to deliver even "
+                    +"higher performance and more precise functionality than ever. Logitech G502 Hero "
+                    +"high performance gaming mouse features the next generation Hero 16K optical sensor, "
+                    +"the highest performing and most efficient gaming sensor Logitech has ever made.\n\n"
+                    +"An all-new lens and an updated tracking algorithm deliver ultra-precise tracking with "
+                    +"no acceleration, smoothing, or filtering over the entire DPI range. Now, customize RGB "
+                    +"mouse lighting to match your style and environment or sync to other Logitech G products.\n\n"
+                    +"No matter your gaming style, it's easy to tweak G502 Hero to match your requirements with "
+                    +"custom profiles for your games, adjustable sensitivity from 200 up to 16000 DPI, and a "
+                    +"tunable weight system that allows for tuning and balancing of up to five 3.6G weights for "
+                    +"just the right balance and feel.",
                     // === =========== === //
-                    "1.0",
                     "com.monkygames.kbmaster.driver.devices.logitech.LogitechG502",
                     "/com/monkygames/kbmaster/driver/logitech/g502/LogitechG502.fxml",
                     "/com/monkygames/kbmaster/driver/logitech/g502/resources/printable.png",
-                    null,
+                    "https://www.amazon.com/Logitech-G502-Performance-Gaming-Mouse/dp/B07GBZ4Q68/ref=sr_1_3?dchild=1&keywords=logitech+g502&qid=1593460337&sr=8-3",
                     true);
     }
     @Override

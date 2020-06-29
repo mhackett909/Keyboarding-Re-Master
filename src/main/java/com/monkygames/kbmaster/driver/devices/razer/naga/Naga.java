@@ -23,7 +23,6 @@ import net.java.games.input.Component.Identifier.Key;
 
 /**
  * Contains information about a specific device.
- * @version 1.0
  */
 public class Naga extends Device{
 
@@ -36,12 +35,11 @@ public class Naga extends Device{
 		// === description === //
 		"* 4G Dual Sensor System - 8200dpi\n"
 		+" ",
-		// ===  
-		"1.0",
+		// ===
 		"com.monkygames.kbmaster.driver.devices.razer.naga.Naga",
 		"/com/monkygames/kbmaster/driver/razer/naga/Naga.fxml",
 		"/com/monkygames/kbmaster/driver/razer/naga/resources/printable.png",
-		"http://www.amazon.com/gp/product/B00E8CF268/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00E8CF268&linkCode=as2&tag=monkygamescom-20&linkId=3UAZCMWKNC4LYCGG",
+		"https://www.amazon.com/Razer-2014-ergon%C3%B3mico-Gaming-Mouse-01040100-r3u1/dp/B00E8CF268/ref=sr_1_4?dchild=1&keywords=%22razer+naga%22&qid=1593460558&sr=8-4",
 		true);
     }
 // ============= Public Methods ============== //

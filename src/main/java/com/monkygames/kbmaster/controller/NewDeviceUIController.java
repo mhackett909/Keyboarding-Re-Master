@@ -4,10 +4,10 @@
 package com.monkygames.kbmaster.controller;
 
 // === java imports === //
-import com.monkygames.kbmaster.KeyboardingMaster;
 import java.net.URL;
 import java.util.ResourceBundle;
 // === javafx imports === //
+import com.monkygames.kbmaster.KeyboardingMaster;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
@@ -47,8 +47,6 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
     private HBox iconImageHBox;
     @FXML
     private TextArea deviceDescriptionTA;
-    @FXML
-    private Label driverVersionL;
     @FXML
     private Label driverStatusL;
     @FXML
@@ -103,7 +101,6 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
     private void resetDeviceInformation(){
 	iconImageHBox.getChildren().clear();
 	deviceDescriptionTA.setText("");
-	driverVersionL.setText("");
 	amazonLink.setText("unavailable");
 	amazonLink.setDisable(true);
 	amazonLink.setVisited(false);
@@ -188,7 +185,6 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 	iconImageHBox.getChildren().add(imageView);
 
 	deviceDescriptionTA.setText(device.getDeviceInformation().getDeviceDescription());
-	driverVersionL.setText(device.getDeviceInformation().getVersion());
 	if(link == null){
 	    amazonLink.setText("unavailable");
 	    amazonLink.setDisable(true);

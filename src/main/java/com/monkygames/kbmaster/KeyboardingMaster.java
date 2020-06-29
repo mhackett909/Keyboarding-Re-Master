@@ -1,4 +1,4 @@
-/* 
+/*
  * See COPYING in top-level directory.
  */
 package com.monkygames.kbmaster;
@@ -63,7 +63,7 @@ public class KeyboardingMaster extends Application {
      * @return the user settings.
      */
     public static UserSettings getUserSettings(){
-            return _instance.userSettings;
+        return _instance.userSettings;
     }
 
     /**
@@ -90,11 +90,11 @@ public class KeyboardingMaster extends Application {
             controller = (LoginUIController) fxmlLoader.getController();
             controller.setStage(stage);
             AnchorPane pane = (AnchorPane)root;
-            WindowUtil.configureStage(pane.prefWidthProperty().doubleValue(), 
-                                      pane.prefHeightProperty().doubleValue(), 
-                                      root, stage);
+            WindowUtil.configureStage(pane.prefWidthProperty().doubleValue(),
+                    pane.prefHeightProperty().doubleValue(),
+                    root, stage);
         } catch (IOException ex) {
-                Logger.getLogger(KeyboardingMaster.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(KeyboardingMaster.class.getName()).log(Level.SEVERE, null, ex);
         }
         // initialize the dropbox sync ui
         try {
@@ -107,27 +107,21 @@ public class KeyboardingMaster extends Application {
         } catch (IOException ex) {
             Logger.getLogger(KeyboardingMaster.class.getName()).log(Level.SEVERE, null, ex);
         }
-        controller.showDeviceMenuFromLogin(null,false);
+
         //TODO finish cloud account code and test user settings
-        /**
-        if(userSettings.isRemember){
+         if(userSettings.isRemember){
             switch(userSettings.loginMethod){
-                case LoginUIController.LOGIN_LOCAL:
-                    controller.showDeviceMenuFromLogin(null,false);
-                    break;
-                case LoginUIController.LOGIN_DROPBOX:
-                    // get accesstoken
-                    if(userSettings.accessToken != null && !userSettings.accessToken.equals("")){
-                            startDropboxSync(new DropBoxAccount(userSettings.accessToken),false);
-                    }else{
-                            controller.showDeviceMenuFromLogin(null,false);
-                    }
-                    break;
+            case LoginUIController.LOGIN_LOCAL:
+                controller.showDeviceMenuFromLogin(null,false);
+                break;
+            case LoginUIController.LOGIN_DROPBOX:
+                // get accesstoken
+                if(userSettings.accessToken != null && !userSettings.accessToken.equals(""))
+                    startDropboxSync(new DropBoxAccount(userSettings.accessToken),false);
+                else controller.showDeviceMenuFromLogin(null,false);
+                break;
             }
-        }else{
-            controller.showStage();
-        }
-        */
+         }else controller.showStage();
     }
 
     /**

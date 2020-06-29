@@ -16,7 +16,6 @@ import java.awt.Rectangle;
 
 /**
  * Contains information about a specific device.
- * @version 1.0
  */
 public class Tartarus extends Device{
 
@@ -39,11 +38,10 @@ public class Tartarus extends Device{
 		+ "* Depth: 54.8mm / 2.16\n"
 		+ "* Product weight: 370g / 0.66lbs",
 		// === =========== === //
-		"1.0",
 		"com.monkygames.kbmaster.driver.devices.razer.tartarus.Tartarus",
 		"/com/monkygames/kbmaster/driver/razer/tartarus/Tartarus.fxml",
 		"/com/monkygames/kbmaster/driver/razer/tartarus/resources/printable.png",
-		"http://www.amazon.com/gp/product/B00EHBKUTE/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00EHBKUTE&linkCode=as2&tag=monkygamescom-20&linkId=BAIC34E3NQE62O44",
+		"https://www.amazon.com/Razer-RZ07-01030100-R3U1-Tartarus-Gaming-Keypad/dp/B00EHBKUTE/ref=sr_1_5?dchild=1&keywords=razer+tartarus&qid=1593461001&s=electronics&sr=1-5",
 		true);
 	// setup input bindings
 	int i = 1;

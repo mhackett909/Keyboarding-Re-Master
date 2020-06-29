@@ -54,7 +54,6 @@ public abstract class Device implements Mapper{
      * @param deviceType the type of device (keyboard or mouse).
      * @param deviceIcon the icon for this device.
      * @param deviceDescription the description of the device.
-     * @param version the version of this driver.
      * @param packageName the name of the package for loading the driver.
      * @param uiFXMLURL the url to the package in order to load the driver.
      * @param imageBindingsTemplate used for exporting descriptions to an image.
@@ -63,14 +62,12 @@ public abstract class Device implements Mapper{
      */
     public Device(String make, String model, String jinputName, 
 		   DeviceType deviceType, String deviceIcon,
-		   String deviceDescription, String version,
-		   String packageName, String uiFXMLURL, 
-		   String imageBindingsTemplate,
-		   String amazonLink,
-		   boolean hasMouse){
+		   String deviceDescription, String packageName,
+		   String uiFXMLURL, String imageBindingsTemplate,
+		   String amazonLink, boolean hasMouse){
 	this(new DeviceInformation(make,model,jinputName,
 						  deviceType, deviceIcon,
-						  deviceDescription, version,
+						  deviceDescription,
 						  packageName, uiFXMLURL,
 						  imageBindingsTemplate,
 						  amazonLink,

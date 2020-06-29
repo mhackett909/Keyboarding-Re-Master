@@ -14,4 +14,4 @@ Keyboarding Master uses Gradle 6.5 as the build tool.  Issue the following comma
 Additional developer documentation is [here](https://kbmaster.atlassian.net/wiki/display/KBM/Developer+Documentation)
 
 ## Support
-Please see /docs/keyboarding-master-edits.doc for more information about setting up support for your own device. The original Keyboarding Master documentation is also available there. Additionally, you may email me at mhackett909@gmail.com with any questions or comments.
+Please see /docs/keyboarding-master-edits.doc for technical assistance (including information about setting up support for your own device). The original Keyboarding Master documentation is also available there. Additionally, you may email me at mhackett909@gmail.com with any questions or comments.

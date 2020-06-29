@@ -16,7 +16,6 @@ import java.awt.Rectangle;
 
 /**
  * Contains information about a specific device.
- * @version 1.0
  */
 public class OrbweaverChroma extends Device{
 
@@ -37,11 +36,10 @@ public class OrbweaverChroma extends Device{
 	       + "* Depth: 55mm / 2.17\n"
 	       + "* Product weight: 395g / 0.87lbs",
 		// === =========== === //
-		"1.0",
 		"com.monkygames.kbmaster.driver.devices.razer.orbweaverchroma.OrbweaverChroma",
 		"/com/monkygames/kbmaster/driver/razer/orbweaverchroma/OrbweaverChroma.fxml",
 		"/com/monkygames/kbmaster/driver/razer/orbweaverchroma/resources/printable.png",
-		null,
+		"https://www.amazon.com/Razer-Orbweaver-Chroma-Progammable-Adjustable/dp/B013P0HW7K/ref=sr_1_1?dchild=1&keywords=orbweaver+chroma&qid=1593460697&sr=8-1",
 		true);
 	// setup input bindings
 	int i = 1;

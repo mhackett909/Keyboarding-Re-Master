@@ -39,8 +39,6 @@ public class ConfigureDeviceUIController implements Initializable, PopupNotifyIn
 
 // ============= Class variables ============== //
     @FXML
-    private Label driverVersionL;
-    @FXML
     private Label driverStatusL;
     @FXML
     private TabPane driverTabPane;
@@ -106,7 +104,6 @@ public class ConfigureDeviceUIController implements Initializable, PopupNotifyIn
      * @param device the device's information to be updated from.
      */
     private void updateDeviceDetails(Device device){
-    driverVersionL.setText(device.getDeviceInformation().getVersion());
 	String status;
 	if(device.isConnected()){
 	    status = "Connected";

@@ -216,8 +216,9 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	 */
 	public void setKeymapDescription(int keymapID, String description){
 		if(currentProfile != null){
-			currentProfile.getKeymap(keymapID).setDescription(description);
 			keymapUIManager.setDescriptionText(description);
+			currentProfile.getKeymap(keymapID).setDescription(description);
+			currentProfile.setLastUpdatedDate(Calendar.getInstance().getTimeInMillis());
 			saveProfile();
 		}
 		else PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
@@ -278,7 +279,6 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		if (currentProfile != null) {
 			currentProfile.setDefaultKeymap(keymapTabPane.getSelectionModel().getSelectedIndex());
 			currentProfile.setInfo(infoTA.getText());
-			currentProfile.setLastUpdatedDate(Calendar.getInstance().getTimeInMillis());
 		}
 		App selectedApp = (App) appsCB.getSelectionModel().getSelectedItem();
 		if (selectedApp != null) selectedApp.setInfo(appInfoTA.getText());
@@ -725,6 +725,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 				appsCB.valueProperty().addListener(appChangeListener);
 			break;
 			case "Save":
+				currentProfile.setLastUpdatedDate(Calendar.getInstance().getTimeInMillis());
 				saveProfile();
 			break;
 			default:

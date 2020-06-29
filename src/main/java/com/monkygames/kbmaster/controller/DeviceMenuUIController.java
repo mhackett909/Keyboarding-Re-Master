@@ -589,6 +589,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      */
     private void logout(){
 	cleanUp();
+	keysRepeatCB.setSelected(true);
 	// check if cloud sync should be popped
 
 	if(cloudAccount != null){
@@ -603,7 +604,10 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
     /**
      * Closes all databases and prepares this gui to be closed.
      */
-    private void cleanUp(){ hardwareManager.stopPollingAllDevices(); }
+    private void cleanUp(){
+		RepeatManager.setRepeat(true);
+    	hardwareManager.stopPollingAllDevices();
+    }
 // ============= Extended Methods ============== //
     @Override
     public void handle(ActionEvent t) {

@@ -10,7 +10,6 @@ import com.monkygames.kbmaster.driver.devices.razer.nostromo.Nostromo;
 
 /**
  * Contains information about a specific device.
- * @version 1.0
  */
 public class N52TE extends Nostromo{
 
@@ -29,11 +28,10 @@ public class N52TE extends Nostromo{
 		+"* Nonslip rubber pads grip in place for aggressive fragging\n"
 		+"\nImages courtesy of Nathan T under the CC BY-SA 3.0\n",
 		// === =========== === //
-		"2.0",
 		"com.monkygames.kbmaster.driver.devices.belkin.n52te.N52TE",
 		"/com/monkygames/kbmaster/driver/belkin/n52te/N52TE.fxml",
 		"/com/monkygames/kbmaster/driver/belkin/n52te/resources/printable.png",
-		null,
+		"https://www.amazon.com/Belkin-n52te-Tournament-Game-Pad/dp/B0010YL6ZS/ref=sr_1_1?dchild=1&keywords=belkin+n52te&qid=1593459227&sr=8-1",
 		true);
     }
 // ============= Public Methods ============== //

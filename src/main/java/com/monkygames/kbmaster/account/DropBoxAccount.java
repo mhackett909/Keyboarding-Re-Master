@@ -48,7 +48,7 @@ public class DropBoxAccount implements CloudAccount{
     public DropBoxAccount(){
         // setup dropbox
         appInfo = new DbxAppInfo(DropBoxApp.APP_KEY, DropBoxApp.APP_SECRET);
-        config = new DbxRequestConfig("kbmaster/"+KeyboardingMaster.VERSION);
+        config = new DbxRequestConfig("kbmaster/"+ KeyboardingMaster.VERSION);
         webAuth = new DbxWebAuth(config, appInfo);
     }
 

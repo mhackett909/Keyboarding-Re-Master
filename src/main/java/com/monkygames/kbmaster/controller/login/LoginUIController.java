@@ -5,10 +5,10 @@ package com.monkygames.kbmaster.controller.login;
 
 import com.monkygames.kbmaster.KeyboardingMaster;
 import com.monkygames.kbmaster.account.CloudAccount;
-import com.monkygames.kbmaster.account.DropBoxAccount;
 import com.monkygames.kbmaster.account.UserSettings;
 import com.monkygames.kbmaster.controller.ButtonController;
 import com.monkygames.kbmaster.controller.DeviceMenuUIController;
+import com.monkygames.kbmaster.util.RepeatManager;
 import com.monkygames.kbmaster.util.WindowUtil;
 import java.io.IOException;
 import java.net.URL;
@@ -170,6 +170,7 @@ public class LoginUIController implements Initializable {
 	deviceMenuStage.hide();
 	if(showLogin){
 	    loginStage.show();
+	    rememberEmailCB.setSelected(KeyboardingMaster.getUserSettings().isRemember);
 	}
     }
     /**
@@ -184,7 +185,6 @@ public class LoginUIController implements Initializable {
     }
     /**
      * Shows the device menu.
-     * @param hideLogin true if the login should also be hidden and false otherwise.
      */
     public void showDeviceMenuFromNonJavaFXThread(){
 	try{
@@ -240,6 +240,7 @@ public class LoginUIController implements Initializable {
 		}
 		// check if the cloud account -- if so, pop sync display plus thread
 		deviceMenuController.initResources(userSettings,cloudAccount);
+		deviceMenuStage.setOnCloseRequest(event -> { RepeatManager.setRepeat(true); });
 		deviceMenuStage.show();
 	}
 }

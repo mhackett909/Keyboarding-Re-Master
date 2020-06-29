@@ -16,7 +16,6 @@ import java.awt.Rectangle;
 
 /**
  * Contains information about a specific device.
- * @version 1.0
  */
 public class Marauder extends Device{
 
@@ -35,11 +34,10 @@ public class Marauder extends Device{
 		"* Up to 200 inches per second and 50g of acceleration\n" +
 		"* Seven-foot lightweight, braided fiber cable",
 		// === =========== === //
-		"1.1",
 		"com.monkygames.kbmaster.driver.devices.razer.marauder.Marauder",
 		"/com/monkygames/kbmaster/driver/razer/marauder/Marauder.fxml",
 		"/com/monkygames/kbmaster/driver/razer/marauder/resources/printable.png",
-		"http://www.amazon.com/gp/product/B004EYSH30/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B004EYSH30&linkCode=as2&tag=monkygamescom-20&linkId=GXXG2WKU6PBUPTRD",
+		null,
 		true);
 	int i = 1;
 	inputMaps.put(i,new InputMap(i++,Key.ESCAPE.getName(),	KeyEvent.VK_ESCAPE));

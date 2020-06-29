@@ -20,8 +20,6 @@ import java.awt.Rectangle;
 
 /**
  * Contributed by David Ferreira (FZ)
- *
- * @version 1.0
  */
 public class GSpyUsbGamingMouseRH1900 extends Device{
 
@@ -34,12 +32,11 @@ public class GSpyUsbGamingMouseRH1900 extends Device{
     			"* RH1900 Wired USB 2.0 800/1600/2400/3200dpi Laser Engine Game Mouse - Black\n"
     			+ "* 7 programmable Hyperesponse buttons\n"
     			+ "* 1000Hz Ultrapolling / 1ms response time\n",
-    			// ===  
-    			"1.0",
+    			// ===
     			"com.monkygames.kbmaster.driver.devices.generic.mouse.gspy.GSpyUsbGamingMouseRH1900",
     			"/com/monkygames/kbmaster/driver/generic/mouse/gspy/rh1900/Gspy_RH1900.fxml",
     			"/com/monkygames/kbmaster/driver/generic/mouse/gspy/rh1900/resources/gspy_rh1900_printable.png",
-    			"http://www.dx.com/p/rh1900-wired-usb-2-0-800-1600-2400-3200dpi-laser-engine-game-mouse-black-230897",
+    			null,
     			true);
     }
 // ============= Public Methods ============== //
