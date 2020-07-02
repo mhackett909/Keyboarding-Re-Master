@@ -38,7 +38,7 @@ public class Orbweaver extends Device{
 		"com.monkygames.kbmaster.driver.devices.razer.orbweaver.Orbweaver",
 		"/com/monkygames/kbmaster/driver/razer/orbweaver/Orbweaver.fxml",
 		"/com/monkygames/kbmaster/driver/razer/orbweaver/resources/printable.png",
-		"https://www.amazon.com/Razer-Orbweaver-Mechanical-Gaming-Keypad/dp/B00B1N07QM/ref=sr_1_11?dchild=1&keywords=razer+orbweaver&qid=1593460408&sr=8-11",
+		"http://www.amazon.com/gp/product/B00B1N07QM/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00B1N07QM&linkCode=as2&tag=monkygamescom-20",
 		true);
 	// setup input bindings
 	int i = 1;

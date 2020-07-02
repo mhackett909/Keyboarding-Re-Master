@@ -31,7 +31,7 @@ public class N52TE extends Nostromo{
 		"com.monkygames.kbmaster.driver.devices.belkin.n52te.N52TE",
 		"/com/monkygames/kbmaster/driver/belkin/n52te/N52TE.fxml",
 		"/com/monkygames/kbmaster/driver/belkin/n52te/resources/printable.png",
-		"https://www.amazon.com/Belkin-n52te-Tournament-Game-Pad/dp/B0010YL6ZS/ref=sr_1_1?dchild=1&keywords=belkin+n52te&qid=1593459227&sr=8-1",
+		"http://www.amazon.com/gp/product/B0010YL6ZS/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B0010YL6ZS&linkCode=as2&tag=monkygamescom-20",
 		true);
     }
 // ============= Public Methods ============== //

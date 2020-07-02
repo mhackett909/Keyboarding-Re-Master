@@ -39,7 +39,7 @@ public class OrbweaverChroma extends Device{
 		"com.monkygames.kbmaster.driver.devices.razer.orbweaverchroma.OrbweaverChroma",
 		"/com/monkygames/kbmaster/driver/razer/orbweaverchroma/OrbweaverChroma.fxml",
 		"/com/monkygames/kbmaster/driver/razer/orbweaverchroma/resources/printable.png",
-		"https://www.amazon.com/Razer-Orbweaver-Chroma-Progammable-Adjustable/dp/B013P0HW7K/ref=sr_1_1?dchild=1&keywords=orbweaver+chroma&qid=1593460697&sr=8-1",
+		"http://www.amazon.com/gp/product/B013P0HW7K/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B013P0HW7K&linkCode=as2&tag=monkygamescom-20",
 		true);
 	// setup input bindings
 	int i = 1;

@@ -224,20 +224,20 @@ public class LoginUIController implements Initializable {
 			KeyboardingMaster.saveUserSettings();
 		}
 			
-		if(deviceMenuController == null){
-			try {
-				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/DeviceMenuUI.fxml");
-				FXMLLoader fxmlLoader = new FXMLLoader();
-				fxmlLoader.setLocation(location);
-				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-				root = (Parent)fxmlLoader.load(location.openStream());
-				deviceMenuController = (DeviceMenuUIController) fxmlLoader.getController();
-				deviceMenuStage = WindowUtil.createStage(root);
-				deviceMenuController.setLoginController(this);
-			} catch (IOException ex) {
-				Logger.getLogger(LoginUIController.class.getName()).log(Level.SEVERE, null, ex);
-			}
+		deviceMenuController = null;
+		try {
+			URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/DeviceMenuUI.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(location);
+			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+			root = (Parent)fxmlLoader.load(location.openStream());
+			deviceMenuController = (DeviceMenuUIController) fxmlLoader.getController();
+			deviceMenuStage = WindowUtil.createStage(root);
+			deviceMenuController.setLoginController(this);
+		} catch (IOException ex) {
+			Logger.getLogger(LoginUIController.class.getName()).log(Level.SEVERE, null, ex);
 		}
+
 		// check if the cloud account -- if so, pop sync display plus thread
 		deviceMenuController.initResources(userSettings,cloudAccount);
 		deviceMenuStage.setOnCloseRequest(event -> { RepeatManager.setRepeat(true); });

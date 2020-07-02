@@ -42,7 +42,7 @@ public class Taipan extends Device{
 		"com.monkygames.kbmaster.driver.devices.razer.taipan.Taipan",
 		"/com/monkygames/kbmaster/driver/razer/taipan/Taipan.fxml",
 		"/com/monkygames/kbmaster/driver/razer/taipan/resources/taipan_printable.png",
-		"https://www.amazon.com/Razer-Taipan-Ambidextrous-Gaming-Mouse/dp/B008BGXYBM/ref=sr_1_3?dchild=1&keywords=razer+taipan+ambidextrous+pc+gaming+mouse&qid=1593460961&s=electronics&sr=1-3",
+		"http://www.amazon.com/gp/product/B008BGXYBM/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B008BGXYBM&linkCode=as2&tag=monkygamescom-20",
 		true);
     }
 // ============= Public Methods ============== //

@@ -30,7 +30,7 @@ public class N52 extends Nostromo{
 		"com.monkygames.kbmaster.driver.devices.belkin.n52.N52",
 		"/com/monkygames/kbmaster/driver/belkin/n52/N52.fxml",
 		"/com/monkygames/kbmaster/driver/belkin/n52/resources/printable.png",
-		"https://www.amazon.com/Belkin-F8GFPC100-Nostromo-Speedpad-n52/dp/B0000DC643/ref=sr_1_2?dchild=1&keywords=belkin+n52&qid=1593459102&sr=8-2",
+		"http://www.amazon.com/gp/product/B0000DC643/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B0000DC643&linkCode=as2&tag=monkygamescom-20",
 		true);
     }
 // ============= Public Methods ============== //

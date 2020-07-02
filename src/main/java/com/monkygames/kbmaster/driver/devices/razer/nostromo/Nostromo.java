@@ -76,7 +76,7 @@ public class Nostromo extends Device{
 		"com.monkygames.kbmaster.driver.devices.razer.nostromo.Nostromo",
 		"/com/monkygames/kbmaster/driver/razer/nostromo/Nostromo.fxml",
 		"/com/monkygames/kbmaster/driver/razer/nostromo/resources/printable.png",
-		"https://www.amazon.com/Razer-Nostromo-PC-Gaming-Keypad/dp/B004AM5RB6/ref=sr_1_3?dchild=1&keywords=%22razer+nostromo%22&qid=1593460520&sr=8-3",
+		"http://www.amazon.com/gp/product/B004AM5RB6/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B004AM5RB6&linkCode=as2&tag=monkygamescom-20",
 		true);
 
     }

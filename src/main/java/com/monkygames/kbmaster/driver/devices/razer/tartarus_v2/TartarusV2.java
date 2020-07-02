@@ -47,7 +47,7 @@ public class TartarusV2 extends Device{
 		"com.monkygames.kbmaster.driver.devices.razer.tartarus_v2.TartarusV2",
 		"/com/monkygames/kbmaster/driver/razer/tartarus_v2/TartarusV2.fxml",
 		"/com/monkygames/kbmaster/driver/razer/tartarus_v2/resources/printable.png",
-		"https://www.amazon.com/Razer-Tartarus-Progammable-Detachable-Mecha-Membrane/dp/B07754PYFK/ref=sr_1_2?dchild=1&keywords=razer+tartarus+v2&qid=1593461032&sr=8-2",
+		"http://www.amazon.com/gp/product/B07754PYFK/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B07754PYFK&linkCode=as2&tag=monkygamescom-20",
 		true);
 
 	// setup input bindings

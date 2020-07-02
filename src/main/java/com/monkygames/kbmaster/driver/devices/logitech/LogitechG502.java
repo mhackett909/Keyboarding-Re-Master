@@ -32,7 +32,7 @@ public class LogitechG502 extends Device {
                     "com.monkygames.kbmaster.driver.devices.logitech.LogitechG502",
                     "/com/monkygames/kbmaster/driver/logitech/g502/LogitechG502.fxml",
                     "/com/monkygames/kbmaster/driver/logitech/g502/resources/printable.png",
-                    "https://www.amazon.com/Logitech-G502-Performance-Gaming-Mouse/dp/B07GBZ4Q68/ref=sr_1_3?dchild=1&keywords=logitech+g502&qid=1593460337&sr=8-3",
+                    "http://www.amazon.com/gp/product/B07GBZ4Q68/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B07GBZ4Q68&linkCode=as2&tag=monkygamescom-20",
                     true);
     }
     @Override
