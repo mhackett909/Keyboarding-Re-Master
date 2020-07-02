@@ -83,7 +83,6 @@ public class ConfigureDeviceUIController implements Initializable, PopupNotifyIn
     public void updateDeviceDetails(){
 
 	if(device != null){
-	    //updateDeviceDetails(device);
 	    String status;
 	    if(device.isConnected()){
 		status = "Connected";

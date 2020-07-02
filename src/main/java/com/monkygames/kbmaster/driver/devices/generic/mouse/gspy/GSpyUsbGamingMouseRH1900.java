@@ -49,15 +49,15 @@ public class GSpyUsbGamingMouseRH1900 extends Device{
 	Keymap keymap = new Keymap(id+1);
 	net.java.games.input.Component.Identifier.Button jinputB;
 	jinputB = net.java.games.input.Component.Identifier.Button.LEFT;
-	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(1,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON1_MASK, MouseType.MouseClick)));
+	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(1,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON1_DOWN_MASK, MouseType.MouseClick)));
 	jinputB = net.java.games.input.Component.Identifier.Button.RIGHT;
-	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(2,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON3_MASK, MouseType.MouseClick)));
+	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(2,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON3_DOWN_MASK, MouseType.MouseClick)));
 	jinputB = net.java.games.input.Component.Identifier.Button.EXTRA;
 	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(3,jinputB.getName()),new OutputDisabled()));
 	jinputB = net.java.games.input.Component.Identifier.Button.SIDE;
 	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(4,jinputB.getName()),new OutputDisabled()));
 	jinputB = net.java.games.input.Component.Identifier.Button.MIDDLE;
-	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(7,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON2_MASK,MouseType.MouseClick)));
+	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(7,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON2_DOWN_MASK,MouseType.MouseClick)));
 	jinputB = net.java.games.input.Component.Identifier.Button._8;	
 	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(8,jinputB.getName()),new OutputDisabled()));
 	

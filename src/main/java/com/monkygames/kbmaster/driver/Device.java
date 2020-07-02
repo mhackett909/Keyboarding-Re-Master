@@ -101,9 +101,7 @@ public abstract class Device implements Mapper{
 	return deviceState.isIsConnected();
     }
 
-    public void setIsConnected(boolean isConnected) {
-	deviceState.setIsConnected(isConnected);
-    }
+    public void setIsConnected(boolean isConnected) { deviceState.setIsConnected(isConnected); }
 
 	public DeviceState getDeviceState(){ return deviceState; }
 

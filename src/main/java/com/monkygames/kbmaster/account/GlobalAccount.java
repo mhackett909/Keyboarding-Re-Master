@@ -145,7 +145,6 @@ public class GlobalAccount{
      */
     public ArrayList<Device> getInstalledDevices(){
 	ArrayList<Device> devices = new ArrayList<>();
-
 	for(DevicePackage devicePackage: deviceList.getList()){
 	    if(devicePackage.isIsDownloaded()){
 		devices.add(driverManager.getDeviceByPackageName(devicePackage.getDevice().getDeviceState().getPackageName()));

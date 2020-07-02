@@ -5,8 +5,10 @@ package com.monkygames.kbmaster.util;
 
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.profiles.Profile;
+import com.thoughtworks.xstream.mapper.Mapper;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
@@ -35,70 +37,52 @@ public class DeviceEntry{
     private Device device;
 // ============= Constructors ============== //
     public DeviceEntry(Device device){
-	this.device = device;
-	enabled = new SimpleBooleanProperty(device.isEnabled());
+	    this.device = device;
+	    enabled = new SimpleBooleanProperty(device.isEnabled());
+	    isConnected = new SimpleStringProperty(device.isConnected() ? "Yes" : "No");
+	    deviceName = new SimpleStringProperty(device.getDeviceInformation().getName());
+	    profileName = new SimpleStringProperty();
+	    try {
+	        profileName.setValue(device.getProfile().getProfileName());
+        }catch (NullPointerException e) { }
     }
 // ============= Public Methods ============== //
-    public BooleanProperty enabledProperty(){
-	return enabled;
-    }
+    public BooleanProperty enabledProperty(){ return enabled; }
     /**
      * Returns the name of this device.
      * @return the name of this device.
      */
-    public String getDeviceName(){
-	return device.getDeviceInformation().getName();
-    }
+    public String getDeviceName(){ return device.getDeviceInformation().getName();  }
     /**
      * Returns the app + profile name.
      * @return the app + profile name used in the table view.
      */
     public String getProfileName(){
-	Profile profile = device.getProfile();
-	if(profile == null){
-	    return "None Selected";
-	}
-	return profile.getAppInfo().getName()+":"+profile.getProfileName();
+	    Profile profile = device.getProfile();
+	    if(profile == null) return "None Selected";
+	    return profile.getAppInfo().getName()+":"+profile.getProfileName();
     }
     /**
      * Returns a string representation if the device is connected.
      * @return Yes if connected and No otherwise.
      */
     public String getIsConnected(){
-	if(device.isConnected()){
-	    return "Yes";
-	}
-	return "No";
-    }
-    /**
-     * Returns true if the device is enabled and false otherwise.
-     */
-    public boolean isEnabled() {
-	return device.isEnabled();
-    }
-    public void setEnabled(boolean enabled){
-	this.enabled.setValue(enabled); 
+	    if(device.isConnected()) return "Yes";
+	    return "No";
     }
     /**
      * Returns the device associated with this device entry.
      * @return the device.
      */
-    public Device getDevice(){
-	return device;
+    public Device getDevice(){ return device; }
+    public void setEnabled(boolean enabled){
+        this.enabled.setValue(enabled);
     }
-// ============= Protected Methods ============== //
-// ============= Private Methods ============== //
-// ============= Implemented Methods ============== //
-// ============= Extended Methods ============== //
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
+    public void setConnected(String isConnected) {
+         this.isConnected.setValue(isConnected);
+    }
+    public void setProfile(String profile) {
+        this.profileName.setValue(profile);
+    }
 
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

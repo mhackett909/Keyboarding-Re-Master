@@ -2,6 +2,7 @@ package com.monkygames.kbmaster.driver;
 
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.Profile;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * Contains the state of the device.
@@ -14,6 +15,7 @@ public class DeviceState {
     /**
      * The current status of the device.
      */
+     @XStreamOmitField
     private boolean isConnected;
     /**
      * The state in which this driver is being used or not.
@@ -26,7 +28,6 @@ public class DeviceState {
 
     public DeviceState(Profile profile, boolean isConnected,
         boolean isEnabled, String packageName){
-
         this.profile = profile;
         this.isConnected = isConnected;
         this.isEnabled = isEnabled;

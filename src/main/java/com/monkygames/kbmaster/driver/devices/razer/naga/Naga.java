@@ -64,11 +64,11 @@ public class Naga extends Device{
 	keymap.addButtonMapping(Key.MINUS.getName(), new ButtonMapping(new Button(11,Key.MINUS.getName()),new OutputKey("Minus",KeyEvent.VK_MINUS,0)));
 	keymap.addButtonMapping(Key.EQUALS.getName(), new ButtonMapping(new Button(12,Key.EQUALS.getName()),new OutputKey("Equals",KeyEvent.VK_EQUALS,0)));
 	jinputB = net.java.games.input.Component.Identifier.Button.LEFT;
-	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(13,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON1_MASK, MouseType.MouseClick)));
+	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(13,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON1_DOWN_MASK, MouseType.MouseClick)));
 	jinputB = net.java.games.input.Component.Identifier.Button.RIGHT;
-	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(14,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON3_MASK, MouseType.MouseClick)));
+	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(14,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON3_DOWN_MASK, MouseType.MouseClick)));
 	jinputB = net.java.games.input.Component.Identifier.Button.MIDDLE;
-	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(17,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON2_MASK,MouseType.MouseClick)));
+	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(17,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON2_DOWN_MASK,MouseType.MouseClick)));
 
 	// wheel 
 	keymap.setzUpWheelMapping(new WheelMapping(new Wheel(15),new OutputMouse("Scroll Up",-1,MouseType.MouseWheel)));

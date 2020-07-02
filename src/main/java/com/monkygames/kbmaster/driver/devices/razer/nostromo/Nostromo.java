@@ -58,7 +58,7 @@ public class Nostromo extends Device{
 	inputMaps.put(i,new InputMap(i++,Key.LEFT.getName(),   KeyEvent.VK_LEFT));
 	inputMaps.put(23,new InputMap(23,
 	    net.java.games.input.Component.Identifier.Button.MIDDLE.getName(),
-	    InputEvent.BUTTON2_MASK));
+	    InputEvent.BUTTON2_DOWN_MASK));
     }
     public Nostromo(){
 	this("Razer","Nostromo","Razer Razer Nostromo", DeviceType.KEYBOARD,
@@ -212,7 +212,7 @@ public class Nostromo extends Device{
 	// wheel 
 	net.java.games.input.Component.Identifier.Button jinputB;
 	jinputB = net.java.games.input.Component.Identifier.Button.MIDDLE;
-	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(23,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON2_MASK,MouseType.MouseClick)));
+	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(23,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON2_DOWN_MASK,MouseType.MouseClick)));
 	keymap.setzUpWheelMapping(new WheelMapping(new Wheel(21),new OutputMouse("Scroll Up",-1,MouseType.MouseWheel)));
 	keymap.setzDownWheelMapping(new WheelMapping(new Wheel(22),new OutputMouse("Scroll Down",1,MouseType.MouseWheel)));
 

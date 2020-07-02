@@ -148,7 +148,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	    	PopupManager.getPopupManager().showError("Unable to add device. Is it already added?");
 	   		 return;
 		}
-		updateDeviceEntryList(true);
+		updateDevices();
 		globalAccount.save();
     }
     /**
@@ -162,7 +162,14 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 		if (configureDeviceController != null)
 			configureDeviceController.getProfileUIController().deviceRemoved(device);
 		hardwareManager.removeDevice(device);
-		updateDeviceEntryList(true);
+		for (Object entry : deviceList) {
+			DeviceEntry deviceEntry = (DeviceEntry) entry;
+			if (deviceEntry.getDevice() == device) {
+				deviceList.remove(deviceEntry);
+				break;
+			}
+		}
+		updateDevices();
 		globalAccount.save();
     }
     /**
@@ -190,7 +197,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
     public void initResources(UserSettings userSettings, CloudAccount cloudAccount){
 	this.userSettings = userSettings;
 	this.cloudAccount = cloudAccount;
-
 	Image image;
 	// manage the icons
 	switch(userSettings.loginMethod){
@@ -208,27 +214,46 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	// to populate the list.
 	globalAccount = new GlobalAccount();
 	deviceList = FXCollections.observableArrayList();
-	updateDeviceEntryList(true);
-	deviceTV.setItems(deviceList);
+	updateDevices();
     }
-
     /**
      * One or more devices has changed status and the UI
      * will be updated to reflect these changes.
-     * Note, its not necessary to specify which devices have been
-     * connected/disconnected since this information is set in the device
-     * object which is universal throughout the program so no need
-     * to pass references around.
      */
-    public void updateDevices(){
-	// update device list
-	//deviceTV.getItems().setAll(getDeviceEntryList(false));
-	updateDeviceEntryList(false);
-	// update config ui if its open!
-	if(configureDeviceController != null){
-	    configureDeviceController.updateDeviceDetails();
+	public void updateDevices() {
+		for (Device device : globalAccount.getInstalledDevices()) {
+			if(!hardwareManager.isDeviceManaged(device)) {
+				hardwareManager.addManagedDevice(device);
+				deviceList.add(new DeviceEntry(device));
+			}
+		}
+		for (Object entry : deviceList) {
+			DeviceEntry deviceEntry = (DeviceEntry) entry;
+			Device entryDevice = deviceEntry.getDevice();
+			String entryProfile;
+			try {
+				entryProfile = entryDevice.getProfile().getProfileName();
+			}catch (NullPointerException e) { entryProfile = "None Selected"; }
+			String entryConnected = entryDevice.isConnected() ? "Yes" : "No";
+			boolean isModified = false;
+			if (!deviceEntry.getProfileName().equals(entryProfile)) {
+				deviceEntry.setProfile(entryProfile);
+				isModified = true;
+			}
+			if (deviceEntry.enabledProperty().getValue() != entryDevice.isEnabled()) {
+				deviceEntry.setEnabled(entryDevice.isEnabled());
+				isModified = true;
+			}
+			if (!deviceEntry.getIsConnected().equals(entryConnected)) {
+				deviceEntry.setConnected(entryConnected);
+				isModified = true;
+			}
+			if (isModified) deviceTV.refresh();
+		}
+		deviceTV.setItems(deviceList);
+		if(configureDeviceController != null)
+			configureDeviceController.updateDeviceDetails();
 	}
-    }
     /**
      * Shutsdown all engines and exits the program.
      */
@@ -467,7 +492,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	// get device
 	GenerateBindingsImage generator = new GenerateBindingsImage(deviceEntry.getDevice());
 	displayProfileController.setGenerateBindingsImage(generator);
-	System.out.println("um "+displayProfileController);
 	ProfileManager profileManager = new ProfileManager(
 		ProfileUIController.profileDirS+File.separator+deviceEntry.getDevice().getDeviceInformation().getProfileName()
 	);
@@ -529,48 +553,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	systemTray = new KBMSystemTray(this);
     }
 
-    /**
-     * Returns a list of device entries available from the Global Account. 
-     */
-    /*
-    private List<DeviceEntry> getDeviceEntryList(boolean pollDeviceState) {
-	List<DeviceEntry> list = new ArrayList<>();
-	// parse and construct User datamodel list by looping your ResultSet rs
-	// and return the list   
-	for (Device device : globalAccount.getInstalledDevices()) {
-	    // initialize devices if not already initialized
-	    if(pollDeviceState){
-		if(!hardwareManager.isDeviceManaged(device)){
-		    hardwareManager.addManagedDevice(device);
-		}
-		hardwareManager.updateConnectionState(device);
-		// check if this device needs to be enabled
-		if(device.isEnabled()){
-		    hardwareManager.startPollingDevice(device, device.getProfile());
-		}else{
-		    hardwareManager.startPollingDevice(device, null);
-		}
-	    }
-	    list.add(new DeviceEntry(device));
-	}
-	return list;
-    }
-    */
-    /**
-     * Returns a list of device entries available from the Global Account. 
-     */
-    private void updateDeviceEntryList(boolean pollDeviceState) {
-		deviceList.clear();
-		for (Device device : globalAccount.getInstalledDevices()) {
-				if(pollDeviceState){
-					if(!hardwareManager.isDeviceManaged(device))
-						hardwareManager.addManagedDevice(device);
-					hardwareManager.updateConnectionState(device);
-					hardwareManager.startPollingDevice(device, device.getProfile());
-    			}
-    		 	deviceList.add(new DeviceEntry(device));
-		}
-    }
 	/**
 	 * Returns the selected device. If no device is selected, returns
 	 * the first managed device. If no managed device exists, returns
@@ -613,37 +595,34 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
     public void handle(ActionEvent t) {
 	CheckBoxTableCell cell = (CheckBoxTableCell)t.getSource();
 	Parent parent = cell.getParent();
-	Parent parent2 = parent.getParent();
-	if(!(parent instanceof TableRow)){
-	    return;
-	}
+	if(!(parent instanceof TableRow)) return;
 	TableRow row = (TableRow)parent;
 	DeviceEntry deviceEntry = (DeviceEntry)row.getItem();
 	Device device = deviceEntry.getDevice();
 	// traverse through scene graph to get checkbox.
 	Node node = cell.getChildrenUnmodifiable().get(0);
-	if(node == null && !(node instanceof CheckBox)){
-	    return;
-	}
+	if(node == null && !(node instanceof CheckBox)) return;
 	CheckBox checkBox = (CheckBox)node;
-	if(device.getProfile() == null){
-	    // pop an error 
-	    PopupManager.getPopupManager().showError("No profile selected, not enabled");
-	    // not, cannot enable
-	    device.setIsEnabled(false);
-	    deviceEntry.setEnabled(false);
-	    checkBox.selectedProperty().set(false);
-		hardwareManager.disableDevice(device);
-	    return;
+	if (!device.isEnabled()) {
+		if (device.getProfile() == null) {
+			PopupManager.getPopupManager().showError("No profile selected");
+			checkBox.selectedProperty().set(false);
+			return;
+		}
+		else if (!device.isConnected()) {
+			PopupManager.getPopupManager().showError("Device not connected.");
+			checkBox.selectedProperty().set(false);
+			return;
+		}
+		device.setIsEnabled(true);
+		hardwareManager.startPollingDevice(device, device.getProfile());
 	}
-	if(!deviceEntry.isEnabled()){
-	    device.setIsEnabled(true);
-	    hardwareManager.startPollingDevice(device, device.getProfile());
-	}else{
-	    device.setIsEnabled(false);
+	else{
+		device.setIsEnabled(false);
 	    hardwareManager.disableDevice(device);
 	}
 	// something has changed
+	updateDevices();
 	globalAccount.save();
     }
 // ============= Internal Classes ============== //
@@ -674,15 +653,4 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	    return tableColumn.getCellObservableValue(p);
 	}
     }
-// ============= Static Methods ============== //
-
-
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

@@ -123,6 +123,7 @@ public class XStreamManager {
         globalStream.omitField(Device.class, "inputMaps");
         globalStream.omitField(Device.class, "codeToJFX");
         globalStream.omitField(App.class, "profiles");
+        globalStream.omitField(DeviceState.class, "isConnected");
         XStream.setupDefaultSecurity(globalStream);
         globalStream.allowTypesByWildcard(new String[] {"com.monkygames.kbmaster.**"});
         globalAccountFile = new File(globalAccountFileName);

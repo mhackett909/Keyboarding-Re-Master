@@ -40,11 +40,11 @@ public class LogitechG502 extends Device {
         Keymap keymap = new Keymap(id+1);
         Component.Identifier.Button jinputB;
         jinputB = Component.Identifier.Button.LEFT;
-        keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(1,jinputB.getName()),new OutputMouse(jinputB.getName(), InputEvent.BUTTON1_MASK, OutputMouse.MouseType.MouseClick)));
+        keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(1,jinputB.getName()),new OutputMouse(jinputB.getName(), InputEvent.BUTTON1_DOWN_MASK, OutputMouse.MouseType.MouseClick)));
         jinputB = Component.Identifier.Button.RIGHT;
-        keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(2,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON3_MASK, OutputMouse.MouseType.MouseClick)));
+        keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(2,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON3_DOWN_MASK, OutputMouse.MouseType.MouseClick)));
         jinputB = Component.Identifier.Button.MIDDLE;
-        keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(3,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON2_MASK, OutputMouse.MouseType.MouseClick)));
+        keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(3,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON2_DOWN_MASK, OutputMouse.MouseType.MouseClick)));
         jinputB = Component.Identifier.Button.SIDE;
         keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(6,jinputB.getName()),new OutputDisabled()));
         jinputB = Component.Identifier.Button.EXTRA;

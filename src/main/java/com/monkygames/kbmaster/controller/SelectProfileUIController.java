@@ -218,7 +218,6 @@ public class SelectProfileUIController implements Initializable, ChangeListener<
 	    return;
 	}
 	selectedProfile = (Profile)profileCB.getSelectionModel().getSelectedItem();
-		System.out.println(currentProfile+" : "+selectedProfile);
 
 	if(selectedProfile != null && selectedProfile != currentProfile){
 	    currentProfile = selectedProfile;

@@ -96,13 +96,13 @@ public class MouseButtonController implements Initializable{
      */
     private int getKeyCode(String name){
 	if(name.equals("Click")){
-	    return InputEvent.BUTTON1_MASK;
+	    return InputEvent.BUTTON1_DOWN_MASK;
 	}else if(name.equals("Double-Click")){
-	    return InputEvent.BUTTON1_MASK;
+	    return InputEvent.BUTTON1_DOWN_MASK;
 	}else if(name.equals("Middle-Click")){
-	    return InputEvent.BUTTON2_MASK;
+	    return InputEvent.BUTTON2_DOWN_MASK;
 	}else if(name.equals("Right-Click")){
-	    return InputEvent.BUTTON3_MASK;
+	    return InputEvent.BUTTON3_DOWN_MASK;
 	}else if(name.equals("Scroll Up")){
 	    return -1;
 	}else if(name.equals("Scroll Down")){

@@ -14,7 +14,10 @@ import java.awt.AWTException;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
+
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +25,6 @@ import net.java.games.input.Component;
 import net.java.games.input.Component.Identifier.Axis;
 import net.java.games.input.Controller;
 import net.java.games.input.Event;
-import net.java.games.input.EventQueue;
 import net.java.games.input.Keyboard;
 import net.java.games.input.LinuxEnvironmentPlugin;
 import net.java.games.input.Mouse;
@@ -36,12 +38,17 @@ import net.java.games.input.Mouse;
 public class HardwareEngine implements Runnable{
 
 	// ============= Class variables ============== //
-	private Device device;
+	private final Device device;
 	private ArrayList<Keyboard> keyboards;
 	private Mouse mouse;
 	private ArrayList<PollEventQueue> keyboardEventQueues;
 	private PollEventQueue mouseEventQueue;
 	private DeviceMenuUIController deviceMenuUIController;
+	/**
+	 * Timer for checking hardware status.
+	 */
+	 private Timer timer;
+	 private TimerTask timerTask;
 	/**
 	 * True if polling and false otherwise.
 	 */
@@ -49,7 +56,7 @@ public class HardwareEngine implements Runnable{
 	/**
 	 * Controls the thread loop for polling.
 	 */
-	private boolean poll = false;
+	private boolean poll = false, pollFail = false;
 	/**
 	 * Used for polling the devices.
 	 */
@@ -90,22 +97,12 @@ public class HardwareEngine implements Runnable{
 	/**
 	 * A list of listeners for hardware status change.
 	 */
-	private final ArrayList<HardwareListener> hardwareListeners;
-	/**
-	 * The amount of time to sleep between polling.
-	 */
-	private static final long sleepActive = 20;
+	private final HardwareListener hardwareListener;
 	/**
 	 * The amount of time to check for new devices.
 	 */
 	private static final long sleepPassive = 1000;
-	private long sleepTime = sleepActive;
-	/**
-	 * True if in edit mode and false otherwise.
-	 */
-	private boolean isEditMode = false;
-	private Profile defaultProfile = new Profile();
-	private Profile profileSwitch = null;
+
 	private boolean isMouseEvent = false;
 	/**
 	 * True if the hardware should be "grabbed" or false otherwise.
@@ -122,274 +119,125 @@ public class HardwareEngine implements Runnable{
 	 */
 	private boolean hasMouse = true;
 	// ============= Constructors ============== //
-	public HardwareEngine(Device device){
+	public HardwareEngine(Device device, HardwareListener hardwareListener){
+		event = new Event();
 		keyboards = new ArrayList<>();
+		this.mouseEventQueue = null;
+		this.hardwareListener = hardwareListener;
 		this.keyboardEventQueues = new ArrayList<>();
 		this.device = device;
-		doesHardwareExist = scanHardware();
-		event = new Event();
-		try {
-			robot = new Robot();
-		} catch (AWTException ex) {
+		try { robot = new Robot();}
+		catch (AWTException ex) {
 			Logger.getLogger(HardwareEngine.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		hardwareListeners = new ArrayList<>();
-		hasMouse          = device.getDeviceInformation().hasMouse();
+		hasMouse = device.getDeviceInformation().hasMouse();
 	}
 // ============= Public Methods ============== //
 	/**
+	 * Begins hardware scanning.
+	 */
+	 public void startScanning() {
+		 scanHardware();
+		 timerTask = new HardwareScanScheduler();
+		 timer = new Timer();
+		 timer.schedule(timerTask,sleepPassive,sleepPassive);
+	 }
+	/**
 	 * Sets that this hardware should be grabbed if already detected.
 	 */
-	public void setEnabled(boolean isEnabled){
-
+	public void grabHardware(boolean isEnabled){
 		if(isEnabled){
-			if(keyboards.size() > 0){
-				for(Keyboard keyboard:keyboards){
+			if(keyboards.size() > 0) {
+				for(Keyboard keyboard:keyboards)
 					keyboard.grab();
-				}
 			}
-			if(hasMouse){
-				if(mouse != null){
-					mouse.grab();
-				}
-			}
+			if(hasMouse && mouse != null) mouse.grab();
 		}else{
-			if(keyboards.size() > 0){
-				for(Keyboard keyboard:keyboards){
+			if(keyboards.size() > 0) {
+				for(Keyboard keyboard:keyboards)
 					keyboard.ungrab();
-				}
 			}
-			if(hasMouse){
-				if(mouse != null){
-					mouse.ungrab();
-				}
-			}
+			if(hasMouse && mouse != null) mouse.ungrab();
 		}
 		this.isEnabled = isEnabled;
 	}
-	public void setEditMode(boolean editMode){
-		this.isEditMode = editMode;
-		if(isEditMode){
-			startPolling(defaultProfile);
-		}else{
-			startPolling(profileSwitch);
-		}
-	}
 	public void setDeviceMenuUIController(DeviceMenuUIController deviceMenuUIController) { this.deviceMenuUIController = deviceMenuUIController; }
-	public boolean isEnabled() { return isEnabled; }
-	public boolean isEditMode(){
-		return isEditMode;
-	}
+	public Device getDevice(){ return device; }
 	/**
 	 * Returns true if the hardware is found.
 	 * @return true if the hardware exists on the system and false otherwise.
 	 */
-	public boolean hardwareExist(){
-		return doesHardwareExist;
-	}
+	public boolean hardwareExist(){	return doesHardwareExist; }
 	/**
 	 * Starts polling the devices.
 	 * Must check that hardware exists before starting.
 	 * Note, null can be passed in as long as its not enabled!
 	 */
 	public void startPolling(Profile profile){
-
+		if(isPolling) stopPolling();
 		this.profile = profile;
-		this.profileSwitch = profile;
-		if(profile != null){
+		if(profile != null) {
+			grabHardware(true);
 			this.keymap = profile.getKeymap(profile.getDefaultKeymap());
 		}
+		else return;
 		this.isKeymapOnRelease = false;
-		if(this.doesHardwareExist){
-			sleepTime = sleepActive;
-		}else{
-			sleepTime = sleepPassive;
-		}
-		if(isPolling){
-			// kill current thread
-			poll = false;
-			// wait for thread to die
-			while(isPolling){
-				try{
-					Thread.sleep(sleepPassive);
-				}catch(Exception e){}
-			}
-		}
 		poll = true;
 		thread = new Thread(this);
 		thread.start();
 	}
-	public void stopPolling(){ poll = false; }
-	public void addHardwareListener(HardwareListener listener){
-		hardwareListeners.add(listener);
+	public void stopPolling(){
+		poll = false;
+		// wait for thread to die
+		while(isPolling);
+		grabHardware(false);
 	}
-	public Device getDevice(){
-		return device;
-	}
-
-// ============= Protected Methods ============== //
 // ============= Private Methods ============== //
-	/**
-	 * Attempt to find and initialize the device hardware.
-	 * @return true if the hardware has been found and false otherwise.
-	 */
-	private boolean rescanHardware(){
-		boolean ret = false;
-		try{
-			ret = scanHardware(LinuxEnvironmentPlugin.getDefaultEnvironment().rescanControllers());
-		}catch(Exception e){}
-		return ret;
-	}
-	private boolean scanHardware(){
-		return scanHardware(LinuxEnvironmentPlugin.getDefaultEnvironment().getControllers());
-	}
-	private boolean scanHardware(Controller[] controllers){
-		mouse = null;
-		keyboards.clear();
-		Keyboard keyboard;
-		this.keyboardEventQueues.clear();
-		for(Controller controller: controllers){
-			//System.out.println("Controller: "+controller);
-			if(controller.getType() == Controller.Type.KEYBOARD &&
-					controller.getName().equals(device.getDeviceInformation().getJinputName())){
-				keyboard = (Keyboard)controller;
-				keyboards.add((Keyboard)controller);
-				if(isEnabled){
-					keyboard.grab();
-				}
-				// create a new event queue
-				keyboardEventQueues.add(new PollEventQueue(keyboard.getComponents()));
-
-			}else if(controller.getType() == Controller.Type.MOUSE &&
-					controller.getName().equals(device.getDeviceInformation().getJinputName())){
-				mouse = (Mouse)controller;
-				if(mouse.getX() != null && !mouse.getX().isRelative()){
-					isMouseRelative = false;
-				}else{
-					isMouseRelative = true;
-				}
-				float width = MouseInfo.getPointerInfo().getDevice().getDisplayMode().getWidth();
-				float height = MouseInfo.getPointerInfo().getDevice().getDisplayMode().getHeight();
-				unit_width = 1f/width;
-				unit_height = 1f/height;
-				if(isEnabled){
-					mouse.grab();
-				}
-				mouseEventQueue = new PollEventQueue(mouse.getComponents());
-			}
-		}
-
-		if(hasMouse){
-			if(keyboards.size() == 0 && mouse == null){
-				return false;
-			}
-		}else{
-			if(keyboards.size() == 0){
-				return false;
-			}
-		}
-		return true;
-	}
-	/**
-	 * Set if hardware has been disconnected.
-	 */
-	private void hardwareDisconnected(Controller controller){
-		boolean isHardware = false;
-		for(Keyboard keyboard: keyboards){
-			if(controller == keyboard){
-				isHardware = true;
-			}
-		}
-		if(isHardware){
-			keyboards.clear();
-		}
-		if(hasMouse){
-			if(controller == mouse){
-				mouse = null;
-				isHardware = true;
-			}
-		}
-		if(isHardware){
-			doesHardwareExist = false;
-			for(HardwareListener listener:hardwareListeners){
-				listener.hardwareStatusChange(false,device.getDeviceInformation().getJinputName());
-			}
-			sleepTime = sleepPassive;
-		}
-	}
-	private void hardwareConnected(){
-		if(keyboards.size() > 0 && mouse != null){
-			doesHardwareExist = true;
-			for(HardwareListener listener:hardwareListeners){
-				listener.hardwareStatusChange(true,device.getDeviceInformation().getJinputName());
-			}
-			sleepTime = sleepActive;
-		}
-	}
 	/**
 	 * Poll the hardware and generate system key calls.
 	 */
 	private void pollNormalMode(){
 		while(poll){
-			try{
-				Thread.sleep(sleepTime);
-			}catch(Exception e){}
-			if(!doesHardwareExist){
-				//System.out.println("Hardware does not exist. Rescanning.");
-				doesHardwareExist = rescanHardware();
-				if(doesHardwareExist){
-					hardwareConnected();
-				}
-				continue;
-			}
 			// poll keyboard
-			boolean isDoContinue = false;
 			for(Keyboard keyboard: keyboards){
-				if(!keyboard.poll()){
-					hardwareDisconnected(keyboard);
-					isDoContinue = true;
+				if(!keyboard.poll()) {
+					poll = false;
+					pollFail = true;
+					grabHardware(false);
 				}
 			}
-			if(isDoContinue){
-				continue;
-			}
-
 			// poll mouse
-			if(hasMouse){
-				if(mouse != null && !mouse.poll()){
-					hardwareDisconnected(mouse);
-					continue;
+			if(hasMouse) {
+				if (mouse != null && !mouse.poll()){
+					poll = false;
+					pollFail = true;
+					grabHardware(false);
 				}
 			}
-
-			// handles just detecting if a device is connected or not.
-			if(!isEnabled){
-				//System.out.println("[HardwareEngine:pollNormalMode] not enabled");
-
-				continue;
-			}
-
+			// Determines whether to process the output or not
+			if (!isEnabled) continue;
 			// handle keyboard events
 			for(PollEventQueue keyboardEventQueue: this.keyboardEventQueues){
 				for(Event event: keyboardEventQueue.getEvents()){
 					Component component = event.getComponent();
 					//System.out.println("component = "+component);
 					String name = component.getIdentifier().getName();
-					if (profile.getDefaultKeymap() != keymap.getID()-1) keymap = profile.getKeymap(profile.getDefaultKeymap());
+					if (profile.getDefaultKeymap() != keymap.getID()-1)
+						keymap = profile.getKeymap(profile.getDefaultKeymap());
 					ButtonMapping mapping = keymap.getButtonMapping(name);
-					if(mapping != null){
-						processOutput(name, mapping.getOutput(), event.getValue());
-					}
+					if(mapping != null) processOutput(name, mapping.getOutput(), event.getValue());
 				}
 			}
 			// handle mouse events
 			if(hasMouse){
+				if (mouseEventQueue == null) continue;
 				for(Event event: mouseEventQueue.getEvents()){
 					//System.out.println("===== New Event Queue =====");
 					Component component = event.getComponent();
 					//System.out.println("component = "+component);
 					String name = component.getIdentifier().getName();
-					if (profile.getDefaultKeymap() != keymap.getID()-1) keymap = profile.getKeymap(profile.getDefaultKeymap());
+					if (profile.getDefaultKeymap() != keymap.getID()-1)
+						keymap = profile.getKeymap(profile.getDefaultKeymap());
 					WheelMapping mapping = null;
 					if(component.getIdentifier() == Axis.X){
 						Point point = MouseInfo.getPointerInfo().getLocation();
@@ -407,104 +255,21 @@ public class HardwareEngine implements Runnable{
 							processOutput(name, mapping.getOutput(),1);
 							robot.delay(10);
 							processOutput(name, mapping.getOutput(),0);
-						}else{
-							processOutput(name, mapping.getOutput(),event.getValue());
-						}
+						}else processOutput(name, mapping.getOutput(),event.getValue());
 					}else if(component.getIdentifier() == Axis.Z && event.getValue() <= -1){
 						mapping = keymap.getzDownWheelMapping();
 						if(mapping.getOutput() instanceof OutputKey || mapping.getOutput() instanceof OutputKeymapSwitch){
-
 							processOutput(name, mapping.getOutput(),1);
 							robot.delay(10);
 							processOutput(name, mapping.getOutput(),0);
-						}else{
-							processOutput(name, mapping.getOutput(),event.getValue());
-						}
+						}else processOutput(name, mapping.getOutput(),event.getValue());
 					}else if(component.getIdentifier() == Axis.Z && event.getValue() == 0){
 						// on release, don't do anything
 					}else{
 						try {
 							ButtonMapping bMapping = keymap.getButtonMapping(name);
 							processOutput(name, bMapping.getOutput(), event.getValue());
-						}catch (NullPointerException v) {
-							//v.printStackTrace();
-						}
-					}
-				}
-			}
-		}
-	}
-	/**
-	 * Poll the hardware in edit mode.
-	 */
-	private void pollEditMode(){
-		while(poll){
-			try{
-				Thread.sleep(sleepTime);
-			}catch(Exception e){}
-			if(!doesHardwareExist){
-				doesHardwareExist = rescanHardware();
-				if(doesHardwareExist){
-					hardwareConnected();
-				}
-				continue;
-			}
-			// poll keyboard
-			boolean isDoContinue = false;
-			for(Keyboard keyboard: keyboards){
-				if(!keyboard.poll()){
-					hardwareDisconnected(keyboard);
-					isDoContinue = true;
-				}
-				EventQueue queue = keyboard.getEventQueue();
-
-				while(queue.getNextEvent(event)){
-
-					Component component = event.getComponent();
-					String name = component.getIdentifier().getName();
-					ButtonMapping mapping = keymap.getButtonMapping(name);
-					if(event.getValue() == 0){
-						for(HardwareListener listener: this.hardwareListeners){
-							listener.eventIndexPerformed(mapping.getInputHardware().getID());
-						}
-					}
-				}
-			}
-			if(isDoContinue){
-				continue;
-			}
-			// poll mouse
-			if(hasMouse){
-				if(!mouse.poll()){
-					hardwareDisconnected(mouse);
-					continue;
-				}
-				EventQueue queue = mouse.getEventQueue();
-				while(queue.getNextEvent(event)){
-					Component component = event.getComponent();
-
-					WheelMapping mapping = null;
-					isMouseEvent = false;
-					if(component.getIdentifier() == Axis.Z && event.getValue() == 1){
-						mapping = keymap.getzUpWheelMapping();
-						isMouseEvent = true;
-					}else if(component.getIdentifier() == Axis.Z && event.getValue() == -1){
-						mapping = keymap.getzDownWheelMapping();
-						isMouseEvent = true;
-					}
-		    /*
-		    }else{
-			// must be middle mouse click
-			mapping = keymap.getMiddleWheelMapping();
-			if(event.getValue() == 0){
-			    isMouseEvent = true;
-			}
-		    }
-		    */
-					if(isMouseEvent){
-						for(HardwareListener listener: this.hardwareListeners){
-							listener.eventIndexPerformed(mapping.getInputHardware().getID()+20);
-						}
+						}catch (NullPointerException v) { }
 					}
 				}
 			}
@@ -531,27 +296,24 @@ public class HardwareEngine implements Runnable{
 		if(output instanceof OutputKey){
 			if(eventValue == 1){
 				// handle modifiers
-				if(output.getModifier() != 0){
+				if(output.getModifier() != 0)
 					robot.keyPress(output.getModifier());
-				}
 				robot.keyPress(output.getKeycode());
 			}else if(eventValue == 0){
 				// note, don't do anything if
 				// the value is 2 (which means repeat)
 				robot.keyRelease(output.getKeycode());
 				// release the modifier after the key has been released
-				if(output.getModifier() != 0){
+				if(output.getModifier() != 0)
 					robot.keyRelease(output.getModifier());
-				}
 			}
 		}else if(output instanceof OutputMouse){
 			OutputMouse outputM = (OutputMouse)output;
 			if(outputM.getMouseType() == MouseType.MouseClick){
-				if(eventValue == 1){
+				if(eventValue == 1)
 					robot.mousePress(outputM.getKeycode());
-				}else if(eventValue == 0){
+				else if(eventValue == 0)
 					robot.mouseRelease(outputM.getKeycode());
-				}
 			}else if(outputM.getMouseType() == MouseType.MouseDoubleClick){
 				if(eventValue == 1){
 					robot.mousePress(outputM.getKeycode());
@@ -562,9 +324,8 @@ public class HardwareEngine implements Runnable{
 					robot.delay(10);
 					robot.mouseRelease(outputM.getKeycode());
 				}
-			}else if(outputM.getMouseType() == MouseType.MouseWheel){
+			}else if(outputM.getMouseType() == MouseType.MouseWheel)
 				robot.mouseWheel(outputM.getKeycode());
-			}
 		}else if(output instanceof OutputKeymapSwitch){
 			if(output.getKeycode() > 0 && output.getKeycode() <= 8){
 				OutputKeymapSwitch outputSwitch = (OutputKeymapSwitch)output;
@@ -587,27 +348,98 @@ public class HardwareEngine implements Runnable{
 		}
 		// don't do anything if output instanceof OutputDisabled
 	}
+	/**
+	 * Attempt to find and initialize the device hardware.
+	 * @return true if the hardware has been found and false otherwise.
+	 */
+	private void rescanHardware(){
+		scanHardware(getControllers(false));
+	}
+	private void scanHardware(){
+		doesHardwareExist = false;
+		scanHardware(getControllers(true));
+	}
+	private void scanHardware(Controller[] controllers){
+		boolean found = false;
+		for(Controller controller: controllers){
+			//System.out.println("Controller: "+controller);
+			if (controller.getName().equals(device.getDeviceInformation().getJinputName())) {
+				found = true;
+				hardwareConnected(controller);
+			}
+		}
+		if (!found || pollFail) {
+			hardwareDisconnected();
+			pollFail = false;
+		}
+	}
+	/**
+	 * Set if hardware has been disconnected.
+	 */
+	private void hardwareDisconnected(){
+		if (!hardwareExist()) return;
+		stopPolling();
+		keyboards.clear();
+		if(hasMouse) mouse = null;
+		device.setIsEnabled(false);
+		doesHardwareExist = false;
+		synchronized(hardwareListener) {
+				hardwareListener.hardwareStatusChange(hardwareExist(),device.getDeviceInformation().getJinputName());
+		}
+		System.out.println(device.getDeviceInformation().getName()+" disconnected");
+	}
+	/**
+	 * Set if hardware has connected.
+	 */
+	private void hardwareConnected(Controller controller){
+		if (hardwareExist()) return;
+		if (controller.getType() == Controller.Type.KEYBOARD) {
+			Keyboard keyboard;
+			keyboard = (Keyboard)controller;
+			keyboards.clear();
+			keyboards.add((Keyboard)controller);
+			keyboardEventQueues.clear();
+			keyboardEventQueues.add(new PollEventQueue(keyboard.getComponents()));
+		}
+		else if (controller.getType() == Controller.Type.MOUSE) {
+			mouse = (Mouse)controller;
+			if(mouse.getX() != null && !mouse.getX().isRelative())
+				isMouseRelative = false;
+			else isMouseRelative = true;
+			float width = MouseInfo.getPointerInfo().getDevice().getDisplayMode().getWidth();
+			float height = MouseInfo.getPointerInfo().getDevice().getDisplayMode().getHeight();
+			unit_width = 1f/width;
+			unit_height = 1f/height;
+			mouseEventQueue = new PollEventQueue(mouse.getComponents());
+		}
+		doesHardwareExist = true;
+		synchronized(hardwareListener) {
+			hardwareListener.hardwareStatusChange(hardwareExist(),device.getDeviceInformation().getJinputName());
+		}
+		if (device.isEnabled()) startPolling(device.getProfile());
+		System.out.println(device.getDeviceInformation().getName()+" connected");
+	}
+
+	/**
+	 * Returns a list of controllers. Uses native methods.
+	 *
+	 * @return
+	 */
+	private static synchronized Controller[] getControllers(boolean firstScan) {
+		if (firstScan) return LinuxEnvironmentPlugin.getDefaultEnvironment().getControllers();
+		else return LinuxEnvironmentPlugin.getDefaultEnvironment().rescanControllers();
+		//return LinuxEnvironmentPlugin.getDefaultEnvironment().getControllers();
+	}
 	// ============= Implemented Methods ============== //
 	@Override
 	public void run(){
 		isPolling = true;
-		if(this.isEditMode()){
-			pollEditMode();
-		}else{
-			pollNormalMode();
-		}
+		pollNormalMode();
 		isPolling = false;
 	}
-// ============= Extended Methods ============== //
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
-
+	// ============= Private Classes ============== //
+	private class HardwareScanScheduler extends TimerTask {
+		@Override
+		public void run() { rescanHardware(); }
+	}
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

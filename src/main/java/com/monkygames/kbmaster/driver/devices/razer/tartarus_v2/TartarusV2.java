@@ -79,7 +79,7 @@ public class TartarusV2 extends Device{
 	inputMaps.put(i,new InputMap(i++,Key.LALT.getName(),   KeyEvent.VK_ALT));
 	inputMaps.put(28,new InputMap(28,
 			net.java.games.input.Component.Identifier.Button.MIDDLE.getName(),
-			InputEvent.BUTTON2_MASK));
+			InputEvent.BUTTON2_DOWN_MASK));
 
     }
 // ============= Public Methods ============== //
@@ -214,7 +214,7 @@ public class TartarusV2 extends Device{
 	// wheel
 	net.java.games.input.Component.Identifier.Button jinputB;
 	jinputB = net.java.games.input.Component.Identifier.Button.MIDDLE;
-	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(28,jinputB.getName()),new OutputMouse(jinputB.getName(), InputEvent.BUTTON2_MASK, OutputMouse.MouseType.MouseClick)));
+	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(28,jinputB.getName()),new OutputMouse(jinputB.getName(), InputEvent.BUTTON2_DOWN_MASK, OutputMouse.MouseType.MouseClick)));
 	keymap.setzUpWheelMapping(new WheelMapping(new Wheel(26),new OutputMouse("Scroll Up",-1, OutputMouse.MouseType.MouseWheel)));
 	keymap.setzDownWheelMapping(new WheelMapping(new Wheel(27),new OutputMouse("Scroll Down",1, OutputMouse.MouseType.MouseWheel)));
 
