@@ -1,7 +1,4 @@
 .gradle/*
-gradle/*
-gradlew*
-/libs/native/.gradle/*
 /libs/other/*
 .idea/*
 build/*

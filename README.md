@@ -11,6 +11,11 @@ Keyboarding Master uses Gradle 6.5 as the build tool.  Issue the following comma
 * *gradle build*: Builds The project
 * *gradle run*: Runs the project
 
+Alternatively, you may try the Gradle Wrapper:
+
+* *./gradlew build*: Builds The project
+* *./gradlew run*: Runs the project
+
 Additional developer documentation is [here](https://kbmaster.atlassian.net/wiki/display/KBM/Developer+Documentation)
 
 ## Support
