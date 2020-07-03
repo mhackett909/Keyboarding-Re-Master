@@ -137,7 +137,6 @@ public class HardwareEngine implements Runnable{
 	 * Begins hardware scanning.
 	 */
 	 public void startScanning() {
-	 	System.out.println("Starting");
 		 scanHardware();
 		 timerTask = new HardwareScanScheduler();
 		 timer = new Timer();
@@ -397,7 +396,7 @@ public class HardwareEngine implements Runnable{
 		synchronized(hardwareListener) {
 				hardwareListener.hardwareStatusChange(hardwareExist(),device.getDeviceInformation().getJinputName());
 		}
-		System.out.println(device.getDeviceInformation().getName()+" disconnected");
+		//System.out.println(device.getDeviceInformation().getName()+" disconnected");
 	}
 	/**
 	 * Set if hardware has connected.
@@ -436,7 +435,7 @@ public class HardwareEngine implements Runnable{
 			hardwareListener.hardwareStatusChange(hardwareExist(),device.getDeviceInformation().getJinputName());
 		}
 		if (device.isEnabled()) startPolling(device.getProfile());
-		System.out.println(device.getDeviceInformation().getName()+" connected");
+		//System.out.println(device.getDeviceInformation().getName()+" connected");
 	}
 
 	/**

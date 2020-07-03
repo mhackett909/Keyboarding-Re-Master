@@ -49,7 +49,11 @@ public class NewProgramUIController extends PopupController{
     private ImageView appIV;
     @FXML
     private ImageView devIV;
-    /**
+	/**
+	 * The name of the current device.
+	 */
+	private String deviceName;
+	/**
      * The full path to the file.
      */
     private String appLogoPath = null;
@@ -68,6 +72,7 @@ public class NewProgramUIController extends PopupController{
     public void setProfileManager(ProfileManager profileManager){
 	this.profileManager = profileManager;
     }
+    public void setDeviceName(String deviceName) { this.deviceName = deviceName; }
     public void okEventFired(ActionEvent evt){
 	AppType type;
 
@@ -93,6 +98,7 @@ public class NewProgramUIController extends PopupController{
 					  appLogoPath,
 					  devLogoPath,
 					  appName,
+					  deviceName,
 					  type))){
 	    PopupManager.getPopupManager().showError("App name already exists");
 	    return;

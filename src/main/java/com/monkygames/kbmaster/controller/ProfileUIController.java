@@ -98,6 +98,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
     private DeleteProfileUIController deleteProfileUIController;
     private DeleteProgramUIController deleteProgramUIController;
     private DisplayKeymapUIController displayKeymapUIController;
+	private ResetKeymapUIController resetKeymapUIController;
     private File profileDir;
     public static final String profileDirS = "profiles";
     private Device device;
@@ -256,11 +257,36 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		displayKeymapUIController.displayKeymap(currentProfile.getKeymaps(),keymapID);
 	}
 	/**
+	 * Opens the reset keymap popup with the specified keymap id.
+	 * @param keymapID from 0 to 7.
+	 */
+	public void openResetKeymapPopup(int keymapID){
+		if (!checkDevice()) return;
+		if (currentProfile == null) {
+			PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
+			return;
+		}
+		try{
+			URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/ResetKeymapUI.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(location);
+			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+			Parent root = fxmlLoader.load(location.openStream());
+			resetKeymapUIController = fxmlLoader.getController();
+			Stage stage = WindowUtil.createStage(root);
+			resetKeymapUIController.setStage(stage);
+			resetKeymapUIController.setUI(keymapID, currentProfile.getProfileName());
+			resetKeymapUIController.addNotification(this);
+			stage.show();
+		}catch(IOException e){}
+	}
+	/**
 	 * Note, this needs to be called before other methods.
 	 */
 	public void setDeviceMenuController(DeviceMenuUIController deviceMenuController){
 		this.deviceMenuController = deviceMenuController;
 	}
+	public Device getDevice() { return device; }
 	/**
 	 * Returns the selected application type.
 	 */
@@ -376,6 +402,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	    }
 	}
 	newProgramUIController.setProfileManager(profileManager);
+	newProgramUIController.setDeviceName(device.getDeviceInformation().getName());
 	newProgramUIController.showStage();
 	newProgramUIController.setAppType(typeCB.getSelectionModel().getSelectedIndex());
 
@@ -580,6 +607,10 @@ public class ProfileUIController implements Initializable, ChangeListener<String
      * Opens a file selector and writes the profile out.
      */
     private void exportProfile(){
+   	if (currentProfile == null) {
+		PopupManager.getPopupManager().showError("No profile selected.");
+		return;
+	}
 	File file = kmpFileChooser.showSaveDialog(null);
 	if(file != null){
 	    if (!profileManager.exportProfile(file, currentProfile)) PopupManager.getPopupManager().showError("Export failed. Please save as .xml");
@@ -724,6 +755,13 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 				appsCB.getSelectionModel().select(app);
 				appsCB.valueProperty().addListener(appChangeListener);
 			break;
+			case "ResetKeymap":
+				int selectedKeymap = keymapTabPane.getSelectionModel().getSelectedIndex();
+				device.setDefaultKeymap(device.getProfile(), selectedKeymap);
+				setKeymapDescription(selectedKeymap, "");
+				DriverUIController driverUIController = keymapUIManager.getDriverUIController(selectedKeymap);
+				driverUIController.setSelectedKeymap(device.getProfile().getKeymap(selectedKeymap));
+				//break missing on purpose
 			case "Save":
 				currentProfile.setLastUpdatedDate(Calendar.getInstance().getTimeInMillis());
 				saveProfile();

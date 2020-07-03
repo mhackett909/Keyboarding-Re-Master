@@ -106,7 +106,7 @@
     </HBox>
     <HBox alignment="CENTER_RIGHT" layoutX="581.0" layoutY="689.0" prefHeight="41.0" prefWidth="391.0" spacing="5.0">
       <children>
-        <Button fx:id="eraseKeymapB" mnemonicParsing="false" onAction="#handleButtonAction" text="Reset Keymap" />
+        <Button fx:id="resetKeymapB" mnemonicParsing="false" onAction="#handleButtonAction" text="Reset Keymap" />
         <Button fx:id="displayKeymapB" mnemonicParsing="false" onAction="#handleButtonAction" text="Display Keymap" />
         <Button fx:id="hideB" mnemonicParsing="false" onAction="#handleButtonAction" prefWidth="95.0" text="Save" />
       </children>

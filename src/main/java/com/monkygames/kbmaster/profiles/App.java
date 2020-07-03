@@ -38,6 +38,10 @@ public class App implements Comparable{
      * The name of this app.
      */
     private String name;
+	/**
+	 * The name of this app.
+	 */
+	private String deviceName;
     /**
      * The type of App.
      */
@@ -58,11 +62,12 @@ public class App implements Comparable{
      * @param name
      * @param appType
      */
-    public App(String info, String appLogoPath, String devLogoPath, String name, AppType appType){
+    public App(String info, String appLogoPath, String devLogoPath, String name, String deviceName, AppType appType){
 	this.info = info;
 	setAppLogoPath(appLogoPath);
 	setDevLogoPath(devLogoPath);
 	this.name = name;
+	this.deviceName = deviceName;
 	this.appType = appType;
 	profiles = new ArrayList<>();
     }
@@ -123,6 +128,7 @@ public class App implements Comparable{
     public String getName() {
 	return name;
     }
+    public String getDeviceName() { return deviceName; }
 
     public void setName(String name) {
 	this.name = name;

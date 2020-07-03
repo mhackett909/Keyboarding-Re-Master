@@ -4,12 +4,15 @@ package com.monkygames.kbmaster.profiles;
  * @author vapula87
  */
 public class AppInfo {
-    public String appName;
-    public AppType appType;
+    private String appName;
+    private AppType appType;
+    private String deviceName;
     public AppInfo(App app) {
         appName = app.getName();
         appType = app.getAppType();
+        deviceName = app.getDeviceName();
     }
     public String getName() { return appName; }
+    public String getDeviceName() { return deviceName; }
     public AppType getAppType() { return appType; }
 }

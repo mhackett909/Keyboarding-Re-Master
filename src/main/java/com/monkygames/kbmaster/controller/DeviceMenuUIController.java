@@ -505,7 +505,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	else apps = FXCollections.observableArrayList(profileManager.getGamesRoot().getList());
 	App appName = null;
 	for (App app : apps) {
-		if (app.toString().equals(deviceEntry.getDevice().getProfile().getAppInfo().appName)) {
+		if (app.toString().equals(deviceEntry.getDevice().getProfile().getAppInfo().getName())) {
 			appName = app;
 			break;
 		}
