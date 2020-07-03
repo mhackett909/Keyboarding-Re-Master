@@ -171,7 +171,7 @@ public class KeyboardingMaster extends Application {
      * Exit the program.
      */
     public void exit(){
-        System.exit(1);
+        System.exit(0);
     }
 
     public void logout(){

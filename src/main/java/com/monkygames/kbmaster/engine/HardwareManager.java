@@ -53,7 +53,7 @@ public class HardwareManager implements HardwareListener{
 		return false;
 	}
 	/**
-	 * Disable the specified device but continue to poll to check
+	 * Disable the specified device but continue to check
 	 * for device status.
 	 * @param device the device to disable.
 	 */
@@ -69,6 +69,7 @@ public class HardwareManager implements HardwareListener{
 	public boolean removeDevice(Device device){
 		HardwareEngine engine = engines.remove(device.getDeviceInformation().getJinputName());
 		engine.stopPolling();
+		engine.stopScanning();
 		if(engine != null) return true;
 		return false;
 	}
@@ -84,12 +85,25 @@ public class HardwareManager implements HardwareListener{
 		engine.startPolling(profile);
 	}
 	/**
-	 * Stops all devices from polling.
+	 * Stops all polling threads.
 	 */
 	public void stopPollingAllDevices(){
 		for(HardwareEngine engine: engines.values())
 			engine.stopPolling();
 	}
+	/**
+	 * Stops all hardware scanning threads.
+	 */
+	public void stopScanningAllDevices() {
+		for (HardwareEngine engine: engines.values())
+			engine.stopScanning();
+	}
+	/**
+	 * Alerts the user interface of a change in device status.
+	 *
+	 * @param hasConnected true if the hardware has been connected or false for disconnected.
+	 * @param deviceName the name of the device that was connected or disconnected.
+	 */
 	@Override
 	public void hardwareStatusChange(boolean hasConnected, String deviceName) {
 		// update device connection status

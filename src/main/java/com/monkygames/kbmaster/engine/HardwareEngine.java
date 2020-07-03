@@ -137,11 +137,22 @@ public class HardwareEngine implements Runnable{
 	 * Begins hardware scanning.
 	 */
 	 public void startScanning() {
+	 	System.out.println("Starting");
 		 scanHardware();
 		 timerTask = new HardwareScanScheduler();
 		 timer = new Timer();
 		 timer.schedule(timerTask,sleepPassive,sleepPassive);
 	 }
+	/**
+	 * Halts hardware scanning.
+	 */
+	public void stopScanning() {
+		timerTask.cancel();
+		timer.cancel();
+	}
+	/**
+	 *
+	 */
 	/**
 	 * Sets that this hardware should be grabbed if already detected.
 	 */
@@ -360,6 +371,7 @@ public class HardwareEngine implements Runnable{
 		scanHardware(getControllers(true));
 	}
 	private void scanHardware(Controller[] controllers){
+		//System.out.println("///---Scanning Controllers---\\\\\\");
 		boolean found = false;
 		for(Controller controller: controllers){
 			//System.out.println("Controller: "+controller);
@@ -428,7 +440,6 @@ public class HardwareEngine implements Runnable{
 	private static synchronized Controller[] getControllers(boolean firstScan) {
 		if (firstScan) return LinuxEnvironmentPlugin.getDefaultEnvironment().getControllers();
 		else return LinuxEnvironmentPlugin.getDefaultEnvironment().rescanControllers();
-		//return LinuxEnvironmentPlugin.getDefaultEnvironment().getControllers();
 	}
 	// ============= Implemented Methods ============== //
 	@Override

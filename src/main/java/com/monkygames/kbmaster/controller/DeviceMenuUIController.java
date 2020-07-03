@@ -588,6 +588,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      */
     private void cleanUp(){
 		RepeatManager.setRepeat(true);
+		hardwareManager.stopScanningAllDevices();
     	hardwareManager.stopPollingAllDevices();
     }
 // ============= Extended Methods ============== //
