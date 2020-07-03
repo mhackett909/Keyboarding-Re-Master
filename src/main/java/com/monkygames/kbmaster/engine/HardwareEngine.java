@@ -151,9 +151,6 @@ public class HardwareEngine implements Runnable{
 		timer.cancel();
 	}
 	/**
-	 *
-	 */
-	/**
 	 * Sets that this hardware should be grabbed if already detected.
 	 */
 	public void grabHardware(boolean isEnabled){
@@ -226,7 +223,9 @@ public class HardwareEngine implements Runnable{
 				}
 			}
 			// Determines whether to process the output or not
-			if (!isEnabled) continue;
+			if (!isEnabled) {
+				continue;
+			}
 			// handle keyboard events
 			for(PollEventQueue keyboardEventQueue: this.keyboardEventQueues){
 				for(Event event: keyboardEventQueue.getEvents()){
@@ -403,9 +402,17 @@ public class HardwareEngine implements Runnable{
 	/**
 	 * Set if hardware has connected.
 	 */
-	private void hardwareConnected(Controller controller){
-		if (hardwareExist()) return;
-		if (controller.getType() == Controller.Type.KEYBOARD) {
+	private void hardwareConnected(Controller controller) {
+		Controller.Type type = controller.getType();
+		if (hardwareExist()) {
+			if (type == Controller.Type.KEYBOARD) {
+				for (Keyboard keyboard : keyboards) {
+					if (keyboard == controller) return;
+				}
+			}
+			else if (mouse == controller) return;
+		}
+		if (type == Controller.Type.KEYBOARD) {
 			Keyboard keyboard;
 			keyboard = (Keyboard)controller;
 			keyboards.clear();
@@ -413,7 +420,7 @@ public class HardwareEngine implements Runnable{
 			keyboardEventQueues.clear();
 			keyboardEventQueues.add(new PollEventQueue(keyboard.getComponents()));
 		}
-		else if (controller.getType() == Controller.Type.MOUSE) {
+		else if (type == Controller.Type.MOUSE) {
 			mouse = (Mouse)controller;
 			if(mouse.getX() != null && !mouse.getX().isRelative())
 				isMouseRelative = false;
