@@ -5,12 +5,10 @@ package com.monkygames.kbmaster.util;
 
 import com.monkygames.kbmaster.controller.DriverUIController;
 import com.monkygames.kbmaster.controller.PopupNotifyInterface;
-import com.monkygames.kbmaster.controller.ProfileUIController;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.profiles.Profile;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Driver;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,7 +35,6 @@ public class KeymapUIManager implements ChangeListener{
     private DriverUIController[] driverUIController;
     private Profile profile;
     private Label keymapDescription;
-    private ProfileUIController profileUIController;
 // ============= Constructors ============== //
     public KeymapUIManager(){
 	driverUIController = new DriverUIController[8];
@@ -73,12 +70,6 @@ public class KeymapUIManager implements ChangeListener{
 			driverUIController[i].setSelectedKeymap(profile.getKeymap(i));
 		}
     }
-	/**
-	 * Adds a profile UI controller. Needed for saving.
-	 */
-	 public void setProfileUIController(ProfileUIController profileUIController) {
-	 	this.profileUIController = profileUIController;
-	 }
 	/**
 	 * Gets the DriverUIController. Used for resetting keymap to default.
 	 */

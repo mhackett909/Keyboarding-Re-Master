@@ -280,7 +280,7 @@ public class XStreamManager {
      * Singleton for returning the manager.
      * @return A singleton that manages the XStreams.
      */
-    public static XStreamManager getStreamManager(){
+    public static synchronized XStreamManager getStreamManager(){
         if(xStreamManager == null){
             xStreamManager = new XStreamManager();
         }

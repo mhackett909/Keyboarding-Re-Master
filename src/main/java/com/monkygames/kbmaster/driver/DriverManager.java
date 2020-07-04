@@ -25,15 +25,15 @@ public class DriverManager{
      */
     ArrayList<String> mouseMakes;
 // ============= Constructors ============== //
-    public DriverManager(){
-	devices = new ArrayList<>();
-	keyboardMakes = new ArrayList<>();
-	mouseMakes = new ArrayList<>();
-	// initialize all drivers by make
-	createRazerDrivers();
-	createBelkinDrivers();
-        createOtherDrivers();
-    }
+    public DriverManager() {
+		devices = new ArrayList<>();
+		keyboardMakes = new ArrayList<>();
+		mouseMakes = new ArrayList<>();
+		// initialize all drivers by make
+		createRazerDrivers();
+		createBelkinDrivers();
+		createOtherDrivers();
+	}
 // ============= Public Methods ============== //
     public ArrayList<Device> getDevices(){
 	return devices;
@@ -104,18 +104,18 @@ public class DriverManager{
      * Adds a device and sets up the appropriate make information.
      * @param device the device to add.
      */
-    private void addDevice(Device device){
-	devices.add(device);
-	if(device.getDeviceInformation().getDeviceType() == DeviceType.KEYBOARD){
-	    if(!keyboardMakes.contains(device.getDeviceInformation().getMake())){
-		keyboardMakes.add(device.getDeviceInformation().getMake());
-	    }
-	}else if(device.getDeviceInformation().getDeviceType() == DeviceType.MOUSE){
-	    if(!mouseMakes.contains(device.getDeviceInformation().getMake())){
-		mouseMakes.add(device.getDeviceInformation().getMake());
-	    }
+    private void addDevice(Device device) {
+		devices.add(device);
+		if (device.getDeviceInformation().getDeviceType() == DeviceType.KEYBOARD) {
+			if (!keyboardMakes.contains(device.getDeviceInformation().getMake())) {
+				keyboardMakes.add(device.getDeviceInformation().getMake());
+			}
+		} else if (device.getDeviceInformation().getDeviceType() == DeviceType.MOUSE) {
+			if (!mouseMakes.contains(device.getDeviceInformation().getMake())) {
+				mouseMakes.add(device.getDeviceInformation().getMake());
+			}
+		}
 	}
-    }
     /**
      * Handles creating all Razer drivers.
      * Includes mice and keyboards.

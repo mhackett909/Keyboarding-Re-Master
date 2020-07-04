@@ -4,7 +4,6 @@
 package com.monkygames.kbmaster.engine;
 
 // === jinput imports === //
-import com.monkygames.kbmaster.controller.DeviceMenuUIController;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.input.*;
 import com.monkygames.kbmaster.input.OutputMouse.MouseType;
@@ -43,7 +42,6 @@ public class HardwareEngine implements Runnable{
 	private Mouse mouse;
 	private ArrayList<PollEventQueue> keyboardEventQueues;
 	private PollEventQueue mouseEventQueue;
-	private DeviceMenuUIController deviceMenuUIController;
 	/**
 	 * Timer for checking hardware status.
 	 */
@@ -97,7 +95,7 @@ public class HardwareEngine implements Runnable{
 	/**
 	 * A list of listeners for hardware status change.
 	 */
-	private final HardwareListener hardwareListener;
+	private final HardwareManager hardwareManager;
 	/**
 	 * The amount of time to check for new devices.
 	 */
@@ -119,11 +117,11 @@ public class HardwareEngine implements Runnable{
 	 */
 	private boolean hasMouse = true;
 	// ============= Constructors ============== //
-	public HardwareEngine(Device device, HardwareListener hardwareListener){
+	public HardwareEngine(Device device, HardwareManager hardwareManager){
 		event = new Event();
 		keyboards = new ArrayList<>();
 		this.mouseEventQueue = null;
-		this.hardwareListener = hardwareListener;
+		this.hardwareManager = hardwareManager;
 		this.keyboardEventQueues = new ArrayList<>();
 		this.device = device;
 		try { robot = new Robot();}
@@ -168,7 +166,6 @@ public class HardwareEngine implements Runnable{
 		}
 		this.isEnabled = isEnabled;
 	}
-	public void setDeviceMenuUIController(DeviceMenuUIController deviceMenuUIController) { this.deviceMenuUIController = deviceMenuUIController; }
 	public Device getDevice(){ return device; }
 	/**
 	 * Returns true if the hardware is found.
@@ -297,8 +294,8 @@ public class HardwareEngine implements Runnable{
 			isKeymapOnRelease = false;
 			profile.setDefaultKeymap(previousKeymap.getID()-1);
 			try{
-				if (deviceMenuUIController.getProfileUIController().getCurrentProfile() == profile)
-					deviceMenuUIController.getProfileUIController().getKeymapTabPane().getSelectionModel().select(previousKeymap.getID()-1);
+				if (hardwareManager.getProfileUIController().getCurrentProfile() == profile)
+					hardwareManager.getProfileUIController().getKeymapTabPane().getSelectionModel().select(previousKeymap.getID()-1);
 			}catch (NullPointerException e) { }
 			return;
 		}
@@ -348,8 +345,8 @@ public class HardwareEngine implements Runnable{
 						}
 						profile.setDefaultKeymap(output.getKeycode()-1);
 						try {
-							if (deviceMenuUIController.getProfileUIController().getCurrentProfile() == profile)
-								deviceMenuUIController.getProfileUIController().getKeymapTabPane().getSelectionModel().select(output.getKeycode()-1);
+							if (hardwareManager.getProfileUIController().getCurrentProfile() == profile)
+								hardwareManager.getProfileUIController().getKeymapTabPane().getSelectionModel().select(output.getKeycode()-1);
 						}catch (NullPointerException e) { }
 					}
 				}
@@ -393,8 +390,8 @@ public class HardwareEngine implements Runnable{
 		if(hasMouse) mouse = null;
 		device.setIsEnabled(false);
 		doesHardwareExist = false;
-		synchronized(hardwareListener) {
-				hardwareListener.hardwareStatusChange(hardwareExist(),device.getDeviceInformation().getJinputName());
+		synchronized(hardwareManager) {
+				hardwareManager.hardwareStatusChange(hardwareExist(),device.getDeviceInformation().getJinputName());
 		}
 		//System.out.println(device.getDeviceInformation().getName()+" disconnected");
 	}
@@ -431,8 +428,8 @@ public class HardwareEngine implements Runnable{
 			mouseEventQueue = new PollEventQueue(mouse.getComponents());
 		}
 		doesHardwareExist = true;
-		synchronized(hardwareListener) {
-			hardwareListener.hardwareStatusChange(hardwareExist(),device.getDeviceInformation().getJinputName());
+		synchronized(hardwareManager) {
+			hardwareManager.hardwareStatusChange(hardwareExist(),device.getDeviceInformation().getJinputName());
 		}
 		if (device.isEnabled()) startPolling(device.getProfile());
 		//System.out.println(device.getDeviceInformation().getName()+" connected");

@@ -10,7 +10,6 @@ import com.monkygames.kbmaster.controller.profile.DeleteProgramUIController;
 import com.monkygames.kbmaster.controller.profile.NewProfileUIController;
 import com.monkygames.kbmaster.controller.profile.NewProgramUIController;
 import com.monkygames.kbmaster.driver.Device;
-import com.monkygames.kbmaster.io.XStreamManager;
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.Profile;
 import java.io.File;
@@ -171,10 +170,10 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		keymapUIManager.setDevice(device);
 		keymapUIManager.initializeTabs();
 		keymapUIManager.setProfile(currentProfile);
-		keymapUIManager.setProfileUIController(this);
 		keymapUIManager.addSaveNotification(this);
-		String deviceName = device.getDeviceInformation().getProfileName();
-		profileManager = new ProfileManager(profileDir+File.separator+deviceName);
+		String profileName = device.getDeviceInformation().getProfileName();
+		if (profileManager != null) profileManager.close();
+		profileManager = new ProfileManager(profileDir+File.separator+profileName);
 		profileManager.setUIController(this);
 		if(newProfileUIController != null){
 	    	newProfileUIController.setProfileManager(profileManager);
@@ -309,7 +308,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		App selectedApp = (App) appsCB.getSelectionModel().getSelectedItem();
 		if (selectedApp != null) selectedApp.setInfo(appInfoTA.getText());
 		profileManager.saveProfile();
-		deviceMenuController.getGlobalAccount().save();
+		deviceMenuController.getDeviceManager().save();
 	}
 	/**
 	 * The profiles combo box selected a new profile.
@@ -649,7 +648,6 @@ public class ProfileUIController implements Initializable, ChangeListener<String
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-	//profileManager = new ProfileManager("local.db4o");
 	defaultAppLogoImage = new Image("/com/monkygames/kbmaster/fxml/resources/profile/app_logo.png");
 	defaultDevLogoImage = new Image("/com/monkygames/kbmaster/fxml/resources/profile/dev_logo.png");
 	

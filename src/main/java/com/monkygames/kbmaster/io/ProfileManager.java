@@ -108,6 +108,7 @@ public class ProfileManager {
 		// export to an xml file only
 		if (!extension.equals(".xml")) return false;
 		if (file.exists()) file.delete();
+		//Ensure the currently selected keymap is saved before export
 		profileUIController.saveProfile();
 		return XStreamManager.getStreamManager().writeProfile(file.getAbsolutePath(), profile);
 	}

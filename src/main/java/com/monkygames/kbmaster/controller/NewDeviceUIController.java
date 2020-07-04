@@ -14,7 +14,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 // === kbmaster imports === //
-import com.monkygames.kbmaster.account.GlobalAccount;
+import com.monkygames.kbmaster.account.DeviceManager;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.driver.DeviceType;
 import com.monkygames.kbmaster.util.PopupManager;
@@ -54,7 +54,7 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
     private Hyperlink amazonLink;
 
     private Stage stage;
-    private GlobalAccount globalAccount;
+    private DeviceManager deviceManager;
     /**
      * Used for notifying the main application when a user selects a new
      * device to add to the local account.
@@ -65,8 +65,8 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
     public void setStage(Stage stage){
 	this.stage = stage;
     }
-    public void setAccount(GlobalAccount globalAccount){
-	this.globalAccount = globalAccount;
+    public void setAccount(DeviceManager deviceManager){
+	this.deviceManager = deviceManager;
     }
     public void cancelEventFired(ActionEvent evt){
 	reset();
@@ -79,11 +79,11 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 	Device device = null;
 	switch(index){
 	    case 1:
-		device = globalAccount.getDriverManager().getDevice(DeviceType.MOUSE, make, model);
+		device = deviceManager.getDriverManager().getDevice(DeviceType.MOUSE, make, model);
 		break;
 	    case 0:
 	    default:
-		device = globalAccount.getDriverManager().getDevice(DeviceType.KEYBOARD, make, model);
+		device = deviceManager.getDriverManager().getDevice(DeviceType.KEYBOARD, make, model);
 	}
 	if(device == null){
 	    PopupManager.getPopupManager().showError("Device could not be found");
@@ -158,7 +158,7 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 	deviceNameCB.valueProperty().removeListener(this);
 
 	deviceTypeCB.getItems().removeAll();
-	List<String> list = globalAccount.getDriverManager().getDevicesByMake(type, make);
+	List<String> list = deviceManager.getDriverManager().getDevicesByMake(type, make);
 	ObservableList<String> modelsList = FXCollections.observableArrayList(list);
 	deviceNameCB.setItems(modelsList);
 
@@ -177,7 +177,7 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
      */
     private void setDeviceInformation(DeviceType type, String make, String model, String link) {
 		// find device
-		Device device = globalAccount.getDriverManager().getDevice(type, make, model);
+		Device device = deviceManager.getDriverManager().getDevice(type, make, model);
 		if (device == null) {
 			PopupManager.getPopupManager().showError("Unable to find device");
 			return;
@@ -228,11 +228,11 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 	    int index = deviceTypeCB.getSelectionModel().getSelectedIndex();
 	    switch(index){
 		case 1:
-		    setMakeComboBox(globalAccount.getDriverManager().getMouseMakes());
+		    setMakeComboBox(deviceManager.getDriverManager().getMouseMakes());
 		    break;
 		case 0:
 		default:
-		    setMakeComboBox(globalAccount.getDriverManager().getKeyboardMakes());
+		    setMakeComboBox(deviceManager.getDriverManager().getKeyboardMakes());
 	    }
 	}else if(ov == deviceMakeCB.valueProperty()){
 	    int index = deviceTypeCB.getSelectionModel().getSelectedIndex();
@@ -250,11 +250,11 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 	    String link;
 	    switch(index){
 		case 1:
-		    link = globalAccount.getDriverManager().getDevice(DeviceType.MOUSE, make, newValue).getDeviceInformation().getAmazonLink();
+		    link = deviceManager.getDriverManager().getDevice(DeviceType.MOUSE, make, newValue).getDeviceInformation().getAmazonLink();
 		    setDeviceInformation(DeviceType.MOUSE,make,newValue,link);
 		    break;
 		default:
-		    link = globalAccount.getDriverManager().getDevice(DeviceType.KEYBOARD, make, newValue).getDeviceInformation().getAmazonLink();
+		    link = deviceManager.getDriverManager().getDevice(DeviceType.KEYBOARD, make, newValue).getDeviceInformation().getAmazonLink();
 		    setDeviceInformation(DeviceType.KEYBOARD,make,newValue,link);
 	    }
 	}

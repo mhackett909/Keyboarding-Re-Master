@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * available locally.
  * @version 1.0
  */
-public class GlobalAccount{
+public class DeviceManager {
 
 // ============= Class variables ============== //
 
@@ -43,7 +43,7 @@ public class GlobalAccount{
     private DriverManager driverManager;
 
 // ============= Constructors ============== //
-    public GlobalAccount(){
+    public DeviceManager(){
 	driverManager = new DriverManager();
 
 	// populate supported devices
@@ -54,10 +54,10 @@ public class GlobalAccount{
 	// instantiate devices
 	for(DevicePackage devicePackage: deviceList.getList()){
 	    Device device = driverManager.getDeviceByPackageName(devicePackage.getDevice().getDeviceState().getPackageName());
-	    if(device != null){
-		device.setDeviceState(devicePackage.getDevice().getDeviceState());
-		installedDevices.add(device);
-	    }
+	    if(device != null) {
+			device.setDeviceState(devicePackage.getDevice().getDeviceState());
+			installedDevices.add(device);
+		}
 	}
     }
 

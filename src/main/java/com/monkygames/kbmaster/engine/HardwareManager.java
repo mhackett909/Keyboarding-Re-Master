@@ -5,6 +5,7 @@ package com.monkygames.kbmaster.engine;
 
 // === imports === //
 import com.monkygames.kbmaster.controller.DeviceMenuUIController;
+import com.monkygames.kbmaster.controller.ProfileUIController;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.profiles.Profile;
 import java.util.HashMap;
@@ -37,7 +38,6 @@ public class HardwareManager implements HardwareListener{
 	public boolean addManagedDevice(Device device){
 		HardwareEngine engine = new HardwareEngine(device, this);
 		engines.put(device.getDeviceInformation().getJinputName(),engine);
-		engine.setDeviceMenuUIController(deviceMenuController);
 		engine.startScanning();
 		boolean hardwareExist = engine.hardwareExist();
 		return hardwareExist;
@@ -97,6 +97,15 @@ public class HardwareManager implements HardwareListener{
 	public void stopScanningAllDevices() {
 		for (HardwareEngine engine: engines.values())
 			engine.stopScanning();
+	}
+	/**
+	 * Cleans up engines. Used in memory cleanup.
+	 */
+	public void cleanUpEngines() {
+		for (HardwareEngine engine : engines.values()) engine = null;
+	}
+	public ProfileUIController getProfileUIController() {
+		return deviceMenuController.getProfileUIController();
 	}
 	/**
 	 * Alerts the user interface of a change in device status.

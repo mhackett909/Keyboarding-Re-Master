@@ -6,7 +6,7 @@ package com.monkygames.kbmaster.controller;
 // === javafx imports === //
 import com.monkygames.kbmaster.KeyboardingMaster;
 import com.monkygames.kbmaster.account.CloudAccount;
-import com.monkygames.kbmaster.account.GlobalAccount;
+import com.monkygames.kbmaster.account.DeviceManager;
 import com.monkygames.kbmaster.account.UserSettings;
 import com.monkygames.kbmaster.controller.login.LoginUIController;
 import com.monkygames.kbmaster.driver.Device;
@@ -105,7 +105,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
     /**
      * Contains the device information.
      */
-    private GlobalAccount globalAccount;
+    private DeviceManager deviceManager;
     /**
      * Used for configuring devices.
      */
@@ -144,18 +144,18 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      */
     public void addDevice(Device device){
 		// update global account
-		if(!globalAccount.downloadDevice(device.getDeviceInformation().getPackageName())){
+		if(!deviceManager.downloadDevice(device.getDeviceInformation().getPackageName())){
 	    	PopupManager.getPopupManager().showError("Unable to add device. Is it already added?");
 	   		 return;
 		}
 		updateDevices();
-		globalAccount.save();
+		deviceManager.save();
     }
     /**
      * Removes the device and updates the table.
      */
     public void removeDevice(Device device){
-		if(!globalAccount.removeDownloadedDevice(device)){
+		if(!deviceManager.removeDownloadedDevice(device)){
 	    	PopupManager.getPopupManager().showError("Unable to remove device.");
 	   	 	return;
 		}
@@ -170,7 +170,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 			}
 		}
 		updateDevices();
-		globalAccount.save();
+		deviceManager.save();
     }
     /**
      * Sets the active profile for the specified device.
@@ -183,7 +183,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	/**
 	 * Returns the global account. Used in saving.
 	 */
-	 public GlobalAccount getGlobalAccount() { return globalAccount; }
+	 public DeviceManager getDeviceManager() { return deviceManager; }
 	/**
 	 * Returns the ProfileUIController. Used to bridge engine to UI.
 	 */
@@ -212,7 +212,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 
 	// initialize Global Account first since getDeviceList uses it
 	// to populate the list.
-	globalAccount = new GlobalAccount();
+	deviceManager = new DeviceManager();
 	deviceList = FXCollections.observableArrayList();
 	updateDevices();
     }
@@ -221,7 +221,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      * will be updated to reflect these changes.
      */
 	public void updateDevices() {
-		for (Device device : globalAccount.getInstalledDevices()) {
+		for (Device device : deviceManager.getInstalledDevices()) {
 			if(!hardwareManager.isDeviceManaged(device)) {
 				hardwareManager.addManagedDevice(device);
 				deviceList.add(new DeviceEntry(device));
@@ -370,7 +370,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 		Scene scene = new Scene(root);
 		newDeviceStage = WindowUtil.createStage(root);
 		controller.setStage(newDeviceStage);
-		controller.setAccount(globalAccount);
+		controller.setAccount(deviceManager);
 		controller.setDeviceMenuUIController(this);
 	    } catch (IOException ex) {
 		Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
@@ -440,33 +440,33 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 
     }
 
-    private void openSelectProfileUI(){
-	DeviceEntry deviceEntry = getDeviceEntry();
-	if(deviceEntry == null) {
-		// pop error
-		PopupManager.getPopupManager().showError("No device selected");
-		return;
-	}
-	if(selectProfileController == null){
-	    try {
-		// pop open add new device
-		URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/SelectProfile.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setLocation(location);
-		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-		Parent root = (Parent)fxmlLoader.load(location.openStream());
-		selectProfileController = (SelectProfileUIController) fxmlLoader.getController();
-		Stage stage = WindowUtil.createStage(root);
+    private void openSelectProfileUI() {
+		DeviceEntry deviceEntry = getDeviceEntry();
+		if (deviceEntry == null) {
+			// pop error
+			PopupManager.getPopupManager().showError("No device selected");
+			return;
+		}
+		if (selectProfileController == null) {
+			try {
+				// pop open add new device
+				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/SelectProfile.fxml");
+				FXMLLoader fxmlLoader = new FXMLLoader();
+				fxmlLoader.setLocation(location);
+				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+				Parent root = (Parent) fxmlLoader.load(location.openStream());
+				selectProfileController = (SelectProfileUIController) fxmlLoader.getController();
+				Stage stage = WindowUtil.createStage(root);
 
-		selectProfileController.setStage(stage);
-		selectProfileController.setDeviceMenuController(this);
-	    } catch (IOException ex) {
-		Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
-	    }
+				selectProfileController.setStage(stage);
+				selectProfileController.setDeviceMenuController(this);
+			} catch (IOException ex) {
+				Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+		selectProfileController.setDevice(deviceEntry.getDevice());
+		selectProfileController.show();
 	}
-	selectProfileController.setDevice(deviceEntry.getDevice());
-	selectProfileController.show();
-    }
     private void openDetailsUI(){
 	DeviceEntry deviceEntry = getDeviceEntry();
 	if(deviceEntry == null) {
@@ -590,6 +590,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 		RepeatManager.setRepeat(true);
 		hardwareManager.stopScanningAllDevices();
     	hardwareManager.stopPollingAllDevices();
+    	hardwareManager.cleanUpEngines();
     }
 // ============= Extended Methods ============== //
     @Override
@@ -624,7 +625,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	}
 	// something has changed
 	updateDevices();
-	globalAccount.save();
+	deviceManager.save();
     }
 // ============= Internal Classes ============== //
     public class CheckboxCallback implements Callback<TableColumn<DeviceEntry,Boolean>, TableCell<DeviceEntry,Boolean>> {
