@@ -3,7 +3,7 @@ package com.monkygames.kbmaster.util.about;
 import com.monkygames.kbmaster.KeyboardingMaster;
 
 /* 
- * See COPYING in top-level directory.
+ * See LICENSE in top-level directory.
  */
 
 /**

@@ -1,5 +1,5 @@
 /* 
- * See COPYING in top-level directory.
+ * See LICENSE in top-level directory.
  */
 package com.monkygames.kbmaster.driver;
 

@@ -1,5 +1,5 @@
 /* 
- * See COPYING in top-level directory.
+ * See LICENSE in top-level directory.
  */
 package com.monkygames.kbmaster.controller;
 
@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 // === javafx imports === //
 import com.monkygames.kbmaster.KeyboardingMaster;
+import com.monkygames.kbmaster.engine.HardwareEngine;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
@@ -101,6 +102,7 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
     private void resetDeviceInformation(){
 	iconImageHBox.getChildren().clear();
 	deviceDescriptionTA.setText("");
+	driverStatusL.setText("Disconnected");
 	amazonLink.setText("unavailable");
 	amazonLink.setDisable(true);
 	amazonLink.setVisited(false);
@@ -173,55 +175,52 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
      * @param model the model of the device.
      * @param link the amazon associate link and null if doesn't exist
      */
-    private void setDeviceInformation(DeviceType type, String make, String model, String link){
-	// find device
-	Device device = globalAccount.getDriverManager().getDevice(type, make, model);
-	if(device == null){
-	    PopupManager.getPopupManager().showError("Unable to find device");
-	    return;
+    private void setDeviceInformation(DeviceType type, String make, String model, String link) {
+		// find device
+		Device device = globalAccount.getDriverManager().getDevice(type, make, model);
+		if (device == null) {
+			PopupManager.getPopupManager().showError("Unable to find device");
+			return;
+		}
+		iconImageHBox.getChildren().clear();
+		ImageView imageView = new ImageView(new Image(device.getDeviceInformation().getDeviceIcon()));
+		iconImageHBox.getChildren().add(imageView);
+		deviceDescriptionTA.setText(device.getDeviceInformation().getDeviceDescription());
+		if (link == null) {
+			amazonLink.setText("unavailable");
+			amazonLink.setDisable(true);
+			amazonLink.setVisited(false);
+		} else {
+			amazonLink.setText("buy");
+			amazonLink.setUserData(link);
+			amazonLink.setDisable(false);
+			amazonLink.setVisited(false);
+		}
+		net.java.games.input.Controller[] controllers = HardwareEngine.getControllers(true);
+		boolean connected = false;
+		for (net.java.games.input.Controller controller : controllers) {
+			if (controller.getName().equals(device.getDeviceInformation().getJinputName()))
+				connected = true;
+		}
+		driverStatusL.setText(connected ? "Connected" : "Disconnected");
 	}
-	iconImageHBox.getChildren().clear();
-	ImageView imageView = new ImageView(new Image(device.getDeviceInformation().getDeviceIcon()));
-	iconImageHBox.getChildren().add(imageView);
-
-	deviceDescriptionTA.setText(device.getDeviceInformation().getDeviceDescription());
-	if(link == null){
-	    amazonLink.setText("unavailable");
-	    amazonLink.setDisable(true);
-	    amazonLink.setVisited(false);
-	}else{
-	    amazonLink.setText("buy");
-	    amazonLink.setUserData(link);
-	    amazonLink.setDisable(false);
-	    amazonLink.setVisited(false);
-	}
-    }
 // ============= Implemented Methods ============== //
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-	deviceTypeCB.getItems().removeAll();
-	deviceMakeCB.getItems().removeAll();
-	deviceNameCB.getItems().removeAll();
+		deviceTypeCB.getItems().removeAll();
+		deviceMakeCB.getItems().removeAll();
+		deviceNameCB.getItems().removeAll();
 
-	ObservableList<String> typesList = FXCollections.observableArrayList("Keyboard","Mouse");
-	deviceTypeCB.setItems(typesList);
-	deviceMakeCB.setItems(FXCollections.observableArrayList());
-	deviceNameCB.setItems(FXCollections.observableArrayList());
+		ObservableList<String> typesList = FXCollections.observableArrayList("Keyboard", "Mouse");
+		deviceTypeCB.setItems(typesList);
+		deviceMakeCB.setItems(FXCollections.observableArrayList());
+		deviceNameCB.setItems(FXCollections.observableArrayList());
 
-	deviceTypeCB.valueProperty().addListener(this);
-	deviceMakeCB.valueProperty().addListener(this);
-	deviceNameCB.valueProperty().addListener(this);
+		deviceTypeCB.valueProperty().addListener(this);
+		deviceMakeCB.valueProperty().addListener(this);
+		deviceNameCB.valueProperty().addListener(this);
 
-
-	/*
-	typeCB.getItems().removeAll();
-	Image gameImage = new Image("/com/monkygames/kbmaster/fxml/resources/sort/game.png");
-	Image applicationImage = new Image("/com/monkygames/kbmaster/fxml/resources/sort/application.png");
-	ObservableList<Image> images = FXCollections.observableArrayList(gameImage,applicationImage);
-	typeCB.setItems(images);
-	typeCB.setCellFactory(new ImageCellFactoryCallback());
-	*/
-    }
+	}
 
     @Override
     public void changed(ObservableValue<? extends String> ov, String previousValue, String newValue) {
@@ -254,28 +253,13 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 		    link = globalAccount.getDriverManager().getDevice(DeviceType.MOUSE, make, newValue).getDeviceInformation().getAmazonLink();
 		    setDeviceInformation(DeviceType.MOUSE,make,newValue,link);
 		    break;
-		case 0:
 		default:
-		    link = globalAccount.getDriverManager().getDevice(DeviceType.MOUSE, make, newValue).getDeviceInformation().getAmazonLink();
+		    link = globalAccount.getDriverManager().getDevice(DeviceType.KEYBOARD, make, newValue).getDeviceInformation().getAmazonLink();
 		    setDeviceInformation(DeviceType.KEYBOARD,make,newValue,link);
 	    }
 	}
     }
-
     public void handleAmazonLink(ActionEvent e) {
 	KeyboardingMaster.gotoWeb((String)amazonLink.getUserData());
     }
-
-// ============= Extended Methods ============== //
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
-
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

@@ -1,7 +1,7 @@
 package com.monkygames.kbmaster.util.about;
 
 /* 
- * See COPYING in top-level directory.
+ * See LICENSE in top-level directory.
  */
 
 /**

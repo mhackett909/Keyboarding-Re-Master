@@ -1,5 +1,5 @@
 /* 
- * See COPYING in top-level directory.
+ * See LICENSE in top-level directory.
  */
 package com.monkygames.kbmaster.io;
 
@@ -29,7 +29,7 @@ public class BindingPDFWriter{
 // ============= Class variables ============== //
     /**
      * Writes a PDF file of the images passed in.
-     * @param awtImages the images to write to a pdf file.
+     * @param awtImage the images to write to a pdf file.
      * @param name the title of the pdf document.
      * @param subject the description of this pdf document.
      * @param keywords for this pdf.

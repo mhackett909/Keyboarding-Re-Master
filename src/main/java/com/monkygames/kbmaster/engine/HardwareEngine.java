@@ -1,5 +1,5 @@
 /*
- * See COPYING in top-level directory.
+ * See LICENSE in top-level directory.
  */
 package com.monkygames.kbmaster.engine;
 
@@ -443,7 +443,7 @@ public class HardwareEngine implements Runnable{
 	 *
 	 * @return
 	 */
-	private static synchronized Controller[] getControllers(boolean firstScan) {
+	public static synchronized Controller[] getControllers(boolean firstScan) {
 		if (firstScan) return LinuxEnvironmentPlugin.getDefaultEnvironment().getControllers();
 		else return LinuxEnvironmentPlugin.getDefaultEnvironment().rescanControllers();
 	}

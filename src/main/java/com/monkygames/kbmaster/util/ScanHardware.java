@@ -1,8 +1,9 @@
 /* 
- * See COPYING in top-level directory.
+ * See LICENSE in top-level directory.
  */
 package com.monkygames.kbmaster.util;
 
+import com.monkygames.kbmaster.engine.HardwareEngine;
 import com.monkygames.kbmaster.engine.PollEventQueue;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -10,8 +11,6 @@ import java.util.logging.Logger;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.Event;
-import net.java.games.input.EventQueue;
-import net.java.games.input.LinuxEnvironmentPlugin;
 
 /**
  * Scans the hardware and prints out the information.
@@ -44,7 +43,7 @@ public class ScanHardware implements Runnable{
      */
     private Controller[] scanHardware(String deviceName){
 	ArrayList<Controller> returnControllers = new ArrayList<>();
-	Controller[] controllers = LinuxEnvironmentPlugin.getDefaultEnvironment().getControllers();
+	Controller[] controllers = HardwareEngine.getControllers(true);
 	System.out.println("Device Name == "+deviceName);
 	for(Controller controller: controllers){
 	    // Check if this controller should be returned for polling.
@@ -167,23 +166,15 @@ public class ScanHardware implements Runnable{
 	}
     }
 // ============= Static Methods ============== //
-    public static void main(String[] args){
-	boolean doPoll = true;
-	String deviceName = null;
-	System.out.println("Args "+args[0]);
-	if(args.length == 0){
-	    doPoll = false;
-	}else{
-	    deviceName = args[0];
+    public static void main(String[] args) {
+		boolean doPoll = true;
+		String deviceName = null;
+		if (args.length == 0) {
+			doPoll = false;
+		} else {
+			System.out.println("Args " + args[0]);
+			deviceName = args[0];
+		}
+		new ScanHardware(deviceName, doPoll);
 	}
-	ScanHardware scanHardware = new ScanHardware(deviceName,doPoll);
-    }
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */
