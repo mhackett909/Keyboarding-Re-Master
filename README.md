@@ -8,15 +8,16 @@ Additional documentation can be found [here](https://kbmaster.atlassian.net/wiki
 ## Compiling
 Keyboarding Master uses Gradle 6.5 as the build tool.  Issue the following commands:
 
+* *./gradlew build*: Builds The project
+* *./gradlew run*: Runs the project
+
+
+Alternatively, you may try the following (requires Gradle installation):
 * *gradle build*: Builds The project
 * *gradle run*: Runs the project
 
-Alternatively, you may try the Gradle Wrapper:
-
-* *./gradlew build*: Builds The project
-* *./gradlew run*: Runs the project
 
 Additional developer documentation is [here](https://kbmaster.atlassian.net/wiki/display/KBM/Developer+Documentation)
 
 ## Support
-Please see /docs/keyboarding-master-edits.doc for technical assistance (including information about setting up support for your own device). The original Keyboarding Master documentation is also available there. Additionally, you may email me at mhackett909@gmail.com with any questions or comments.
+Please see /docs/Keyboarding (Re)Master.doc for technical assistance (including information about setting up support for your own device). The original Keyboarding Master documentation is also available there. Additionally, you may email me at mhackett909@gmail.com with any questions or comments.

@@ -156,7 +156,14 @@ public class HardwareEngine implements Runnable{
 				for(Keyboard keyboard:keyboards)
 					keyboard.grab();
 			}
-			if(hasMouse && mouse != null) mouse.grab();
+			if(hasMouse && mouse != null) {
+				//Wait for mouse button to be released before grabbing to prevent crash
+				while (mouse.poll()) {
+					if (mouseEventQueue.eventExists()) continue;
+					break;
+				}
+				mouse.grab();
+			}
 		}else{
 			if(keyboards.size() > 0) {
 				for(Keyboard keyboard:keyboards)
@@ -181,8 +188,8 @@ public class HardwareEngine implements Runnable{
 		if(isPolling) stopPolling();
 		this.profile = profile;
 		if(profile != null) {
-			grabHardware(true);
 			this.keymap = profile.getKeymap(profile.getDefaultKeymap());
+			grabHardware(true);
 		}
 		else return;
 		this.isKeymapOnRelease = false;
@@ -219,9 +226,8 @@ public class HardwareEngine implements Runnable{
 				}
 			}
 			// Determines whether to process the output or not
-			if (!isEnabled) {
-				continue;
-			}
+			if (!isEnabled) continue;
+
 			// handle keyboard events
 			for(PollEventQueue keyboardEventQueue: this.keyboardEventQueues){
 				for(Event event: keyboardEventQueue.getEvents()){
@@ -236,7 +242,7 @@ public class HardwareEngine implements Runnable{
 			}
 			// handle mouse events
 			if(hasMouse){
-				if (mouseEventQueue == null) continue;
+			//	if (mouseEventQueue == null) continue;
 				for(Event event: mouseEventQueue.getEvents()){
 					//System.out.println("===== New Event Queue =====");
 					Component component = event.getComponent();
@@ -244,7 +250,7 @@ public class HardwareEngine implements Runnable{
 					String name = component.getIdentifier().getName();
 					if (profile.getDefaultKeymap() != keymap.getID()-1)
 						keymap = profile.getKeymap(profile.getDefaultKeymap());
-					WheelMapping mapping = null;
+					WheelMapping mapping;
 					if(component.getIdentifier() == Axis.X){
 						Point point = MouseInfo.getPointerInfo().getLocation();
 						float rel = component.getPollData();
@@ -315,8 +321,8 @@ public class HardwareEngine implements Runnable{
 			}
 		}else if(output instanceof OutputMouse){
 			OutputMouse outputM = (OutputMouse)output;
-			if(outputM.getMouseType() == MouseType.MouseClick){
-				if(eventValue == 1)
+			if(outputM.getMouseType() == MouseType.MouseClick) {
+				if (eventValue == 1)
 					robot.mousePress(outputM.getKeycode());
 				else if(eventValue == 0)
 					robot.mouseRelease(outputM.getKeycode());
@@ -435,6 +441,14 @@ public class HardwareEngine implements Runnable{
 		//System.out.println(device.getDeviceInformation().getName()+" connected");
 	}
 
+	// ============= Implemented Methods ============== //
+	@Override
+	public void run(){
+		isPolling = true;
+		pollNormalMode();
+		isPolling = false;
+	}
+	// ============= Static Methods ============== //
 	/**
 	 * Returns a list of controllers. Uses native methods.
 	 *
@@ -444,13 +458,7 @@ public class HardwareEngine implements Runnable{
 		if (firstScan) return LinuxEnvironmentPlugin.getDefaultEnvironment().getControllers();
 		else return LinuxEnvironmentPlugin.getDefaultEnvironment().rescanControllers();
 	}
-	// ============= Implemented Methods ============== //
-	@Override
-	public void run(){
-		isPolling = true;
-		pollNormalMode();
-		isPolling = false;
-	}
+
 	// ============= Private Classes ============== //
 	private class HardwareScanScheduler extends TimerTask {
 		@Override

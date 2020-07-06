@@ -43,7 +43,7 @@ public class Keymap{
 // ============= Constructors ============== //
     public Keymap(int id){
 	this.id = id;
-	buttonMappings = new HashMap<String,ButtonMapping>();
+	buttonMappings = new HashMap<>();
 	description = "";
     }
 // ============= Public Methods ============== //
@@ -95,17 +95,20 @@ public class Keymap{
     /**
      * Returns a list of all the mappings.
      * @return a list of all the mappings.
+	 * @param wheelsToo true if including wheel mappings.
      */
-    public ArrayList<Mapping> getMappings(){
-	ArrayList<Mapping> list = new ArrayList<Mapping>(buttonMappings.values());
-	if(zUpWheelMapping != null){
-	    list.add(zUpWheelMapping);
+    public ArrayList<Mapping> getMappings(boolean wheelsToo) {
+		ArrayList<Mapping> list = new ArrayList<Mapping>(buttonMappings.values());
+		if (wheelsToo) {
+			if (zUpWheelMapping != null) {
+				list.add(zUpWheelMapping);
+			}
+			if (zDownWheelMapping != null) {
+				list.add(zDownWheelMapping);
+			}
+		}
+		return list;
 	}
-	if(zDownWheelMapping != null){
-	    list.add(zDownWheelMapping);
-	}
-	return list;
-    }
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
 // ============= Implemented Methods ============== //

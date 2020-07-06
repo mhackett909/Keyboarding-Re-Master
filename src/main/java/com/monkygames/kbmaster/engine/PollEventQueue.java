@@ -27,41 +27,55 @@ public class PollEventQueue {
     private int i;
     private float val;
 
-    public PollEventQueue(Component[] components){
- 	this.components = components;
-	previousValues = new float[components.length];
-	// populate previous values
-	for(i = 0; i < components.length; i++){
-	    previousValues[i] = components[i].getPollData();
+    public PollEventQueue(Component[] components) {
+		this.components = components;
+		previousValues = new float[components.length];
+		// populate previous values
+		for (i = 0; i < components.length; i++) {
+			previousValues[i] = components[i].getPollData();
+		}
+		events = new ArrayList<>();
 	}
-	events = new ArrayList<Event>();
-    }
 
     /**
      * Runs through all components to check for updates to the poll value.
      */
-    public ArrayList<Event> getEvents(){
+    public ArrayList<Event> getEvents() {
 
-	// clear the events list
-	events.clear();
+		// clear the events list
+		events.clear();
 
-	// check for new events
-	for(i = 0; i < components.length; i++){
-	    val = components[i].getPollData();
-	    if(val != previousValues[i]){
+		// check for new events
+		for (i = 0; i < components.length; i++) {
+			val = components[i].getPollData();
+			if (val != previousValues[i]) {
 
-		// create a new Event
-		Event event = new Event();
-		event.set(components[i], val, 0);
+				// create a new Event
+				Event event = new Event();
+				event.set(components[i], val, 0);
 
-		// add to queue
-		events.add(event);
+				// add to queue
+				events.add(event);
 
-		// set previous values
-		previousValues[i] = val;
-	    }
+				// set previous values
+				previousValues[i] = val;
+			}
+		}
+
+		return events;
 	}
-
-	return events;
-    }
+	/**
+	 * Checks if an event exists. Used to ensure the grabHardware() method does not grab
+	 * the mouse if a mouse button is being held down. It would otherwise result in a crash.
+	 */
+	public boolean eventExists() {
+		for (int x = 0; x < components.length; x++) {
+			float test = components[x].getPollData();
+			if (test > 0) {
+				if (!components[x].getName().equals("x") && !components[x].getName().equals("y"))
+					return true;
+			}
+		}
+		return false;
+	}
 }

@@ -79,7 +79,7 @@ public class GenerateBindingsImage{
 	    this.writeTitle(keymap);
 
 	    // write the mappings to the imaage
-	    for(Mapping mapping: keymap.getMappings()){
+	    for(Mapping mapping: keymap.getMappings(true)){
 		writeBinding(mapping);
 	    }
 
