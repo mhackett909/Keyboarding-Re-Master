@@ -4,6 +4,10 @@
 package com.monkygames.kbmaster.controller;
 
 // === java imports === //
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 // === javafx imports === //
@@ -260,6 +264,7 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 	}
     }
     public void handleAmazonLink(ActionEvent e) {
-	KeyboardingMaster.gotoWeb((String)amazonLink.getUserData());
+    	amazonLink.setVisited(false);
+    	KeyboardingMaster.gotoWeb((String)amazonLink.getUserData());
     }
 }

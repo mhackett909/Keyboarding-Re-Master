@@ -13,7 +13,11 @@ import com.monkygames.kbmaster.util.thread.DropboxSyncTask;
 import com.monkygames.kbmaster.util.thread.SyncEventHandler;
 import com.monkygames.kbmaster.util.thread.SyncEventOnExitHandler;
 import com.monkygames.kbmaster.util.thread.SyncEventOnLogoutHandler;
+
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,7 +59,11 @@ public class KeyboardingMaster extends Application {
      * @url the url to open.
      */
     public static void gotoWeb(String url){
-        _instance.getHostServices().showDocument(url);
+        new Thread(()-> {
+            try { Desktop.getDesktop().browse(new URI(url)); }
+            catch (IOException ioException) { ioException.printStackTrace(); }
+            catch (URISyntaxException uriSyntaxException) {	uriSyntaxException.printStackTrace(); }
+        }).start();
     }
 
     /**

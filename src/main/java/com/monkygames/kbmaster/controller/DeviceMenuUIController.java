@@ -22,12 +22,21 @@ import com.monkygames.kbmaster.util.PopupManager;
 import com.monkygames.kbmaster.util.RepeatManager;
 import com.monkygames.kbmaster.util.WindowUtil;
 
+import java.awt.*;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -41,13 +50,9 @@ import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -61,7 +66,6 @@ import javafx.util.Callback;
  * Handles UI Events for managing devices.
  * @version 1.0
  */
-//public class DeviceMenuUIController implements Initializable, EventHandler<CellEditEvent>{
 public class DeviceMenuUIController implements Initializable, EventHandler<ActionEvent>{
 
 
@@ -94,6 +98,8 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 			installBuilderIV, xstreamIV;
     @FXML
     private ImageView accountIcon;
+    @FXML
+	private Hyperlink updateLink;
     /**
      * Used for displaying a new device popup.
      */
@@ -194,28 +200,53 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      * Prepares the gui and databases to populate device list.
      * @param userSettings the settings for this menu
      */
-    public void initResources(UserSettings userSettings, CloudAccount cloudAccount){
-	this.userSettings = userSettings;
-	this.cloudAccount = cloudAccount;
-	Image image;
-	// manage the icons
-	switch(userSettings.loginMethod){
-	    case LoginUIController.LOGIN_LOCAL:
-		image = new Image("/com/monkygames/kbmaster/fxml/resources/icons/hdd.png");
-		accountIcon.setImage(image);
-		break;
-	    case LoginUIController.LOGIN_DROPBOX:
-		image = new Image("/com/monkygames/kbmaster/fxml/resources/icons/dropbox.png");
-		accountIcon.setImage(image);
-		break;
+    public void initResources(UserSettings userSettings, CloudAccount cloudAccount) {
+		this.userSettings = userSettings;
+		this.cloudAccount = cloudAccount;
+		Image image;
+		// manage the icons
+		switch (userSettings.loginMethod) {
+			case LoginUIController.LOGIN_LOCAL:
+				image = new Image("/com/monkygames/kbmaster/fxml/resources/icons/hdd.png");
+				accountIcon.setImage(image);
+				break;
+			case LoginUIController.LOGIN_DROPBOX:
+				image = new Image("/com/monkygames/kbmaster/fxml/resources/icons/dropbox.png");
+				accountIcon.setImage(image);
+				break;
+		}
+		deviceManager = new DeviceManager();
+		deviceList = FXCollections.observableArrayList();
+		checkUpdates();
+		updateDevices();
 	}
-
-	// initialize Global Account first since getDeviceList uses it
-	// to populate the list.
-	deviceManager = new DeviceManager();
-	deviceList = FXCollections.observableArrayList();
-	updateDevices();
-    }
+	public void handleUpdateLink(ActionEvent e) {
+		updateLink.setVisited(false);
+		KeyboardingMaster.gotoWeb("https://bitbucket.org/vapula87/keyboarding-re-master/src/master");
+	}
+	private void checkUpdates() {
+		try {
+			URL updateCheck = new URL("https://bitbucket.org/vapula87/keyboarding-re-master/raw/be5fb2cfae366363b6dcfc203d0854ea1d926711/src/main/java/com/monkygames/kbmaster/KeyboardingMaster.java");
+			BufferedReader read = new BufferedReader(new InputStreamReader(updateCheck.openStream()));
+			String readURL, latestVersion = "";
+			while ((readURL = read.readLine()) != null) {
+				if (readURL.contains("VERSION")) {
+					String[] tokens = readURL.split(" ");
+					int versionIndex = tokens.length-1;
+					Pattern regexPattern = Pattern.compile("\\d.*.*\\d");
+					Matcher regexMatcher = regexPattern.matcher(tokens[versionIndex]);
+					if (regexMatcher.find()) latestVersion = regexMatcher.group();
+					break;
+				}
+			}
+			read.close();
+			if (!latestVersion.equals(KeyboardingMaster.VERSION)) updateLink.setText("Updates Available");
+		} catch (MalformedURLException e) {
+			System.out.println("Update check failed.");
+		} catch (IOException e) {
+			System.out.println("Error reading remote file.");
+		}
+	}
     /**
      * One or more devices has changed status and the UI
      * will be updated to reflect these changes.

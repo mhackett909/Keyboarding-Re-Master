@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
 <?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
-
 <AnchorPane id="AnchorPane" minHeight="399.7987060546875" prefHeight="399.7987060546875" prefWidth="832.0" styleClass="mainFxmlClass, popupWindow" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.monkygames.kbmaster.controller.DeviceMenuUIController">
   <children>
     <HBox layoutX="14.0" layoutY="345.0" prefHeight="41.0" prefWidth="321.800048828125">
@@ -66,7 +59,7 @@
             <Label fx:id="versionL" alignment="CENTER" contentDisplay="CENTER" text="0.1" textAlignment="LEFT" />
           </children>
         </HBox>
-        <Hyperlink text="No Updates Available" textFill="WHITE" />
+        <Hyperlink fx:id="updateLink" onAction="#handleUpdateLink" text="No Updates Available" textFill="WHITE" />
       </children>
     </VBox>
     <HBox alignment="CENTER_RIGHT" layoutX="564.0" layoutY="70.0" prefHeight="22.0" prefWidth="254.0" spacing="2.0">
