@@ -4,7 +4,8 @@
 package com.monkygames.kbmaster.controller.profile;
 
 import com.monkygames.kbmaster.controller.PopupController;
-import com.monkygames.kbmaster.io.ProfileManager;
+import com.monkygames.kbmaster.driver.Device;
+import com.monkygames.kbmaster.profiles.ProfileManager;
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.util.PopupManager;
 import java.net.URL;
@@ -25,28 +26,30 @@ public class DeleteProgramUIController extends PopupController {
     @FXML
     private Label programL;
     private ProfileManager profileManager;
+    private Device device;
     private App app;
 // ============= Constructors ============== //
 // ============= Public Methods ============== //
     public void setProfileManager(ProfileManager profileManager){
 	this.profileManager = profileManager;
     }
-    public void setApp(App app){
-	this.app = app;
-	typeL.setText(app.getAppType().name());
-	programL.setText(app.getName());
+    public void setDevice(Device device) { this.device = device; }
+    public void setApp(App app) {
+        this.app = app;
+        typeL.setText(app.getAppType().name());
+        programL.setText(app.getName());
     }
-    public void okEventFired(ActionEvent evt){
-	try{
-	    if(app != null){
-		profileManager.removeApp(app);
-		notifyOK("DelApp`"+app.getName());
-	    }else{
-		PopupManager.getPopupManager().showError("Invalid App");
-	    }
-	}finally{
-	    reset();
-	}
+    public void okEventFired(ActionEvent evt) {
+        try {
+            if (app != null) {
+                profileManager.removeApp(device, app);
+                notifyOK("DelApp`" + app.getName());
+            } else {
+                PopupManager.getPopupManager().showError("Invalid App");
+            }
+        } finally {
+            reset();
+        }
     }
     public void cancelEventFired(ActionEvent evt){
 	reset();

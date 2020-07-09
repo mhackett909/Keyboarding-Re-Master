@@ -29,9 +29,9 @@ public class Root{
     
 // ============= Constructors ============== //
     public Root(String name, AppType appType) {
-	this.name = name;
-	this.appType = appType;
-	apps = new ArrayList<>();
+        this.name = name;
+        this.appType = appType;
+        apps = new ArrayList<>();
     }
 // ============= Public Methods ============== //
 
@@ -47,14 +47,10 @@ public class Root{
 	return appType;
     }
 
-    public void setAppType(AppType appType) {
-	this.appType = appType;
-    }
-
-    public ArrayList<App> getList(){
-	// always sort
-	Collections.sort(apps);
-	return apps;
+    public ArrayList<App> getList() {
+        // always sort
+        Collections.sort(apps);
+        return apps;
     }
     public void addApp(App app){
 	apps.add(app);
@@ -62,22 +58,16 @@ public class Root{
     public void removeApp(App app){
 	apps.remove(app);
     }
-// ============= Protected Methods ============== //
-// ============= Private Methods ============== //
-// ============= Implemented Methods ============== //
-// ============= Extended Methods ============== //
+    public void close() {
+        for (App app : apps) {
+            app.close();
+            app = null;
+        }
+        apps.clear();
+    }
     @Override
     public String toString(){
 	return name;
     }
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
+
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

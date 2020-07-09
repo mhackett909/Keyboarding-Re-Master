@@ -4,9 +4,10 @@
 package com.monkygames.kbmaster.controller.profile;
 
 import com.monkygames.kbmaster.controller.PopupController;
+import com.monkygames.kbmaster.driver.Device;
+import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.Profile;
-import com.monkygames.kbmaster.io.ProfileManager;
-import com.monkygames.kbmaster.util.PopupManager;
+import com.monkygames.kbmaster.profiles.ProfileManager;
 import com.monkygames.kbmaster.util.ProfileTypeNames;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,53 +29,39 @@ public class DeleteProfileUIController extends PopupController {
     @FXML
     private Label profileL;
     private ProfileManager profileManager;
+    private Device device;
+    private App app;
     private Profile profile;
 // ============= Constructors ============== //
 // ============= Public Methods ============== //
     public void setProfileManager(ProfileManager profileManager){
 	this.profileManager = profileManager;
     }
-    public void setProfile(Profile profile){
-	this.profile = profile;
-	typeL.setText(ProfileTypeNames.getProfileTypeName(profile.getAppInfo().getAppType()));
-	programL.setText(profile.getAppInfo().getName());
-	profileL.setText(profile.getProfileName());
+    public void setProfile(Device device, App app, Profile profile) {
+        this.device = device;
+        this.app = app;
+        this.profile = profile;
+        typeL.setText(ProfileTypeNames.getProfileTypeName(app.getAppType()));
+        programL.setText(app.getName());
+        profileL.setText(profile.getProfileName());
     }
-    public void okEventFired(ActionEvent evt){
-	try{
-	    if(profile != null){
-		    profileManager.removeProfile(profile);
-		    notifyOK("DelProfile`"+profile.getAppInfo().getAppType().toString()+"`"+profile.getAppInfo().getName()+"`"+profile.getProfileName());
-	    }else PopupManager.getPopupManager().showError("Invalid Profile");
-	}finally{
-	    reset();
-	}
+    public void okEventFired(ActionEvent evt) {
+        profileManager.removeProfile(device, app, profile);
+        notifyOK("DelProfile`" + profile.getAppInfo().getAppType().toString() + "`" + profile.getAppInfo().getName() + "`" + profile.getProfileName());
+        reset();
     }
-    public void cancelEventFired(ActionEvent evt){
-	reset();
-	notifyCancel(null);
+    public void cancelEventFired(ActionEvent evt) {
+        reset();
+        notifyCancel(null);
     }
-// ============= Protected Methods ============== //
 // ============= Private Methods ============== //
-    private void reset(){
-	typeL.setText("");
-	programL.setText("");
-	profileL.setText("");
-	hideStage();
+    private void reset() {
+        typeL.setText("");
+        programL.setText("");
+        profileL.setText("");
+        hideStage();
     }
-// ============= Implemented Methods ============== //
 // ============= Extended Methods ============== //
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
+    public void initialize(URL url, ResourceBundle rb) { }
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

@@ -83,31 +83,9 @@ public class ConfigureDeviceUIController implements Initializable, PopupNotifyIn
 		this.stage = stage;
 	}
 
-	/**
-	 * Updates the device details.
-	 */
-	public void updateDeviceDetails() {
-
-		if (device != null) {
-			String status;
-			if (device.isConnected()) {
-				status = "Connected";
-			} else {
-				status = "Disconnected";
-			}
-			try {
-				driverStatusL.setText(status);
-			} catch (Exception e) {
-				handleNonFXThread(status);
-			}
-		}
-	}
-// ============= Protected Methods ============== //
 // ============= Private Methods ============== //
-
 	/**
 	 * Update the details on the UI from the specified device.
-	 *
 	 * @param device the device's information to be updated from.
 	 */
 	private void updateDeviceDetails(Device device) {
@@ -140,8 +118,8 @@ public class ConfigureDeviceUIController implements Initializable, PopupNotifyIn
 			fxmlLoader.setLocation(location);
 			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
 			Parent profileRoot = (Parent) fxmlLoader.load(location.openStream());
-			profileUIController = (ProfileUIController) fxmlLoader.getController();
 			profilePane.getChildren().add(profileRoot);
+			profileUIController = (ProfileUIController) fxmlLoader.getController();
 			profileUIController.setKeymapTabPane(driverTabPane);
 			profileUIController.setDescriptionLabel(keymapDescriptionL);
 		} catch (IOException ex) {

@@ -21,7 +21,8 @@ import com.dropbox.core.v2.files.WriteMode;
 import com.monkygames.kbmaster.KeyboardingMaster;
 import com.monkygames.kbmaster.account.dropbox.MetaData;
 import com.monkygames.kbmaster.account.dropbox.SyncMetaData;
-import com.monkygames.kbmaster.controller.ProfileUIController;
+import com.monkygames.kbmaster.driver.DeviceList;
+import com.monkygames.kbmaster.profiles.ProfileManager;
 import com.monkygames.kbmaster.io.XStreamManager;
 import com.monkygames.kbmaster.profiles.RootManager;
 import java.io.File;
@@ -112,7 +113,7 @@ public class DropBoxAccount implements CloudAccount{
         }
 
         // make sure local profiles dir exists
-        String profileDir = ProfileUIController.profileDirS;
+        String profileDir = ProfileManager.PROFILE_DIR;
         File localProfileDir = new File(profileDir);
         if(!localProfileDir.exists()){
             localProfileDir.mkdir();

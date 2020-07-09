@@ -18,22 +18,19 @@ public class PollEventQueue {
     /**
      * The components for this event to monitor.
      */
-    private Component[] components; 
-    private float[] previousValues;
+    private Component[] components;
     /**
      * Contains the events.
      */
     private ArrayList<Event> events;
-    private int i;
-    private float val;
+	private float[] previousValues;
 
     public PollEventQueue(Component[] components) {
 		this.components = components;
 		previousValues = new float[components.length];
 		// populate previous values
-		for (i = 0; i < components.length; i++) {
+		for (int i = 0; i < components.length; i++)
 			previousValues[i] = components[i].getPollData();
-		}
 		events = new ArrayList<>();
 	}
 
@@ -44,9 +41,9 @@ public class PollEventQueue {
 
 		// clear the events list
 		events.clear();
-
+		float val;
 		// check for new events
-		for (i = 0; i < components.length; i++) {
+		for (int i = 0; i < components.length; i++) {
 			val = components[i].getPollData();
 			if (val != previousValues[i]) {
 
@@ -61,7 +58,6 @@ public class PollEventQueue {
 				previousValues[i] = val;
 			}
 		}
-
 		return events;
 	}
 	/**
@@ -77,5 +73,10 @@ public class PollEventQueue {
 			}
 		}
 		return false;
+	}
+	public void close() {
+		for (Event event : events) event = null;
+		events.clear();
+		components = null;
 	}
 }

@@ -42,6 +42,7 @@ public class HardwareEngine implements Runnable{
 	private Mouse mouse;
 	private ArrayList<PollEventQueue> keyboardEventQueues;
 	private PollEventQueue mouseEventQueue;
+	private boolean closing;
 	/**
 	 * Timer for checking hardware status.
 	 */
@@ -238,11 +239,14 @@ public class HardwareEngine implements Runnable{
 						keymap = profile.getKeymap(profile.getDefaultKeymap());
 					ButtonMapping mapping = keymap.getButtonMapping(name);
 					if(mapping != null) processOutput(name, mapping.getOutput(), event.getValue());
+
 				}
+
 			}
 			// handle mouse events
+
 			if(hasMouse){
-			//	if (mouseEventQueue == null) continue;
+				if (mouseEventQueue == null) continue;
 				for(Event event: mouseEventQueue.getEvents()){
 					//System.out.println("===== New Event Queue =====");
 					Component component = event.getComponent();
@@ -373,6 +377,7 @@ public class HardwareEngine implements Runnable{
 	}
 	private void scanHardware(Controller[] controllers){
 		//System.out.println("///---Scanning Controllers---\\\\\\");
+		if (closing) return;
 		boolean found = false;
 		for(Controller controller: controllers){
 			//System.out.println("Controller: "+controller);
@@ -394,10 +399,10 @@ public class HardwareEngine implements Runnable{
 		stopPolling();
 		keyboards.clear();
 		if(hasMouse) mouse = null;
-		device.setIsEnabled(false);
+		device.setEnabled(false);
 		doesHardwareExist = false;
 		synchronized(hardwareManager) {
-				hardwareManager.hardwareStatusChange(hardwareExist(),device.getDeviceInformation().getJinputName());
+			hardwareManager.hardwareStatusChange(hardwareExist(),device.getDeviceInformation().getJinputName());
 		}
 		//System.out.println(device.getDeviceInformation().getName()+" disconnected");
 	}
@@ -439,6 +444,16 @@ public class HardwareEngine implements Runnable{
 		}
 		if (device.isEnabled()) startPolling(device.getProfile());
 		//System.out.println(device.getDeviceInformation().getName()+" connected");
+	}
+	public void close() {
+		closing = true;
+		for (PollEventQueue eventQueue : keyboardEventQueues)
+			eventQueue.close();
+		keyboardEventQueues.clear();
+		mouseEventQueue.close();
+		for (Keyboard keyboard : keyboards) keyboard = null;
+		keyboards.clear();
+		mouse = null;
 	}
 
 	// ============= Implemented Methods ============== //

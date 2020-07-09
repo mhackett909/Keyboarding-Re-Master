@@ -84,9 +84,7 @@ public class Profile{
      */
     public Keymap[] getKeymaps(){ return keymaps; }
     public void setKeymap(int index, Keymap keymap){ keymaps[index] = keymap; }
-    public void setAppInfo(App app){
-        this.appInfo = new AppInfo(app);
-    }
+    public void setAppInfo(App app){ this.appInfo = new AppInfo(app); }
     public void setAuthor(String author) { this.author = author; }
     public void setInfo(String info) { this.info = info; }
     public void setDefaultKeymap(int defaultMap) { this.defaultMap = defaultMap; }
@@ -108,6 +106,13 @@ public class Profile{
 	    profile.setLastUpdatedDate(this.lastUpdatedDate);
 	    profile.setInfo(this.info);
 	    return profile;
+    }
+    public void close() {
+        for (Keymap keymap : keymaps) {
+            keymap.close();
+            keymap = null;
+        }
+        keymaps = null;
     }
 
     // ============= Extended Methods ============== //

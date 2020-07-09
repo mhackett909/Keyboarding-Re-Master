@@ -30,11 +30,6 @@ public class RootManager implements SyncMetaData{
         metaData = null;
     }
 
-    public RootManager(Root appsRoot, Root gamesRoot){
-        this.appsRoot = appsRoot;
-        this.gamesRoot = gamesRoot;
-    }
-
     /**
      * Returns the apps root.
      */
@@ -64,25 +59,7 @@ public class RootManager implements SyncMetaData{
      * @param profile
      * @return 
      */
-    public boolean addProfile(Profile profile){
-        Root root;
-        if(profile.getAppInfo().getAppType() == AppType.APPLICATION){
-            root = appsRoot;
-        }else{
-            root = gamesRoot;
-        }
-        // find the app
-        App app = null;
-        for(App tmpApp: root.getList()){
-            if(tmpApp.getName().equals(profile.getAppInfo().getName())){
-                app = tmpApp;
-                break;
-            }
-        }
-        if (app == null) return false;
-        app.addProfile(profile);
-        return true;
-    }
+    public void addProfile(App app, Profile profile){ app.addProfile(profile); }
 
     /**
      * Remove the app from the root.
@@ -106,22 +83,20 @@ public class RootManager implements SyncMetaData{
      * @param app the app to add.
      * @return true if able to add and false otherwise.
      */
-    public boolean addApp(App app){
-	Root root = null;
-	if(app.getAppType() == gamesRoot.getAppType()){
-	    root = gamesRoot;
-	}else if(app.getAppType() == appsRoot.getAppType()){
-	    root = appsRoot;
-	}else{
-	    return false;
-	}
-	// check if there already exists an app!
-	for(App testApp: root.getList()){
-	    if(testApp.getName().equals(app.getName())){
-		return false;
-	    }
-	}
-	root.addApp(app);
+    public boolean addApp(App app) {
+        Root root;
+        if (app.getAppType() == gamesRoot.getAppType()) root = gamesRoot;
+        else if (app.getAppType() == appsRoot.getAppType()) root = appsRoot;
+        else return false;
+        // check if there already exists an app!
+        for (App testApp : root.getList()) {
+            if (testApp.getName().equals(app.getName())) return false;
+        }
+        root.addApp(app);
         return true;
+    }
+    public void close() {
+        appsRoot.close();
+        gamesRoot.close();
     }
 }

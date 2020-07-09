@@ -28,28 +28,28 @@ public class DeleteDeviceUIController extends PopupController {
     private Device device;
 // ============= Constructors ============== //
 // ============= Public Methods ============== //
-    public void setDevice(Device device){
-	this.device = device;
-	typeL.setText(device.getDeviceInformation().getDeviceType().name());
-	makeL.setText(device.getDeviceInformation().getMake());
-	modelL.setText(device.getDeviceInformation().getModel());
-	showStage();
-    }
+    public void setDevice(Device device) {
+		this.device = device;
+		typeL.setText(device.getDeviceInformation().getDeviceType().name());
+		makeL.setText(device.getDeviceInformation().getMake());
+		modelL.setText(device.getDeviceInformation().getModel());
+		showStage();
+	}
     public void setController(DeviceMenuUIController controller){
 	this.controller = controller;
     }
-    public void okEventFired(ActionEvent evt){
-	try{
-	    if(device != null){
-		controller.removeDevice(device);
-		notifyOK(device.getDeviceInformation().getName());
-	    }else{
-		PopupManager.getPopupManager().showError("Invalid Device");
-	    }
-	}finally{
-	    reset();
+    public void okEventFired(ActionEvent evt) {
+		try {
+			if (device != null) {
+				controller.removeDevice(device);
+				notifyOK(device.getDeviceInformation().getName());
+			} else {
+				PopupManager.getPopupManager().showError("Invalid Device");
+			}
+		} finally {
+			reset();
+		}
 	}
-    }
     public void cancelEventFired(ActionEvent evt){
 	reset();
 	notifyCancel(null);

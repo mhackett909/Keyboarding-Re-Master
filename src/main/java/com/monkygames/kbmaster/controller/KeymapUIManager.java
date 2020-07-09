@@ -1,10 +1,8 @@
 /* 
  * See LICENSE in top-level directory.
  */
-package com.monkygames.kbmaster.util;
+package com.monkygames.kbmaster.controller;
 
-import com.monkygames.kbmaster.controller.DriverUIController;
-import com.monkygames.kbmaster.controller.PopupNotifyInterface;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.profiles.Profile;
 import java.io.IOException;
@@ -25,7 +23,6 @@ import javafx.scene.control.TabPane;
 
 /**
  * Handles managing Keymap UI Panels for the device.
- * @version 1.0
  */
 public class KeymapUIManager implements ChangeListener{
 

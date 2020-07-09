@@ -32,41 +32,26 @@ public class Keymap{
      * The z-axis down wheel mapping.
      */
     private WheelMapping zDownWheelMapping;
-    /**
-     * The middle mouse wheel mapping.
-     */
-    //private WheelMapping middleWheelMapping;
+
     /**
      * Describes this keymap.
      */
     private String description;
 // ============= Constructors ============== //
-    public Keymap(int id){
-	this.id = id;
-	buttonMappings = new HashMap<>();
-	description = "";
-    }
+    public Keymap(int id) {
+		this.id = id;
+		buttonMappings = new HashMap<>();
+		description = "";
+	}
 // ============= Public Methods ============== //
     public void addButtonMapping(String index, ButtonMapping buttonMapping){
-	buttonMappings.put(index, buttonMapping);
+		buttonMappings.put(index, buttonMapping);
     }
     public ButtonMapping getButtonMapping(String index){
    	   	return buttonMappings.get(index);
     }
 
-    /*
-    public WheelMapping getMiddleWheelMapping() {
-	return middleWheelMapping;
-    }
-    */
-
-    public String getDescription(){	return description;    }
-
-    /*
-    public void setMiddleWheelMapping(WheelMapping middleWheelMapping) {
-	this.middleWheelMapping = middleWheelMapping;
-    }
-    */
+    public String getDescription(){	return description; }
 
     public WheelMapping getzDownWheelMapping() { return zDownWheelMapping;  }
 
@@ -89,9 +74,7 @@ public class Keymap{
     public int getID(){
 	return id;
     }
-    public void setID(int id){
-	this.id = id;
-    }
+
     /**
      * Returns a list of all the mappings.
      * @return a list of all the mappings.
@@ -109,69 +92,31 @@ public class Keymap{
 		}
 		return list;
 	}
-// ============= Protected Methods ============== //
-// ============= Private Methods ============== //
-// ============= Implemented Methods ============== //
+	public void close() { buttonMappings.clear(); }
 // ============= Extended Methods ============== //
     @Override
-    public Object clone(){
-	Keymap keymap = new Keymap(this.id);
-	keymap.setDescription(description);
-	Iterator<String> iterator = buttonMappings.keySet().iterator();
-	while(iterator.hasNext()){
-	    String key = iterator.next();
-	    ButtonMapping mapping = buttonMappings.get(key);
-	    keymap.addButtonMapping(key, (ButtonMapping)mapping.clone());
-	}
-	
-	// set setz
-	if(zUpWheelMapping != null){
-	    keymap.setzUpWheelMapping((WheelMapping)zUpWheelMapping.clone());
-	}
-	if(zDownWheelMapping != null){
-	    keymap.setzDownWheelMapping((WheelMapping)zDownWheelMapping.clone());
-	}
-	/*
-	if(middleWheelMapping != null){
-	    keymap.setMiddleWheelMapping((WheelMapping)middleWheelMapping.clone());
-	}
-	*/
+    public Object clone() {
+		Keymap keymap = new Keymap(this.id);
+		keymap.setDescription(description);
+		Iterator<String> iterator = buttonMappings.keySet().iterator();
+		while (iterator.hasNext()) {
+			String key = iterator.next();
+			ButtonMapping mapping = buttonMappings.get(key);
+			keymap.addButtonMapping(key, (ButtonMapping) mapping.clone());
+		}
+		if (zUpWheelMapping != null)
+			keymap.setzUpWheelMapping((WheelMapping) zUpWheelMapping.clone());
 
-	return keymap;
-    }
-    public String toString(){
-	String out = "";
-	for(ButtonMapping buttonMapping: buttonMappings.values()){
-	    out += buttonMapping+",";
+		if (zDownWheelMapping != null)
+			keymap.setzDownWheelMapping((WheelMapping) zDownWheelMapping.clone());
+		return keymap;
 	}
-	out += zUpWheelMapping+",";
-	//out += middleWheelMapping+",";
-	out += zDownWheelMapping;
-
-	return out;
-    }
-    public String toStringFormatted(){
-	String out = "\tKeymap "+id+"[\n";
-	for(ButtonMapping buttonMapping: buttonMappings.values()){
-	    out += "\t\t"+buttonMapping+"\n";
+    public String toString() {
+		String out = "";
+		for (ButtonMapping buttonMapping : buttonMappings.values())
+			out += buttonMapping + ",";
+		out += zUpWheelMapping + ",";
+		out += zDownWheelMapping;
+		return out;
 	}
-	out += "\t\t"+zUpWheelMapping+"\n";
-	//out += "\t\t"+middleWheelMapping+"\n";
-	out += "\t\t"+zDownWheelMapping;
-	out += "\t]\n";
-
-	return out;
-
-    }
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
-
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

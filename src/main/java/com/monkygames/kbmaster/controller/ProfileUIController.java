@@ -10,6 +10,7 @@ import com.monkygames.kbmaster.controller.profile.DeleteProgramUIController;
 import com.monkygames.kbmaster.controller.profile.NewProfileUIController;
 import com.monkygames.kbmaster.controller.profile.NewProgramUIController;
 import com.monkygames.kbmaster.driver.Device;
+import com.monkygames.kbmaster.io.XStreamManager;
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.Profile;
 import java.io.File;
@@ -17,7 +18,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 // === javafx imports === //
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -27,12 +27,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
 // === kbmaster imports === //
-import com.monkygames.kbmaster.io.ProfileManager;
+import com.monkygames.kbmaster.profiles.ProfileManager;
 import com.monkygames.kbmaster.profiles.AppType;
 import com.monkygames.kbmaster.io.BindingPDFWriter;
 import com.monkygames.kbmaster.io.GenerateBindingsImage;
 import com.monkygames.kbmaster.profiles.Root;
-import com.monkygames.kbmaster.util.KeymapUIManager;
 import com.monkygames.kbmaster.util.PopupManager;
 import com.monkygames.kbmaster.util.ProfileTypeNames;
 import com.monkygames.kbmaster.util.WindowUtil;
@@ -54,7 +53,7 @@ import javafx.stage.Stage;
  * Handles UI Events for the profile panel.
  * @version 1.0
  */
-public class ProfileUIController implements Initializable, ChangeListener<String>, PopupNotifyInterface{
+public class ProfileUIController implements Initializable, PopupNotifyInterface{
 // ============= Class variables ============== //
     @FXML
     private ComboBox typeCB;
@@ -98,8 +97,6 @@ public class ProfileUIController implements Initializable, ChangeListener<String
     private DeleteProgramUIController deleteProgramUIController;
     private DisplayKeymapUIController displayKeymapUIController;
 	private ResetKeymapUIController resetKeymapUIController;
-    private File profileDir;
-    public static final String profileDirS = "profiles";
     private Device device;
     /**
      * Used for selecting a file to write a pdf binding.
@@ -111,8 +108,6 @@ public class ProfileUIController implements Initializable, ChangeListener<String
      * The currently used profile.
      */
     private Profile currentProfile;
-    private DeviceMenuUIController deviceMenuController;
-    private ChangeListener<App> appChangeListener;
     private ChangeListener<Profile> profileChangeListener;
     /**
      * The default image to be used if the app has not set a logo.
@@ -130,31 +125,31 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 // ============= Constructors ============== //
 // ============= Public Methods ============== //
     @FXML
-    public void profileEventFired(ActionEvent evt){
-	Object src = evt.getSource();
-	if(src == newProfileB){
-	    openNewProfilePopup();
-	}else if(src == newAppB){
-	    openNewProgramPopup();
-	}else if(src == cloneProfileB){
-	    openCloneProfilePopup();
-	}else if(src == importProfileB){
-	    importProfile();
-	}else if(src == exportProfileB){
-	    exportProfile();
-	}else if(src == printPDFB){
-	    openPDFPopup();
-	}else if(src == deleteProfileB){
-	    openDeleteProfilePopup();
-	}else if(src == deleteProgramB){
-	    openDeleteProgramPopup();
+    public void profileEventFired(ActionEvent evt) {
+		Object src = evt.getSource();
+		if (src == newProfileB) {
+			openNewProfilePopup();
+		} else if (src == newAppB) {
+			openNewProgramPopup();
+		} else if (src == cloneProfileB) {
+			openCloneProfilePopup();
+		} else if (src == importProfileB) {
+			importProfile();
+		} else if (src == exportProfileB) {
+			exportProfile();
+		} else if (src == printPDFB) {
+			openPDFPopup();
+		} else if (src == deleteProfileB) {
+			openDeleteProfilePopup();
+		} else if (src == deleteProgramB) {
+			openDeleteProgramPopup();
+		}
+
 	}
-	
-    }
-    public void setKeymapTabPane(TabPane keymapTabPane){
-	this.keymapTabPane = keymapTabPane;
-	keymapUIManager.setTabPane(keymapTabPane);
-    }
+    public void setKeymapTabPane(TabPane keymapTabPane) {
+		this.keymapTabPane = keymapTabPane;
+		keymapUIManager.setTabPane(keymapTabPane);
+	}
     /**
      * Sets the device in order to get device name and to be used in
      * popups for creating profiles.
@@ -171,22 +166,13 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		keymapUIManager.initializeTabs();
 		keymapUIManager.setProfile(currentProfile);
 		keymapUIManager.addSaveNotification(this);
-		String profileName = device.getDeviceInformation().getProfileName();
-		if (profileManager != null) profileManager.close();
-		profileManager = new ProfileManager(profileDir+File.separator+profileName);
-		profileManager.setUIController(this);
-		if(newProfileUIController != null){
-	    	newProfileUIController.setProfileManager(profileManager);
+		if(newProfileUIController != null)
 	    	newProfileUIController.setDevice(device);
-		}
-		typeCB.valueProperty().removeListener(this);
 		typeCB.setItems(FXCollections.observableArrayList(ProfileTypeNames.getProfileTypeName(AppType.GAME),
 							  ProfileTypeNames.getProfileTypeName(AppType.APPLICATION)));
-		typeCB.valueProperty().addListener(this);
 		resetAppUIInfo();
 		resetProfileUIInfo();
 		AppType appType;
-		typeCB.valueProperty().removeListener(this);
 		if (currentProfile == null) {
 			typeCB.getSelectionModel().selectFirst();
 			appType = AppType.GAME;
@@ -201,7 +187,6 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 					typeCB.getSelectionModel().select(1);
 			}
 		}
-		typeCB.valueProperty().addListener(this);
 		updateComboBoxes(appType);
     }
     /**
@@ -223,10 +208,6 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		}
 		else PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
 	}
-	/**
-	 * Returns the KeymapUIManager
-	 */
-	public KeymapUIManager getKeymapUIManager() { return keymapUIManager; }
 	/**
 	 * Returns the current profile. Used by the engine/UI communication process.
 	 */
@@ -282,14 +263,14 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 	/**
 	 * Note, this needs to be called before other methods.
 	 */
-	public void setDeviceMenuController(DeviceMenuUIController deviceMenuController){
-		this.deviceMenuController = deviceMenuController;
+	public void setProfileManager(ProfileManager profileManager){
+		this.profileManager = profileManager;
 	}
 	public Device getDevice() { return device; }
 	/**
 	 * Returns the selected application type.
 	 */
-	public AppType getAppType(){
+	public AppType getAppType() {
 		if(typeCB.getSelectionModel().getSelectedIndex() == 0) return AppType.GAME;
 		else return AppType.APPLICATION;
 	}
@@ -307,8 +288,7 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		}
 		App selectedApp = (App) appsCB.getSelectionModel().getSelectedItem();
 		if (selectedApp != null) selectedApp.setInfo(appInfoTA.getText());
-		profileManager.saveProfile();
-		deviceMenuController.getDeviceManager().save();
+		profileManager.saveProfile(device);
 	}
 	/**
 	 * The profiles combo box selected a new profile.
@@ -317,14 +297,36 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		if (selectedProfile != currentProfile) saveProfile();
 	   	currentProfile = selectedProfile;
 	    keymapUIManager.setProfile(selectedProfile);
-		deviceMenuController.setActiveProfile(device, selectedProfile);
+		profileManager.setActiveProfile(device, selectedProfile);
     }
-	/**
-	 * Resets the UI if the removed device's profile is loaded.
-	 */
-	 public void deviceRemoved(Device device) {
-	 	if (currentProfile == device.getProfile()) this.device = null;
-	 }
+    public void onTypeChange() {
+		if (currentProfile != null) {
+			String currentType = currentProfile.getAppInfo().getAppType().toString().toLowerCase();
+			String newType = ((String) typeCB.getSelectionModel().getSelectedItem()).toLowerCase();
+			if (currentType.equals(newType)) return;
+		}
+		Profile getProf = null;
+		try {
+			if (getAppType() == AppType.APPLICATION) getProf = profileManager.getAppsRoot(device).getList().get(0).getProfiles().get(0);
+			else getProf = profileManager.getGamesRoot(device).getList().get(0).getProfiles().get(0);
+		}
+		catch (Exception e) { }
+		profileSelected(getProf);
+		updateComboBoxes(getAppType());
+	}
+	public void onAppChange() {
+		if (currentProfile != null) {
+			String currentApp = currentProfile.getAppInfo().getName();
+			String newApp = appsCB.getSelectionModel().getSelectedItem().toString();
+			if (currentApp.equals(newApp)) return;
+		}
+		Profile getProf = null;
+		try {
+			getProf = ((App) appsCB.getSelectionModel().getSelectedItem()).getProfiles().get(0);
+		} catch (Exception e) {	}
+		profileSelected(getProf);
+		updateComboBoxes(getAppType());
+	}
 
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
@@ -334,21 +336,20 @@ public class ProfileUIController implements Initializable, ChangeListener<String
      * @param type the type of profile to sort on.
      */
     private void updateComboBoxes(AppType type){
-		Root root = profileManager.getRoot(type);
+		Root root = profileManager.getRoot(device, type);
 		if(root.getList().isEmpty()){
 	   		resetAppUIInfo();
 	    	resetProfileUIInfo();
 	    	return;
 		}
 		ObservableList<App> apps = FXCollections.observableArrayList(root.getList());
-		appsCB.valueProperty().removeListener(appChangeListener);
 		appsCB.setItems(apps);
 		App app;
-		if (currentProfile != null) app = getAppByName(currentProfile.getAppInfo().getAppType().toString(), currentProfile.getAppInfo().getName());
+		if (currentProfile != null) app = profileManager.getAppByName(device,
+				currentProfile.getAppInfo().getAppType().toString(), currentProfile.getAppInfo().getName());
 		else app = (App) appsCB.getItems().get(0);
 		updateAppUIInfo(app);
 		appsCB.getSelectionModel().select(app);
-		appsCB.valueProperty().addListener(appChangeListener);
 		ObservableList<Profile> profiles;
 		updateProfileUIInfo(currentProfile);
 		try {
@@ -382,139 +383,140 @@ public class ProfileUIController implements Initializable, ChangeListener<String
     /**
      * Opens the new Program Popup UI.
      */
-    private void openNewProgramPopup(){
-	if(!checkDevice()) return;
-	if(newProgramUIController == null){
-	    try {
-		// pop open add new device
-		URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/NewProgramUI.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setLocation(location);
-		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-		Parent root = (Parent)fxmlLoader.load(location.openStream());
-		newProgramUIController = (NewProgramUIController) fxmlLoader.getController();
-		Stage stage = WindowUtil.createStage(root);
-		newProgramUIController.setStage(stage);
-		newProgramUIController.addNotification(this);
-	    } catch (IOException ex) {
-		return;
-	    }
-	}
-	newProgramUIController.setProfileManager(profileManager);
-	newProgramUIController.setDeviceName(device.getDeviceInformation().getName());
-	newProgramUIController.showStage();
-	newProgramUIController.setAppType(typeCB.getSelectionModel().getSelectedIndex());
+    private void openNewProgramPopup() {
+		if (!checkDevice()) return;
+		if (newProgramUIController == null) {
+			try {
+				// pop open add new device
+				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/NewProgramUI.fxml");
+				FXMLLoader fxmlLoader = new FXMLLoader();
+				fxmlLoader.setLocation(location);
+				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+				Parent root = (Parent) fxmlLoader.load(location.openStream());
+				newProgramUIController = (NewProgramUIController) fxmlLoader.getController();
+				Stage stage = WindowUtil.createStage(root);
+				newProgramUIController.setStage(stage);
+				newProgramUIController.addNotification(this);
+			} catch (IOException ex) {
+				return;
+			}
+		}
+		newProgramUIController.setProfileManager(profileManager);
+		newProgramUIController.setDevice(device);
+		newProgramUIController.showStage();
+		newProgramUIController.setAppType(typeCB.getSelectionModel().getSelectedIndex());
 
-    }
+	}
     /**
      * Opens a new profile popup.
      */
-    private void openNewProfilePopup(){
-	if(!checkDevice()) return;
-	// check if an app is selected
-	if(appsCB.getSelectionModel().getSelectedItem() == null){
-	    PopupManager.getPopupManager().showError("No App selected.\nMaybe create a new App?");
-	    return;
+    private void openNewProfilePopup() {
+		if (!checkDevice()) return;
+		// check if an app is selected
+		if (appsCB.getSelectionModel().getSelectedItem() == null) {
+			PopupManager.getPopupManager().showError("No App selected.\nMaybe create a new App?");
+			return;
+		}
+		if (newProfileUIController == null)
+			newProfileUIController = (NewProfileUIController) openPopup("/com/monkygames/kbmaster/fxml/popup/NewProfileUI.fxml");
+		newProfileUIController.setDevice(device);
+		newProfileUIController.setProfileManager(profileManager);
+		newProfileUIController.showStage();
+		newProfileUIController.setAppType(typeCB.getSelectionModel().getSelectedIndex());
+		newProfileUIController.setApp(appsCB.getSelectionModel().getSelectedIndex());
 	}
-	if(newProfileUIController == null){
-	    newProfileUIController = (NewProfileUIController)openPopup("/com/monkygames/kbmaster/fxml/popup/NewProfileUI.fxml");
-	}
-	newProfileUIController.setDevice(device);
-	newProfileUIController.setProfileManager(profileManager);
-	newProfileUIController.showStage();
-	newProfileUIController.setAppType(typeCB.getSelectionModel().getSelectedIndex());
-	newProfileUIController.setApp(appsCB.getSelectionModel().getSelectedIndex());
-    }
-    private void openCloneProfilePopup(){
-	if(!checkDevice()) return;
-	// check if a profile has been selected
-	Profile profile = (Profile)profileCB.getSelectionModel().getSelectedItem();
-	if(profile == null){
-	    PopupManager.getPopupManager().showError("No Profile selected");
-	    return; 
-	}
-	if(cloneProfileUIController == null){
-	    cloneProfileUIController = (CloneProfileUIController) openPopup("/com/monkygames/kbmaster/fxml/popup/CloneProfileUI.fxml");
-	}
-	cloneProfileUIController.setDevice(device);
-	cloneProfileUIController.setProfileManager(profileManager);
-	cloneProfileUIController.setLabel(currentProfile.getProfileName());
-	cloneProfileUIController.setAppType(typeCB.getSelectionModel().getSelectedIndex());
-	cloneProfileUIController.setProgram(appsCB.getSelectionModel().getSelectedIndex());
-	cloneProfileUIController.showStage();
+    private void openCloneProfilePopup() {
+		if (!checkDevice()) return;
+		// check if a profile has been selected
+		Profile profile = (Profile) profileCB.getSelectionModel().getSelectedItem();
+		if (profile == null) {
+			PopupManager.getPopupManager().showError("No Profile selected");
+			return;
+		}
+		if (cloneProfileUIController == null) {
+			cloneProfileUIController = (CloneProfileUIController) openPopup("/com/monkygames/kbmaster/fxml/popup/CloneProfileUI.fxml");
+		}
+		cloneProfileUIController.setDevice(device);
+		cloneProfileUIController.setProfileManager(profileManager);
+		cloneProfileUIController.setLabel(currentProfile.getProfileName());
+		cloneProfileUIController.setAppType(typeCB.getSelectionModel().getSelectedIndex());
+		cloneProfileUIController.setProgram(appsCB.getSelectionModel().getSelectedIndex());
+		cloneProfileUIController.showStage();
 
-    }
-    private void openPDFPopup(){
-	Profile profile = (Profile)profileCB.getSelectionModel().getSelectedItem();
-	if(profile == null){
-	    PopupManager.getPopupManager().showError("No Profile selected");
-	    return; 
 	}
-	File file = pdfChooser.showSaveDialog(null);
-	if(file != null){
-	    GenerateBindingsImage generator = new GenerateBindingsImage(device);
-	    String header = profile.getAppInfo().getName() + " / " + profile.getProfileName();
-	    String footer = device.getDeviceInformation().getMake()+" "+
-			    device.getDeviceInformation().getModel();
-	    BindingPDFWriter pdfWriter = new BindingPDFWriter(generator.generateImages(profile),
-							      header,
-							      profile.getInfo(),
-							      "keyboard mice gaming",
-							      header,
-							      footer,
-							      file.getPath());
+    private void openPDFPopup() {
+		Profile profile = (Profile) profileCB.getSelectionModel().getSelectedItem();
+		if (profile == null) {
+			PopupManager.getPopupManager().showError("No Profile selected");
+			return;
+		}
+		File file = pdfChooser.showSaveDialog(null);
+		if (file != null) {
+			GenerateBindingsImage generator = new GenerateBindingsImage(device);
+			String header = profile.getAppInfo().getName() + " / " + profile.getProfileName();
+			String footer = device.getDeviceInformation().getMake() + " " +
+					device.getDeviceInformation().getModel();
+			BindingPDFWriter pdfWriter = new BindingPDFWriter(generator.generateImages(profile),
+					header,
+					profile.getInfo(),
+					"keyboard mice gaming",
+					header,
+					footer,
+					file.getPath());
+		}
 	}
-    }
-    private void openDeleteProfilePopup(){
-	if(!checkDevice()) return;
-	Profile profile = (Profile)profileCB.getSelectionModel().getSelectedItem();
-	if(profile == null){
-	    PopupManager.getPopupManager().showError("No Profile selected");
-	    return; 
+    private void openDeleteProfilePopup() {
+		if (!checkDevice()) return;
+		Profile profile = (Profile) profileCB.getSelectionModel().getSelectedItem();
+		if (profile == null) {
+			PopupManager.getPopupManager().showError("No Profile selected");
+			return;
+		}
+		App app = (App) appsCB.getSelectionModel().getSelectedItem();
+		if (deleteProfileUIController == null) {
+			deleteProfileUIController = (DeleteProfileUIController) openPopup("/com/monkygames/kbmaster/fxml/popup/DeleteProfileUI.fxml");
+		}
+		deleteProfileUIController.setProfile(device, app, profile);
+		deleteProfileUIController.setProfileManager(profileManager);
+		deleteProfileUIController.showStage();
 	}
-	if(deleteProfileUIController == null){
-	    deleteProfileUIController = (DeleteProfileUIController)openPopup("/com/monkygames/kbmaster/fxml/popup/DeleteProfileUI.fxml");
+    private void openDeleteProgramPopup() {
+		if (!checkDevice()) return;
+		App app = (App) appsCB.getSelectionModel().getSelectedItem();
+		if (app == null) {
+			PopupManager.getPopupManager().showError("No App selected");
+			return;
+		}
+		if (deleteProgramUIController == null) {
+			deleteProgramUIController = (DeleteProgramUIController) openPopup("/com/monkygames/kbmaster/fxml/popup/DeleteProgramUI.fxml");
+		}
+		deleteProgramUIController.setProfileManager(profileManager);
+		deleteProgramUIController.setDevice(device);
+		deleteProgramUIController.setApp(app);
+		deleteProgramUIController.showStage();
 	}
-	deleteProfileUIController.setProfile(profile);
-	deleteProfileUIController.setProfileManager(profileManager);
-	deleteProfileUIController.showStage();
-    }
-    private void openDeleteProgramPopup(){
-	if(!checkDevice()) return;
-	App app = (App)appsCB.getSelectionModel().getSelectedItem();
-	if(app == null){
-	    PopupManager.getPopupManager().showError("No App selected");
-	    return; 
-	}
-	if(deleteProgramUIController == null){
-	    deleteProgramUIController = (DeleteProgramUIController)openPopup("/com/monkygames/kbmaster/fxml/popup/DeleteProgramUI.fxml");
-	}
-	deleteProgramUIController.setProfileManager(profileManager);
-	deleteProgramUIController.setApp(app);
-	deleteProgramUIController.showStage();
-    }
     /**
      * Opens a popup specified by the url.
      * @param fxmlURL the url of the fxml file to open.
      * @return the controller associated with the fxml file.
      */
-    private PopupController openPopup(String fxmlURL){
-	PopupController popupController = PopupManager.getPopupManager().openPopup(fxmlURL);
-	if(popupController == null) return null;
-	popupController.addNotification(this);
-	return popupController;
-    }
+    private PopupController openPopup(String fxmlURL) {
+		PopupController popupController = PopupManager.getPopupManager().openPopup(fxmlURL);
+		if (popupController == null) return null;
+		popupController.addNotification(this);
+		return popupController;
+	}
     /**
      * Checks if a device has been selected and pops an error if it has not.
      * @return true if the device has been selected and false if no device has been selected.
      */
-    private boolean checkDevice(){
-	if(device == null){
-	    PopupManager.getPopupManager().showError("No device selected");
-	    return false;
+    private boolean checkDevice() {
+		if (device == null) {
+			PopupManager.getPopupManager().showError("No device selected");
+			return false;
+		}
+		return true;
 	}
-	return true;
-    }
     /**
      * Updates the UI with the app information.
      * @param app the app to be updated.
@@ -535,10 +537,8 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		appInfoTA.setText("");
 		appLogoIV.setImage(defaultAppLogoImage);
 		devLogoIV.setImage(defaultDevLogoImage);
-		appsCB.valueProperty().removeListener(appChangeListener);
+		appsCB.getSelectionModel().clearSelection();
 		appsCB.setItems(FXCollections.observableArrayList());
-		appsCB.getSelectionModel().select(null);
-		appsCB.valueProperty().addListener(appChangeListener);
     }
     /**
      * Updates the UI with the profile information.
@@ -565,129 +565,113 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		updatedL.setText("");
 		keymapUIManager.setDescriptionText("");
 		profileCB.valueProperty().removeListener(profileChangeListener);
+		profileCB.getSelectionModel().clearSelection();
 		profileCB.setItems(FXCollections.observableArrayList());
-		profileCB.getSelectionModel().select(null);
 		profileCB.valueProperty().addListener(profileChangeListener);
     }
-    private void createChangeListeners(){
-	appChangeListener = (ov, previousValue, newValue) -> {
-		if(ov == appsCB.valueProperty()) {
-			Profile getProf = null;
-			try { getProf = ((App) appsCB.getSelectionModel().getSelectedItem()).getProfiles().get(0); }
-			catch (Exception e) { }
-			profileSelected(getProf);
-			updateComboBoxes(getAppType());
-		}
-	};
-	profileChangeListener = (ov, previousValue, newValue) -> {
-		if(ov == profileCB.valueProperty()) {
-			Profile getProf = null;
-			try { getProf = (Profile) profileCB.getSelectionModel().getSelectedItem(); }
-			catch (Exception e) { }
-			profileSelected(getProf);
-			updateComboBoxes(getAppType());
-		}
-	};
-    }
-	@Override
-	public void changed(ObservableValue<? extends String> ov,  String previousValue, String newValue) {
-		if(ov == typeCB.valueProperty()) {
-			Profile getProf = null;
-			try {
-				if (getAppType() == AppType.APPLICATION) getProf = profileManager.getAppsRoot().getList().get(0).getProfiles().get(0);
-				else getProf = profileManager.getGamesRoot().getList().get(0).getProfiles().get(0);
+    private void createChangeListeners() {
+		profileChangeListener = (ov, previousValue, newValue) -> {
+			if (ov == profileCB.valueProperty()) {
+				Profile getProf = null;
+				try {
+					getProf = (Profile) profileCB.getSelectionModel().getSelectedItem();
+				} catch (Exception e) {
+				}
+				profileSelected(getProf);
+				updateComboBoxes(getAppType());
 			}
-			catch (Exception e) { }
-			profileSelected(getProf);
-			updateComboBoxes(getAppType());
+		};
+	}
+	/**
+	 * Export the profile to a unique file location.
+	 */
+    private void exportProfile() {
+		if (currentProfile == null) {
+			PopupManager.getPopupManager().showError("Export failed: No profile selected");
+			return;
 		}
+		File file = kmpFileChooser.showSaveDialog(null);
+		if (file != null) {
+			String fileName = file.getAbsolutePath(), extension = "";
+			int lastIndex = fileName.lastIndexOf(".");
+			if (lastIndex > -1) extension = fileName.substring(lastIndex);
+			// export to an xml file only
+			if (!extension.equals(".xml")) {
+				PopupManager.getPopupManager().showError("Export failed. Please save as .xml");
+				return;
+			}
+			if (file.exists()) file.delete();
+			//Ensure the currently selected keymap is saved before export
+			saveProfile();
+			if (!XStreamManager.getStreamManager().writeProfile(file.getAbsolutePath(), currentProfile))
+				PopupManager.getPopupManager().showError("Export failed.");
+		}else PopupManager.getPopupManager().showError("Export failed: can't find file");
 	}
-    /**
-     * Opens a file selector and writes the profile out.
-     */
-    private void exportProfile(){
-   	if (currentProfile == null) {
-		PopupManager.getPopupManager().showError("No profile selected.");
-		return;
-	}
-	File file = kmpFileChooser.showSaveDialog(null);
-	if(file != null){
-	    if (!profileManager.exportProfile(file, currentProfile)) PopupManager.getPopupManager().showError("Export failed. Please save as .xml");
-	}
-
-    }
-    /**
-     * Opens a file selector for importing a profile.
-     */
+	/**
+	 * Imports the profile into the project (if possible).
+	 */
     private void importProfile(){
 		File file = kmpFileChooser.showOpenDialog(null);
 		if(file != null){
-	    	if(!profileManager.importProfile(file)) PopupManager.getPopupManager().showError("Import failed");
-		}else{
-		    PopupManager.getPopupManager().showError("Import failed: can't find file");
-		}
+			if (!file.exists()) {
+				PopupManager.getPopupManager().showError("Import failed: file does not exist.");
+				return;
+			}
+			try {
+				Profile profile = XStreamManager.getStreamManager().readProfile(file.getAbsolutePath());
+				AppType appType = profile.getAppInfo().getAppType();
+				String appName = profile.getAppInfo().getName();
+				String deviceName = profile.getAppInfo().getDeviceName();
+				//Ensures the profile is being imported to the proper device
+				if (!deviceName.equals(getDevice().getDeviceInformation().getName())) {
+					PopupManager.getPopupManager().showError("Import failed: wrong device selected.");
+					return;
+				}
+				App app = profileManager.getAppByName(device, appType.toString(), appName);
+				if (app == null) {
+					profileManager.addApp(device, new App("", null, null, appName, deviceName, appType));
+					onOK(null, "AddApp`" + appType.toString() + "`" + appName);
+					app = profileManager.getAppByName(device, appType.toString(), appName);
+				}
+				if (!app.doesProfileExist(profile.getProfileName())) {
+					profileManager.addProfile(device, app, profile);
+					onOK(null, "AddProfile`" + appType.toString() + "`" + appName + "`" + profile.getProfileName());
+				} else PopupManager.getPopupManager().showError("Import failed: profile name exists.");
+			}catch (Exception e) {  PopupManager.getPopupManager().showError("Import failed."); }
+		}else PopupManager.getPopupManager().showError("Import failed: can't find file");
     }
-	/**
-	 * Finds and returns an application. Null if no matching application found.
-	 *
-	 */
-	 public App getAppByName(String appTypeString, String appName) {
-	 	AppType appType;
-	 	switch (appTypeString.toLowerCase()) {
-			case "game":
-			appType = AppType.GAME;
-			break;
-			default:
-			appType = AppType.APPLICATION;
-		}
-		for (App app : profileManager.getRoot(appType).getList())
-			if (app.toString().equals(appName)) return app;
-		return null;
-	 }
+
 // ============= Implemented Methods ============== //
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-	defaultAppLogoImage = new Image("/com/monkygames/kbmaster/fxml/resources/profile/app_logo.png");
-	defaultDevLogoImage = new Image("/com/monkygames/kbmaster/fxml/resources/profile/dev_logo.png");
-	
-	typeCB.setItems(FXCollections.observableArrayList());
-	profileCB.setItems(FXCollections.observableArrayList());
-	appsCB.setItems(FXCollections.observableArrayList());
-	createChangeListeners();
+		defaultAppLogoImage = new Image("/com/monkygames/kbmaster/fxml/resources/profile/app_logo.png");
+		defaultDevLogoImage = new Image("/com/monkygames/kbmaster/fxml/resources/profile/dev_logo.png");
 
-	profileDir = new File(profileDirS);
-	if(!profileDir.exists()){
-	    profileDir.mkdir();
+		typeCB.setItems(FXCollections.observableArrayList());
+		profileCB.setItems(FXCollections.observableArrayList());
+		appsCB.setItems(FXCollections.observableArrayList());
+		createChangeListeners();
+
+		setButtonToolTip(newAppB, "New Program");
+		setButtonToolTip(newProfileB, "New Profile");
+		setButtonToolTip(cloneProfileB, "Clone Profile");
+		setButtonToolTip(importProfileB, "Import Profile");
+		setButtonToolTip(exportProfileB, "Export Profile");
+		setButtonToolTip(printPDFB, "Print PDF");
+		setButtonToolTip(deleteProfileB, "Delete Profile");
+		setButtonToolTip(deleteProgramB, "Delete App");
+
+		pdfChooser = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
+		pdfChooser.getExtensionFilters().add(extFilter);
+
+		keymapUIManager = new KeymapUIManager();
+
+		kmpFileChooser = new FileChooser();
+		FileChooser.ExtensionFilter kmpExtFilter = new FileChooser.ExtensionFilter("kbmaster profiles (*.xml)", "*.xml");
+		kmpFileChooser.getExtensionFilters().add(kmpExtFilter);
 	}
-	
-	setButtonToolTip(newAppB, "New Program");
-	setButtonToolTip(newProfileB, "New Profile");
-	setButtonToolTip(cloneProfileB, "Clone Profile");
-	setButtonToolTip(importProfileB, "Import Profile");
-	setButtonToolTip(exportProfileB, "Export Profile");
-	setButtonToolTip(printPDFB, "Print PDF");
-	setButtonToolTip(deleteProfileB, "Delete Profile");
-	setButtonToolTip(deleteProgramB, "Delete App");
-
-	pdfChooser = new FileChooser();
-	FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
-	pdfChooser.getExtensionFilters().add(extFilter);
-
-	keymapUIManager = new KeymapUIManager();
-
-	kmpFileChooser = new FileChooser();
-	FileChooser.ExtensionFilter kmpExtFilter = new FileChooser.ExtensionFilter("kbmaster profiles (*.xml)","*.xml");
-	kmpFileChooser.getExtensionFilters().add(kmpExtFilter);
-
-    }
-
-
-
-// ============= Extended Methods ============== //
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
-
     @Override
     public void onOK(Object src, String message) {
 		String[] objectNames = message.split("`");
@@ -696,44 +680,34 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		switch (objectNames[0]) {
 			case "AddApp":
 				profileSelected(null);
-				appName = getAppByName(objectNames[1],objectNames[2]);
+				appName = profileManager.getAppByName(device, objectNames[1],objectNames[2]);
 				appType = appName.getAppType();
 				currentAppType = getAppType();
-				if (appType != currentAppType) {
-					typeCB.valueProperty().removeListener(this);
+				if (appType != currentAppType)
 					typeCB.getSelectionModel().select(typeCB.getSelectionModel().getSelectedIndex() == 0 ? 1 : 0);
-					typeCB.valueProperty().addListener(this);
-				}
 				updateComboBoxes(appType);
-				appsCB.valueProperty().removeListener(appChangeListener);
 				appsCB.getSelectionModel().select(appName);
-				appsCB.valueProperty().addListener(appChangeListener);
 				updateAppUIInfo(appName);
 			break;
 			case "AddProfile":
-				appName = getAppByName(objectNames[1], objectNames[2]);
+				appName = profileManager.getAppByName(device, objectNames[1], objectNames[2]);
 				currentApp = (App) appsCB.getSelectionModel().getSelectedItem();
 				appType = appName.getAppType();
 				currentAppType = getAppType();
 				Profile getProf = null;
-				int appIndex = profileManager.getRoot(appType).getList().indexOf(appName);
-				for (Profile profile : profileManager.getRoot(appType).getList().get(appIndex).getProfiles()) {
+				int appIndex = profileManager.getRoot(device, appType).getList().indexOf(appName);
+				for (Profile profile : profileManager.getRoot(device, appType).getList().get(appIndex).getProfiles()) {
 					if (profile.toString().equals(objectNames[3])) {
 						getProf = profile;
 						break;
 					}
 				}
 				profileSelected(getProf);
-				if (appType != currentAppType) {
-					typeCB.valueProperty().removeListener(this);
+				if (appType != currentAppType)
 					typeCB.getSelectionModel().select(typeCB.getSelectionModel().getSelectedIndex() == 0 ? 1 : 0);
-					typeCB.valueProperty().addListener(this);
-				}
 				updateComboBoxes(appType);
 				if (currentApp != appName) {
-					appsCB.valueProperty().removeListener(appChangeListener);
 					appsCB.getSelectionModel().select(appName);
-					appsCB.valueProperty().addListener(appChangeListener);
 					updateAppUIInfo(appName);
 				}
 				profileCB.valueProperty().removeListener(profileChangeListener);
@@ -748,10 +722,8 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 			case "DelProfile":
 				profileSelected(null);
 				updateComboBoxes(getAppType());
-				App app = getAppByName(objectNames[1],objectNames[2]);
-				appsCB.valueProperty().removeListener(appChangeListener);
+				App app = profileManager.getAppByName(device, objectNames[1],objectNames[2]);
 				appsCB.getSelectionModel().select(app);
-				appsCB.valueProperty().addListener(appChangeListener);
 			break;
 			case "ResetKeymap":
 				int selectedKeymap = keymapTabPane.getSelectionModel().getSelectedIndex();
@@ -769,16 +741,5 @@ public class ProfileUIController implements Initializable, ChangeListener<String
 		}
     }
     @Override
-    public void onCancel(Object src, String message) {
-	// do nothing for now
-    }
-
+    public void onCancel(Object src, String message) { }
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

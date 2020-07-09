@@ -35,41 +35,39 @@ public class DeviceEntry{
      */
     private BooleanProperty enabled;
     private Device device;
+
+    /**
+     * The actual profile name.
+     */
+    private String realProfileName;
 // ============= Constructors ============== //
     public DeviceEntry(Device device){
 	    this.device = device;
 	    enabled = new SimpleBooleanProperty(device.isEnabled());
 	    isConnected = new SimpleStringProperty(device.isConnected() ? "Yes" : "No");
-	    deviceName = new SimpleStringProperty(device.getDeviceInformation().getName());
+	    deviceName = new SimpleStringProperty(device.getDeviceInformation().getMake()+":"+device.getDeviceInformation().getModel());
 	    profileName = new SimpleStringProperty();
-	    try {
-	        profileName.setValue(device.getProfile().getProfileName());
-        }catch (NullPointerException e) { }
+        setProfile(device.getProfile());
     }
 // ============= Public Methods ============== //
     public BooleanProperty enabledProperty(){ return enabled; }
     /**
      * Returns the name of this device.
-     * @return the name of this device.
      */
-    public String getDeviceName(){ return device.getDeviceInformation().getName();  }
+    public String getDeviceName(){ return deviceName.getValue();  }
     /**
      * Returns the app + profile name.
-     * @return the app + profile name used in the table view.
      */
-    public String getProfileName(){
-	    Profile profile = device.getProfile();
-	    if(profile == null) return "None Selected";
-	    return profile.getAppInfo().getName()+":"+profile.getProfileName();
-    }
+    public String getProfileName(){ return profileName.getValue(); }
+    /**
+     * Returns only the profile name.
+     */
+    public String getRealProfileName(){ return realProfileName; }
     /**
      * Returns a string representation if the device is connected.
      * @return Yes if connected and No otherwise.
      */
-    public String getIsConnected(){
-	    if(device.isConnected()) return "Yes";
-	    return "No";
-    }
+    public String getIsConnected(){ return isConnected.getValue(); }
     /**
      * Returns the device associated with this device entry.
      * @return the device.
@@ -81,8 +79,13 @@ public class DeviceEntry{
     public void setConnected(String isConnected) {
          this.isConnected.setValue(isConnected);
     }
-    public void setProfile(String profile) {
-        this.profileName.setValue(profile);
+    public void setProfile(Profile profile) {
+        if (profile == null) realProfileName = "None Selected";
+        else realProfileName = profile.getProfileName();
+        this.profileName.setValue(convertProfile(profile));
     }
-
+    public String convertProfile(Profile profile) {
+        if (profile == null) return "None Selected";
+        else return profile.getAppInfo().getName()+":"+profile.getProfileName();
+    }
 }

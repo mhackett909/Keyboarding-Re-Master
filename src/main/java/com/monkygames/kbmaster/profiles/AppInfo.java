@@ -1,12 +1,13 @@
 package com.monkygames.kbmaster.profiles;
 /**
- * Contains information about the application associated with this profile.
+ * Contains information about the application associated with a profile. Used by the device descriptor.
  * @author vapula87
  */
 public class AppInfo {
     private String appName;
     private AppType appType;
     private String deviceName;
+
     public AppInfo(App app) {
         appName = app.getName();
         appType = app.getAppType();

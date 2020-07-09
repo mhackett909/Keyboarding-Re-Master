@@ -66,12 +66,11 @@ public class HardwareManager implements HardwareListener{
 	 * @param device the device to be disabled and removed.
 	 * @return true if disables and removes and false otherwise.
 	 */
-	public boolean removeDevice(Device device){
+	public void removeDevice(Device device){
 		HardwareEngine engine = engines.remove(device.getDeviceInformation().getJinputName());
 		engine.stopPolling();
 		engine.stopScanning();
-		if(engine != null) return true;
-		return false;
+		engine = null;
 	}
 	/**
 	 * Starts polling the specified device.
@@ -102,7 +101,16 @@ public class HardwareManager implements HardwareListener{
 	 * Cleans up engines. Used in memory cleanup.
 	 */
 	public void cleanUpEngines() {
-		for (HardwareEngine engine : engines.values()) engine = null;
+		for (HardwareEngine engine : engines.values()) {
+			engine.close();
+			engine = null;
+		}
+		engines.clear();
+	}
+	public void close() {
+		stopScanningAllDevices();
+		stopPollingAllDevices();
+		cleanUpEngines();
 	}
 	public ProfileUIController getProfileUIController() {
 		return deviceMenuController.getProfileUIController();
@@ -117,10 +125,10 @@ public class HardwareManager implements HardwareListener{
 	public void hardwareStatusChange(boolean hasConnected, String deviceName) {
 		// update device connection status
 		HardwareEngine engine = engines.get(deviceName);
-		engine.getDevice().setIsConnected(hasConnected);
+		engine.getDevice().setConnected(hasConnected);
 		deviceMenuController.updateDevices();
+		deviceMenuController.getDeviceManager().save();
 	}
 	@Override
-	public void eventIndexPerformed(int index) {
-	}
+	public void eventIndexPerformed(int index) { }
 }

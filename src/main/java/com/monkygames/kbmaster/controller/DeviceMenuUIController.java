@@ -3,16 +3,15 @@
  */
 package com.monkygames.kbmaster.controller;
 
-// === javafx imports === //
 import com.monkygames.kbmaster.KeyboardingMaster;
 import com.monkygames.kbmaster.account.CloudAccount;
-import com.monkygames.kbmaster.account.DeviceManager;
+import com.monkygames.kbmaster.driver.DeviceManager;
 import com.monkygames.kbmaster.account.UserSettings;
 import com.monkygames.kbmaster.controller.login.LoginUIController;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.engine.HardwareManager;
 import com.monkygames.kbmaster.io.GenerateBindingsImage;
-import com.monkygames.kbmaster.io.ProfileManager;
+import com.monkygames.kbmaster.profiles.ProfileManager;
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.AppType;
 import com.monkygames.kbmaster.profiles.Profile;
@@ -22,14 +21,10 @@ import com.monkygames.kbmaster.util.PopupManager;
 import com.monkygames.kbmaster.util.RepeatManager;
 import com.monkygames.kbmaster.util.WindowUtil;
 
-import java.awt.*;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -133,6 +128,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      * Used for managing engines (which do the work of remapping outputs).
      */
     private HardwareManager hardwareManager;
+    private ProfileManager profileManager;
     private LoginUIController loginController;
     private AboutUIController aboutController;
     private KBMSystemTray systemTray;
@@ -152,8 +148,9 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 		// update global account
 		if(!deviceManager.downloadDevice(device.getDeviceInformation().getPackageName())){
 	    	PopupManager.getPopupManager().showError("Unable to add device. Is it already added?");
-	   		 return;
+	    	return;
 		}
+		profileManager.addManagedDevice(device);
 		updateDevices();
 		deviceManager.save();
     }
@@ -161,13 +158,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      * Removes the device and updates the table.
      */
     public void removeDevice(Device device){
-		if(!deviceManager.removeDownloadedDevice(device)){
-	    	PopupManager.getPopupManager().showError("Unable to remove device.");
-	   	 	return;
-		}
-		if (configureDeviceController != null)
-			configureDeviceController.getProfileUIController().deviceRemoved(device);
-		hardwareManager.removeDevice(device);
 		for (Object entry : deviceList) {
 			DeviceEntry deviceEntry = (DeviceEntry) entry;
 			if (deviceEntry.getDevice() == device) {
@@ -175,6 +165,9 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 				break;
 			}
 		}
+		hardwareManager.removeDevice(device);
+		profileManager.removeDevice(device);
+		deviceManager.removeDownloadedDevice(device);
 		updateDevices();
 		deviceManager.save();
     }
@@ -184,18 +177,25 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
     public void setActiveProfile(Device device, Profile profile){
 		device.setProfile(profile);
 		updateDevices();
+		deviceManager.save();
 		hardwareManager.startPollingDevice(device, profile);
     }
 	/**
-	 * Returns the global account. Used in saving.
+	 * Returns the device manager. Used in saving.
 	 */
 	 public DeviceManager getDeviceManager() { return deviceManager; }
+	/**
+	 * Returns the profile manager.
+	 */
+	public ProfileManager getProfileManager() { return profileManager; }
 	/**
 	 * Returns the ProfileUIController. Used to bridge engine to UI.
 	 */
 	 public ProfileUIController getProfileUIController() {
 	 	return configureDeviceController.getProfileUIController();
 	 }
+
+
 	/**
      * Prepares the gui and databases to populate device list.
      * @param userSettings the settings for this menu
@@ -215,7 +215,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 				accountIcon.setImage(image);
 				break;
 		}
-		deviceManager = new DeviceManager();
+		deviceManager = new DeviceManager(this);
 		deviceList = FXCollections.observableArrayList();
 		checkUpdates();
 		updateDevices();
@@ -249,7 +249,9 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	}
     /**
      * One or more devices has changed status and the UI
-     * will be updated to reflect these changes.
+     * will be updated to reflect these changes. Also updates
+	 * the device descriptors and adds managed devices to the
+	 * hardware manager.
      */
 	public void updateDevices() {
 		for (Device device : deviceManager.getInstalledDevices()) {
@@ -257,18 +259,18 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 				hardwareManager.addManagedDevice(device);
 				deviceList.add(new DeviceEntry(device));
 			}
+			deviceManager.updateDescriptor(device);
 		}
 		for (Object entry : deviceList) {
 			DeviceEntry deviceEntry = (DeviceEntry) entry;
 			Device entryDevice = deviceEntry.getDevice();
-			String entryProfile;
+			String entryConnected = entryDevice.isConnected() ? "Yes" : "No", entryProfile;
 			try {
 				entryProfile = entryDevice.getProfile().getProfileName();
 			}catch (NullPointerException e) { entryProfile = "None Selected"; }
-			String entryConnected = entryDevice.isConnected() ? "Yes" : "No";
 			boolean isModified = false;
-			if (!deviceEntry.getProfileName().equals(entryProfile)) {
-				deviceEntry.setProfile(entryProfile);
+			if (!deviceEntry.getRealProfileName().equals(entryProfile)) {
+				deviceEntry.setProfile(entryDevice.getProfile());
 				isModified = true;
 			}
 			if (deviceEntry.enabledProperty().getValue() != entryDevice.isEnabled()) {
@@ -282,32 +284,26 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 			if (isModified) deviceTV.refresh();
 		}
 		deviceTV.setItems(deviceList);
-		if(configureDeviceController != null)
-			configureDeviceController.updateDeviceDetails();
 	}
     /**
      * Shutsdown all engines and exits the program.
      */
-    public void exitApplication(){
-	cleanUp();
-
-	if(cloudAccount != null){
-	    loginController.hideDeviceMenu(false);
-	    // pop cloud sync UI
-	    KeyboardingMaster.getInstance().endDropboxSync(false, cloudAccount);
-	}else {
-	    KeyboardingMaster.getInstance().exit();
+    public void exitApplication() {
+		cleanUp();
+		if (cloudAccount != null) {
+			loginController.hideDeviceMenu(false);
+			// pop cloud sync UI
+			KeyboardingMaster.getInstance().endDropboxSync(false, cloudAccount);
+		} else {
+			KeyboardingMaster.getInstance().exit();
+		}
 	}
-    }
-    public void showKBMAboutFromNonJavaFXThread(){
-	Platform.runLater(new Runnable() {
-	    @Override
-	    public void run() {
-		initializeAboutController();
-		aboutController.showAbout(AboutUIController.AboutType.KBM);
-	    }
-	});
-    }
+    public void showKBMAboutFromNonJavaFXThread() {
+		Platform.runLater(() -> {
+			initializeAboutController();
+			aboutController.showAbout(AboutUIController.AboutType.KBM);
+		});
+	}
     public void showDeviceUI(){
 	loginController.showDeviceMenuFromNonJavaFXThread();
     }
@@ -401,7 +397,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 		Scene scene = new Scene(root);
 		newDeviceStage = WindowUtil.createStage(root);
 		controller.setStage(newDeviceStage);
-		controller.setAccount(deviceManager);
 		controller.setDeviceMenuUIController(this);
 	    } catch (IOException ex) {
 		Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
@@ -412,64 +407,63 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
     /**
      * Opens a UI for removing the device.
      */
-    private void openRemoveDeviceUI(){
-	// check if there a device selected!
-	DeviceEntry deviceEntry = getDeviceEntry();
-	if(deviceEntry == null) {
-		// pop error
-		PopupManager.getPopupManager().showError("No device selected");
-		return;
-	}
-	if(deleteDeviceController == null){
-	    try {
-		// pop open add new device
-		URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/DeleteDeviceUI.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setLocation(location);
-		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-		Parent root = (Parent)fxmlLoader.load(location.openStream());
-		deleteDeviceController = (DeleteDeviceUIController) fxmlLoader.getController();
-		Scene scene = new Scene(root);
-		Stage stage = WindowUtil.createStage(root);
-		deleteDeviceController.setStage(stage);
-		deleteDeviceController.setController(this);
-	    } catch (IOException ex) {
-		Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
-	    }
-	}
-	
-	if(deviceEntry.getDevice() != null){
-	    deleteDeviceController.setDevice(deviceEntry.getDevice());
-	}
-    }
-    private void openConfigureDeviceUI(){
-	DeviceEntry deviceEntry = getDeviceEntry();
-	if(deviceEntry == null) {
-		// pop error
-		PopupManager.getPopupManager().showError("No device selected");
-		return;
-	}
-	if(configureDeviceStage == null){
-	    try {
-		// pop open add new device
-		URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/ConfigureDeviceUI.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setLocation(location);
-		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-		Parent root = (Parent)fxmlLoader.load(location.openStream());
-		configureDeviceController = (ConfigureDeviceUIController) fxmlLoader.getController();
-		configureDeviceStage = WindowUtil.createStage(root);
+    private void openRemoveDeviceUI() {
+		// check if there a device selected!
+		DeviceEntry deviceEntry = getDeviceEntry();
+		if (deviceEntry == null) {
+			// pop error
+			PopupManager.getPopupManager().showError("No device selected");
+			return;
+		}
+		if (deleteDeviceController == null) {
+			try {
+				// pop open add new device
+				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/DeleteDeviceUI.fxml");
+				FXMLLoader fxmlLoader = new FXMLLoader();
+				fxmlLoader.setLocation(location);
+				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+				Parent root = (Parent) fxmlLoader.load(location.openStream());
+				deleteDeviceController = (DeleteDeviceUIController) fxmlLoader.getController();
+				Scene scene = new Scene(root);
+				Stage stage = WindowUtil.createStage(root);
+				deleteDeviceController.setStage(stage);
+				deleteDeviceController.setController(this);
+			} catch (IOException ex) {
+				Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
 
-		configureDeviceController.setStage(configureDeviceStage);
-		configureDeviceController.getProfileUIController().setDeviceMenuController(this);
-	    } catch (IOException ex) {
-		Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
-	    }
+		if (deviceEntry.getDevice() != null) {
+			deleteDeviceController.setDevice(deviceEntry.getDevice());
+		}
 	}
-	configureDeviceController.setDevice(deviceEntry.getDevice());
-	configureDeviceStage.show();
+    private void openConfigureDeviceUI() {
+		DeviceEntry deviceEntry = getDeviceEntry();
+		if (deviceEntry == null) {
+			// pop error
+			PopupManager.getPopupManager().showError("No device selected");
+			return;
+		}
+		if (configureDeviceStage == null) {
+			try {
+				// pop open add new device
+				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/ConfigureDeviceUI.fxml");
+				FXMLLoader fxmlLoader = new FXMLLoader();
+				fxmlLoader.setLocation(location);
+				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+				Parent root = (Parent) fxmlLoader.load(location.openStream());
+				configureDeviceController = (ConfigureDeviceUIController) fxmlLoader.getController();
+				configureDeviceStage = WindowUtil.createStage(root);
+				configureDeviceController.setStage(configureDeviceStage);
+				configureDeviceController.getProfileUIController().setProfileManager(profileManager);
+			} catch (IOException ex) {
+				Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+		configureDeviceController.setDevice(deviceEntry.getDevice());
+		configureDeviceStage.show();
 
-    }
+	}
 
     private void openSelectProfileUI() {
 		DeviceEntry deviceEntry = getDeviceEntry();
@@ -488,9 +482,8 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 				Parent root = (Parent) fxmlLoader.load(location.openStream());
 				selectProfileController = (SelectProfileUIController) fxmlLoader.getController();
 				Stage stage = WindowUtil.createStage(root);
-
 				selectProfileController.setStage(stage);
-				selectProfileController.setDeviceMenuController(this);
+				selectProfileController.setProfileManager(profileManager);
 			} catch (IOException ex) {
 				Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
 			}
@@ -498,91 +491,89 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 		selectProfileController.setDevice(deviceEntry.getDevice());
 		selectProfileController.show();
 	}
-    private void openDetailsUI(){
-	DeviceEntry deviceEntry = getDeviceEntry();
-	if(deviceEntry == null) {
-		// pop error
-		PopupManager.getPopupManager().showError("No device selected");
-		return;
-	}
-	if(displayProfileController == null){
-	    try {
-		// pop open add new device
-		URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/DisplayProfile.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setLocation(location);
-		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-		Parent root = (Parent)fxmlLoader.load(location.openStream());
-		displayProfileController = (DisplayProfileController) fxmlLoader.getController();
-		Stage stage = WindowUtil.createStage(root);
-		displayProfileController.setStage(stage);
-	    } catch (IOException ex) {
-		Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
-	    }
-	}
-	// get device
-	GenerateBindingsImage generator = new GenerateBindingsImage(deviceEntry.getDevice());
-	displayProfileController.setGenerateBindingsImage(generator);
-	ProfileManager profileManager = new ProfileManager(
-		ProfileUIController.profileDirS+File.separator+deviceEntry.getDevice().getDeviceInformation().getProfileName()
-	);
-	ObservableList<App> apps;
-	if (deviceEntry.getDevice().getProfile() == null) {
-		PopupManager.getPopupManager().showError("No profile selected");
-		return;
-	}
-	if (deviceEntry.getDevice().getProfile().getAppInfo().getAppType() == AppType.APPLICATION)
-		apps = FXCollections.observableArrayList(profileManager.getAppsRoot().getList());
-	else apps = FXCollections.observableArrayList(profileManager.getGamesRoot().getList());
-	App appName = null;
-	for (App app : apps) {
-		if (app.toString().equals(deviceEntry.getDevice().getProfile().getAppInfo().getName())) {
-			appName = app;
-			break;
+    private void openDetailsUI() {
+		DeviceEntry deviceEntry = getDeviceEntry();
+		if (deviceEntry == null) {
+			// pop error
+			PopupManager.getPopupManager().showError("No device selected");
+			return;
 		}
+		if (displayProfileController == null) {
+			try {
+				// pop open add new device
+				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/DisplayProfile.fxml");
+				FXMLLoader fxmlLoader = new FXMLLoader();
+				fxmlLoader.setLocation(location);
+				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+				Parent root = (Parent) fxmlLoader.load(location.openStream());
+				displayProfileController = (DisplayProfileController) fxmlLoader.getController();
+				Stage stage = WindowUtil.createStage(root);
+				displayProfileController.setStage(stage);
+			} catch (IOException ex) {
+				Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+		// get device
+		GenerateBindingsImage generator = new GenerateBindingsImage(deviceEntry.getDevice());
+		displayProfileController.setGenerateBindingsImage(generator);
+		ObservableList<App> apps;
+		if (deviceEntry.getDevice().getProfile() == null) {
+			PopupManager.getPopupManager().showError("No profile selected");
+			return;
+		}
+		if (deviceEntry.getDevice().getProfile().getAppInfo().getAppType() == AppType.APPLICATION)
+			apps = FXCollections.observableArrayList(profileManager.getAppsRoot(deviceEntry.getDevice()).getList());
+		else apps = FXCollections.observableArrayList(profileManager.getGamesRoot(deviceEntry.getDevice()).getList());
+		App appName = null;
+		for (App app : apps) {
+			if (app.toString().equals(deviceEntry.getDevice().getProfile().getAppInfo().getName())) {
+				appName = app;
+				break;
+			}
+		}
+		displayProfileController.displayDevice(deviceEntry.getDevice(), appName);
 	}
-	displayProfileController.displayDevice(deviceEntry.getDevice(),appName);
-    }
 // ============= Implemented Methods ============== //
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-	versionL.setText(KeyboardingMaster.VERSION);
-	hardwareManager = new HardwareManager(this);
-	deviceNameCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, String>("deviceName"));
-	profileNameCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, String>("profileName"));
-	isConnectedCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, String>("isConnected"));
-	isEnabledCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, Boolean>("enabled"));
+		versionL.setText(KeyboardingMaster.VERSION);
+		hardwareManager = new HardwareManager(this);
+		profileManager = new ProfileManager(this);
+		deviceNameCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, String>("deviceName"));
+		profileNameCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, String>("profileName"));
+		isConnectedCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, String>("isConnected"));
+		isEnabledCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, Boolean>("enabled"));
 
-	CheckboxCallback callback = new CheckboxCallback();
-	callback.setCheckboxHandler(this);
-	isEnabledCol.setCellFactory(callback);
-	isEnabledCol.setEditable(true);
+		CheckboxCallback callback = new CheckboxCallback();
+		callback.setCheckboxHandler(this);
+		isEnabledCol.setCellFactory(callback);
+		isEnabledCol.setEditable(true);
 
-	// set the table cell to center for isConnected
-	isConnectedCol.setCellFactory(new Callback<TableColumn<DeviceEntry, String>, TableCell<DeviceEntry, String>>() {
-	    @Override
-	    public TableCell call(TableColumn<DeviceEntry, String> param) {
-		TableCell cell = new TableCell(){
-		    @Override
-		    public void updateItem (Object item, boolean empty ) {
-			if (item != null) {
-				setText(item.toString());
+		// set the table cell to center for isConnected
+		isConnectedCol.setCellFactory(new Callback<TableColumn<DeviceEntry, String>, TableCell<DeviceEntry, String>>() {
+			@Override
+			public TableCell call(TableColumn<DeviceEntry, String> param) {
+				TableCell cell = new TableCell() {
+					@Override
+					public void updateItem(Object item, boolean empty) {
+						if (item != null) {
+							setText(item.toString());
+						}
+					}
+				};
+
+				//adding style class for the cell
+				cell.getStyleClass().add("table-cell-center");
+				return cell;
 			}
-		    }
-		};
-
-		//adding style class for the cell
-		cell.getStyleClass().add("table-cell-center");
-		return cell;
-	    }
-	});
+		});
 
 
-	deviceTV.setEditable(true);
+		deviceTV.setEditable(true);
 
-	// add the system tray
-	systemTray = new KBMSystemTray(this);
-    }
+		// add the system tray
+		systemTray = new KBMSystemTray(this);
+	}
 
 	/**
 	 * Returns the selected device. If no device is selected, returns
@@ -615,49 +606,47 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 
     }
     /**
-     * Closes all databases and prepares this gui to be closed.
+     * Closes all databases, frees memory, and prepares this gui to be closed.
      */
     private void cleanUp(){
 		RepeatManager.setRepeat(true);
-		hardwareManager.stopScanningAllDevices();
-    	hardwareManager.stopPollingAllDevices();
-    	hardwareManager.cleanUpEngines();
+		hardwareManager.close();
+    	profileManager.close();
+    	deviceManager.close();
     }
 // ============= Extended Methods ============== //
     @Override
     public void handle(ActionEvent t) {
-	CheckBoxTableCell cell = (CheckBoxTableCell)t.getSource();
-	Parent parent = cell.getParent();
-	if(!(parent instanceof TableRow)) return;
-	TableRow row = (TableRow)parent;
-	DeviceEntry deviceEntry = (DeviceEntry)row.getItem();
-	Device device = deviceEntry.getDevice();
-	// traverse through scene graph to get checkbox.
-	Node node = cell.getChildrenUnmodifiable().get(0);
-	if(node == null && !(node instanceof CheckBox)) return;
-	CheckBox checkBox = (CheckBox)node;
-	if (!device.isEnabled()) {
-		if (device.getProfile() == null) {
-			PopupManager.getPopupManager().showError("No profile selected");
-			checkBox.selectedProperty().set(false);
-			return;
+		CheckBoxTableCell cell = (CheckBoxTableCell) t.getSource();
+		Parent parent = cell.getParent();
+		if (!(parent instanceof TableRow)) return;
+		TableRow row = (TableRow) parent;
+		DeviceEntry deviceEntry = (DeviceEntry) row.getItem();
+		Device device = deviceEntry.getDevice();
+		// traverse through scene graph to get checkbox.
+		Node node = cell.getChildrenUnmodifiable().get(0);
+		if (node == null && !(node instanceof CheckBox)) return;
+		CheckBox checkBox = (CheckBox) node;
+		if (!device.isEnabled()) {
+			if (device.getProfile() == null) {
+				PopupManager.getPopupManager().showError("No profile selected");
+				checkBox.selectedProperty().set(false);
+				return;
+			} else if (!device.isConnected()) {
+				PopupManager.getPopupManager().showError("Device not connected.");
+				checkBox.selectedProperty().set(false);
+				return;
+			}
+			device.setEnabled(true);
+			hardwareManager.startPollingDevice(device, device.getProfile());
+		} else {
+			device.setEnabled(false);
+			hardwareManager.disableDevice(device);
 		}
-		else if (!device.isConnected()) {
-			PopupManager.getPopupManager().showError("Device not connected.");
-			checkBox.selectedProperty().set(false);
-			return;
-		}
-		device.setIsEnabled(true);
-		hardwareManager.startPollingDevice(device, device.getProfile());
+		// something has changed
+		updateDevices();
+		deviceManager.save();
 	}
-	else{
-		device.setIsEnabled(false);
-	    hardwareManager.disableDevice(device);
-	}
-	// something has changed
-	updateDevices();
-	deviceManager.save();
-    }
 // ============= Internal Classes ============== //
     public class CheckboxCallback implements Callback<TableColumn<DeviceEntry,Boolean>, TableCell<DeviceEntry,Boolean>> {
 	private EventHandler checkBoxHandler;

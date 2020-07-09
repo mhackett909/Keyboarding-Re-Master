@@ -59,21 +59,20 @@ public class DeviceInformation {
     public DeviceInformation(String make, String model, String jinputName, 
 		   DeviceType deviceType, String deviceIcon, String deviceDescription,
 		   String packageName, String uiFXMLURL, String imageBindingsTemplate,
-		   String amazonLink, boolean hasMouse){
-	this.make = make;
-	this.model = model;
-	this.jinputName = jinputName;
-	this.deviceType = deviceType;
-	this.deviceIcon = deviceIcon;
-	this.deviceDescription = deviceDescription;
-	this.packageName = packageName;
-	this.uiFXMLURL = uiFXMLURL;
-	this.imageBindingsTemplate = imageBindingsTemplate;
-	this.amazonLink = amazonLink;
-	this.hasMouse = hasMouse;
+		   String amazonLink, boolean hasMouse) {
+        this.make = make;
+        this.model = model;
+        this.jinputName = jinputName;
+        this.deviceType = deviceType;
+        this.deviceIcon = deviceIcon;
+        this.deviceDescription = deviceDescription;
+        this.packageName = packageName;
+        this.uiFXMLURL = uiFXMLURL;
+        this.imageBindingsTemplate = imageBindingsTemplate;
+        this.amazonLink = amazonLink;
+        this.hasMouse = hasMouse;
     }
-    
-// ============= Protected Methods ============== //
+
 // ============= Public Methods ============== //
     public String getMake() {
 	return make;
@@ -118,21 +117,7 @@ public class DeviceInformation {
     public boolean hasMouse(){
 	return hasMouse;
     }
-    
 
-    /**
-     * Returns true if this device information has the same make and model.
-     * @param deviceInformation to compare with this device.
-     * @return true if this device is the same make and model as the passed in
-     * device information and false otherwise.
-     */
-    public boolean isDevice(DeviceInformation deviceInformation){
-	if(deviceInformation.getMake().equals(make) &&
-	   deviceInformation.getModel().equals(model)){
-	    return true;
-	}
-	return false;
-    }
     @Override
     public boolean equals(Object deviceInformation){
 	if(!(deviceInformation instanceof DeviceInformation)){
@@ -158,28 +143,7 @@ public class DeviceInformation {
      * @return the make and model of the device.
      */
     public String getName(){
-	return make+":"+model;
+	return make+"_"+model;
     }
-    /**
-     * Returns a name used for a profile file.
-     * @return the name of the profile file.
-     */
-    public String getProfileName(){
-	//return make+"_"+model+".prof";
-	return make+"_"+model+".xml";
-    }
-// ============= Private Methods ============== //
-// ============= Implemented Methods ============== //
-// ============= Extended Methods ============== //
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
-
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */
+

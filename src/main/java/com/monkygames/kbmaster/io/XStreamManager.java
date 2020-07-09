@@ -1,12 +1,11 @@
 package com.monkygames.kbmaster.io;
 
-import com.monkygames.kbmaster.account.DeviceList;
-import com.monkygames.kbmaster.account.DevicePackage;
+import com.monkygames.kbmaster.driver.DeviceList;
+import com.monkygames.kbmaster.driver.DevicePackage;
 import com.monkygames.kbmaster.account.UserSettings;
 import com.monkygames.kbmaster.account.dropbox.MetaData;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.driver.DeviceInformation;
-import com.monkygames.kbmaster.driver.DeviceState;
 import com.monkygames.kbmaster.input.Button;
 import com.monkygames.kbmaster.input.ButtonMapping;
 import com.monkygames.kbmaster.input.Hardware;
@@ -68,7 +67,7 @@ public class XStreamManager {
     private File globalAccountFile;
 
     public static final String settingsFileName = "settings.xml";
-    public static final String globalAccountFileName = "global_account.xml";
+    public static final String globalAccountFileName = "device_descriptors.xml";
 
     public XStreamManager(){
 
@@ -117,13 +116,7 @@ public class XStreamManager {
         globalStream.alias("OutputMouse",OutputMouse.class);
         globalStream.alias("DeviceInformation",DeviceInformation.class);
         globalStream.alias("MetaData",MetaData.class);
-        globalStream.alias("DeviceState",DeviceState.class);
         globalStream.alias("Device",Device.class);
-        globalStream.omitField(Device.class, "deviceInformation");
-        globalStream.omitField(Device.class, "inputMaps");
-        globalStream.omitField(Device.class, "codeToJFX");
-        globalStream.omitField(App.class, "profiles");
-        globalStream.omitField(DeviceState.class, "isConnected");
         XStream.setupDefaultSecurity(globalStream);
         globalStream.allowTypesByWildcard(new String[] {"com.monkygames.kbmaster.**"});
         globalAccountFile = new File(globalAccountFileName);

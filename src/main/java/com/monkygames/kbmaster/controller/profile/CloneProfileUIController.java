@@ -9,28 +9,22 @@ import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.Profile;
 import com.monkygames.kbmaster.profiles.AppType;
-import com.monkygames.kbmaster.io.ProfileManager;
+import com.monkygames.kbmaster.profiles.ProfileManager;
 import com.monkygames.kbmaster.util.PopupManager;
 import com.monkygames.kbmaster.util.ProfileTypeNames;
-import java.io.IOException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.JavaFXBuilderFactory;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 /**
  * Handles the cloning feature.
@@ -70,44 +64,42 @@ public class CloneProfileUIController extends PopupController implements ChangeL
 		}
 		programCB.getSelectionModel().select(i);
 	}
-    public void okEventFired(ActionEvent evt){
-	try{
-	    AppType type = getProfileType();
+    public void okEventFired(ActionEvent evt) {
+		try {
+			AppType type = getProfileType();
 
-	    // check for a valid app name
-	    App app = (App)programCB.getSelectionModel().getSelectedItem();
-	    if(app == null){
-		PopupManager.getPopupManager().showError("Invalid App");
-		return;
-	    }
+			// check for a valid app name
+			App app = (App) programCB.getSelectionModel().getSelectedItem();
+			if (app == null) {
+				PopupManager.getPopupManager().showError("Invalid App");
+				return;
+			}
 
-	    // check for a valid name
-	    String newProfileName = profileTF.getText();
-	    if(newProfileName == null || newProfileName.equals("")){
-		PopupManager.getPopupManager().showError("Invalid profile name");
-		return;
-	    }
-		//For using ` as delimiter
-		char[] charArr = newProfileName.toCharArray();
-		for (int index = 0; index < charArr.length; index++)
-			if (charArr[index] == '`') charArr[index] = '\'';
-		newProfileName = new String(charArr);
-	    // check for a redundant name
-	    if(profileManager.doesProfileNameExists(app, newProfileName)){
-		PopupManager.getPopupManager().showError("Profile name already exists");
-		return;
-	    }
-	    Profile profile = new Profile(app,newProfileName);
-	    device.setDefaultKeymaps(profile);
-	    profileManager.addProfile(profile);
-	    profile = device.getProfile().cloneProfile(profile, app);
-		profile.setAppInfo(app);
-		notifyOK("AddProfile`"+type.toString()+"`"+app.getName()+"`"+newProfileName);
+			// check for a valid name
+			String newProfileName = profileTF.getText();
+			if (newProfileName == null || newProfileName.equals("")) {
+				PopupManager.getPopupManager().showError("Invalid profile name");
+				return;
+			}
+			//For using ` as delimiter
+			char[] charArr = newProfileName.toCharArray();
+			for (int index = 0; index < charArr.length; index++)
+				if (charArr[index] == '`') charArr[index] = '\'';
+			newProfileName = new String(charArr);
+			// check for a redundant name
+			if (app.doesProfileExist(newProfileName)) {
+				PopupManager.getPopupManager().showError("Profile name already exists");
+				return;
+			}
+			Profile profile = new Profile(app, newProfileName);
+			device.setDefaultKeymaps(profile);
+			profileManager.addProfile(device, app, profile);
+			profile = device.getProfile().cloneProfile(profile, app);
+			profile.setAppInfo(app);
+			notifyOK("AddProfile`" + type.toString() + "`" + app.getName() + "`" + newProfileName);
 
-	}finally{
-	    reset();
+		} finally { reset(); }
 	}
-    }
     public void cancelEventFired(ActionEvent evt){
 	reset();
 	notifyCancel(null);
@@ -116,7 +108,7 @@ public class CloneProfileUIController extends PopupController implements ChangeL
 // ============= Private Methods ============== //
     private void updateComboBoxesOnType(AppType type){
 	ObservableList<App> apps;
-	apps = FXCollections.observableArrayList(profileManager.getRoot(type).getList());
+	apps = FXCollections.observableArrayList(profileManager.getRoot(device, type).getList());
 	programCB.setItems(apps);
     }
     private void reset(){

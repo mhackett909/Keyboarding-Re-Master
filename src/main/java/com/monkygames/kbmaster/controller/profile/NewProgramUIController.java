@@ -9,15 +9,15 @@ import java.util.ResourceBundle;
 // === javafx imports === //
 // === kbmaster imports === //
 import com.monkygames.kbmaster.controller.PopupController;
+import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.AppType;
-import com.monkygames.kbmaster.io.ProfileManager;
+import com.monkygames.kbmaster.profiles.ProfileManager;
 import com.monkygames.kbmaster.util.PopupManager;
 import com.monkygames.kbmaster.util.ProfileTypeNames;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -50,9 +50,9 @@ public class NewProgramUIController extends PopupController{
     @FXML
     private ImageView devIV;
 	/**
-	 * The name of the current device.
+	 * The current device.
 	 */
-	private String deviceName;
+	private Device device;
 	/**
      * The full path to the file.
      */
@@ -72,40 +72,40 @@ public class NewProgramUIController extends PopupController{
     public void setProfileManager(ProfileManager profileManager){
 	this.profileManager = profileManager;
     }
-    public void setDeviceName(String deviceName) { this.deviceName = deviceName; }
-    public void okEventFired(ActionEvent evt){
-	AppType type;
+    public void setDevice(Device device) { this.device = device; }
+    public void okEventFired(ActionEvent evt) {
+		AppType type;
 
-	if(typeCB.getSelectionModel().getSelectedIndex() == 0){
-	    type = AppType.GAME;
-	}else{
-	    type = AppType.APPLICATION;
+		if (typeCB.getSelectionModel().getSelectedIndex() == 0) {
+			type = AppType.GAME;
+		} else {
+			type = AppType.APPLICATION;
+		}
+		String appName = programTF.getText();
+		// check for a valid program name
+		if (appName == null || appName.equals("")) {
+			PopupManager.getPopupManager().showError("Invalid App Name");
+			reset();
+			notifyCancel(null);
+			return;
+		}
+		//For using ` as delimiter
+		char[] charArr = appName.toCharArray();
+		for (int index = 0; index < charArr.length; index++)
+			if (charArr[index] == '`') charArr[index] = '\'';
+		appName = new String(charArr);
+		if (!profileManager.addApp(device, new App(appInfoTA.getText(),
+				appLogoPath,
+				devLogoPath,
+				appName,
+				device.getDeviceInformation().getName(),
+				type))) {
+			PopupManager.getPopupManager().showError("App name already exists");
+			return;
+		}
+		notifyOK("AddApp`" + typeCB.getSelectionModel().getSelectedItem().toString() + "`" + appName);
+		reset();
 	}
-	String appName = programTF.getText();
-	// check for a valid program name
-	if(appName == null || appName.equals("")){
-	    PopupManager.getPopupManager().showError("Invalid App Name");
-	    reset();
-	    notifyCancel(null);
-	    return;
-	}
-	//For using ` as delimiter
-	char[] charArr = appName.toCharArray();
-	for (int index = 0; index < charArr.length; index++)
-		if (charArr[index] == '`') charArr[index] = '\'';
-	appName = new String(charArr);
-	if(!profileManager.addApp(new App(appInfoTA.getText(),
-					  appLogoPath,
-					  devLogoPath,
-					  appName,
-					  deviceName,
-					  type))){
-	    PopupManager.getPopupManager().showError("App name already exists");
-	    return;
-	}
-	notifyOK("AddApp`"+typeCB.getSelectionModel().getSelectedItem().toString()+"`"+appName);
-	reset();
-    }
     public void cancelEventFired(ActionEvent evt){
 	reset();
 	notifyCancel(null);

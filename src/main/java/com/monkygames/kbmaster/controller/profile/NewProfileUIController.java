@@ -9,7 +9,7 @@ import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.Profile;
 import com.monkygames.kbmaster.profiles.AppType;
-import com.monkygames.kbmaster.io.ProfileManager;
+import com.monkygames.kbmaster.profiles.ProfileManager;
 import com.monkygames.kbmaster.util.PopupManager;
 import com.monkygames.kbmaster.util.ProfileTypeNames;
 // === java imports === //
@@ -67,49 +67,47 @@ public class NewProfileUIController extends PopupController implements ChangeLis
     public void updateLists(){
 	updateComboBoxesOnType(getProfileType());
     }
-    public void okEventFired(ActionEvent evt){
-	try{
-	    App app = (App)programCB.getSelectionModel().getSelectedItem();
-	    String profileName = profileTF.getText();
-	    // check for a valid program name
-	    if(app == null){
-		PopupManager.getPopupManager().showError("Invalid program");
-		return;
-	    }
-	    // check for valid profileName
-	    if(profileName == null || profileName.equals("")){
-		PopupManager.getPopupManager().showError("Invalid profile name");
-		return;
-	    }
-	    //For using ` as delimiter
-		char[] charArr = profileName.toCharArray();
-		for (int index = 0; index < charArr.length; index++)
-			if (charArr[index] == '`') charArr[index] = '\'';
-		profileName = new String(charArr);
-	    // check for existing profile names
-	    if(profileManager.doesProfileNameExists(app, profileName)){
-		PopupManager.getPopupManager().showError("Profile name already exists");
-		return;
-	    }
-	    String author = authorTF.getText();
-	    if(author == null){
-		author = "";
-	    }
-	    String info = infoTA.getText();
-	    if(info == null){
-		info = "";
-	    }
-	    // get the current time
-	    long time = Calendar.getInstance().getTimeInMillis();
-	    Profile profile = new Profile(app,profileName,author,info,time,0);
-	    device.setDefaultKeymaps(profile);
-	    // save the profile
-	    profileManager.addProfile(profile);
-	    notifyOK("AddProfile`"+getProfileType().toString()+"`"+app.getName()+"`"+profileName);
-	} finally{
-	    reset();
+    public void okEventFired(ActionEvent evt) {
+		try {
+			App app = (App) programCB.getSelectionModel().getSelectedItem();
+			String profileName = profileTF.getText();
+			// check for a valid program name
+			if (app == null) {
+				PopupManager.getPopupManager().showError("Invalid program");
+				return;
+			}
+			// check for valid profileName
+			if (profileName == null || profileName.equals("")) {
+				PopupManager.getPopupManager().showError("Invalid profile name");
+				return;
+			}
+			//For using ` as delimiter
+			char[] charArr = profileName.toCharArray();
+			for (int index = 0; index < charArr.length; index++)
+				if (charArr[index] == '`') charArr[index] = '\'';
+			profileName = new String(charArr);
+			// check for existing profile names
+			if (app.doesProfileExist(profileName)) {
+				PopupManager.getPopupManager().showError("Profile name already exists");
+				return;
+			}
+			String author = authorTF.getText();
+			if (author == null) {
+				author = "";
+			}
+			String info = infoTA.getText();
+			if (info == null) {
+				info = "";
+			}
+			// get the current time
+			long time = Calendar.getInstance().getTimeInMillis();
+			Profile profile = new Profile(app, profileName, author, info, time, 0);
+			device.setDefaultKeymaps(profile);
+			// save the profile
+			profileManager.addProfile(device, app, profile);
+			notifyOK("AddProfile`" + getProfileType().toString() + "`" + app.getName() + "`" + profileName);
+		} finally { reset(); }
 	}
-    }
     public void cancelEventFired(ActionEvent evt){;
 	reset();
 	notifyCancel(null);
@@ -120,31 +118,31 @@ public class NewProfileUIController extends PopupController implements ChangeLis
     /**
      * Reset to the defaults.
      */
-    private void reset(){
-	profileTF.setText("");
-	authorTF.setText("");
-	infoTA.setText("");
-	//programCB.getSelectionModel().selectFirst();
-	hideStage();
-    }
-    private void updateComboBoxesOnType(AppType type){
-	ObservableList<App> apps;
-	appsList = profileManager.getRoot(type).getList();
-	apps = FXCollections.observableArrayList(appsList);
-	programCB.setItems(apps);
-    }
+    private void reset() {
+		profileTF.setText("");
+		authorTF.setText("");
+		infoTA.setText("");
+		//programCB.getSelectionModel().selectFirst();
+		hideStage();
+	}
+    private void updateComboBoxesOnType(AppType type) {
+		ObservableList<App> apps;
+		appsList = profileManager.getRoot(device, type).getList();
+		apps = FXCollections.observableArrayList(appsList);
+		programCB.setItems(apps);
+	}
     /**
      * Returns the profile type based on the type combo box.
      */
-    private AppType getProfileType(){
-	AppType type;
-	if(typeCB.getSelectionModel().getSelectedIndex() == 0){
-	    type = AppType.GAME;
-	}else{
-	    type = AppType.APPLICATION;
+    private AppType getProfileType() {
+		AppType type;
+		if (typeCB.getSelectionModel().getSelectedIndex() == 0) {
+			type = AppType.GAME;
+		} else {
+			type = AppType.APPLICATION;
+		}
+		return type;
 	}
-	return type;
-    }
 // ============= Implemented Methods ============== //
     @Override
     public void initialize(URL url, ResourceBundle rb) {

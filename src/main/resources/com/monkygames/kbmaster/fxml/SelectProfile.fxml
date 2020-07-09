@@ -2,9 +2,7 @@
 
 <?import java.lang.*?>
 <?import java.net.*?>
-<?import java.util.*?>
 <?import javafx.collections.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -26,7 +24,7 @@
           </items>
         </ComboBox>
         <Label text="App:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <ComboBox id="programCB" fx:id="appCB" prefWidth="249.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <ComboBox id="programCB" fx:id="appsCB" prefWidth="249.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
           <items>
             <FXCollections fx:factory="observableArrayList">
               <String fx:value="Item 1" />

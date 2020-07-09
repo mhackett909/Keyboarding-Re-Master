@@ -4,10 +4,6 @@
 package com.monkygames.kbmaster.controller;
 
 // === java imports === //
-import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 // === javafx imports === //
@@ -18,7 +14,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 // === kbmaster imports === //
-import com.monkygames.kbmaster.account.DeviceManager;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.driver.DeviceType;
 import com.monkygames.kbmaster.util.PopupManager;
@@ -58,7 +53,6 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
     private Hyperlink amazonLink;
 
     private Stage stage;
-    private DeviceManager deviceManager;
     /**
      * Used for notifying the main application when a user selects a new
      * device to add to the local account.
@@ -69,38 +63,34 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
     public void setStage(Stage stage){
 	this.stage = stage;
     }
-    public void setAccount(DeviceManager deviceManager){
-	this.deviceManager = deviceManager;
-    }
     public void cancelEventFired(ActionEvent evt){
 	reset();
 	stage.hide();
     }
-    public void addEventFired(ActionEvent evt){
-	int index = deviceTypeCB.getSelectionModel().getSelectedIndex();
-	String make = (String)deviceMakeCB.getSelectionModel().getSelectedItem();
-	String model = (String)deviceNameCB.getSelectionModel().getSelectedItem();
-	Device device = null;
-	switch(index){
-	    case 1:
-		device = deviceManager.getDriverManager().getDevice(DeviceType.MOUSE, make, model);
-		break;
-	    case 0:
-	    default:
-		device = deviceManager.getDriverManager().getDevice(DeviceType.KEYBOARD, make, model);
+    public void addEventFired(ActionEvent evt) {
+		int index = deviceTypeCB.getSelectionModel().getSelectedIndex();
+		String make = (String) deviceMakeCB.getSelectionModel().getSelectedItem();
+		String model = (String) deviceNameCB.getSelectionModel().getSelectedItem();
+		Device device;
+		switch (index) {
+			case 1:
+				device = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(DeviceType.MOUSE, make, model);
+				break;
+			default:
+				device = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(DeviceType.KEYBOARD, make, model);
+		}
+		if (device == null) {
+			PopupManager.getPopupManager().showError("Device could not be found");
+			return;
+		}
+		//notify main gui that a device should be added
+		deviceMenuUIController.addDevice(device);
+		reset();
+		stage.hide();
 	}
-	if(device == null){
-	    PopupManager.getPopupManager().showError("Device could not be found");
-	    return;
+    public void setDeviceMenuUIController(DeviceMenuUIController deviceMenuUIController) {
+		this.deviceMenuUIController = deviceMenuUIController;
 	}
-	//notify main gui that a device should be added 
-	deviceMenuUIController.addDevice(device);
-	reset();
-	stage.hide();
-    }
-    public void setDeviceMenuUIController(DeviceMenuUIController deviceMenuUIController){
-	this.deviceMenuUIController = deviceMenuUIController;
-    }
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
     private void resetDeviceInformation(){
@@ -112,66 +102,66 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 	amazonLink.setVisited(false);
 
     }
-    private void reset(){
-	deviceTypeCB.valueProperty().removeListener(this);
-	deviceMakeCB.valueProperty().removeListener(this);
-	deviceNameCB.valueProperty().removeListener(this);
+    private void reset() {
+		deviceTypeCB.valueProperty().removeListener(this);
+		deviceMakeCB.valueProperty().removeListener(this);
+		deviceNameCB.valueProperty().removeListener(this);
 
-	ObservableList<String> typesList = FXCollections.observableArrayList("Keyboard","Mouse");
-	deviceTypeCB.setItems(typesList);
-	deviceMakeCB.setItems(FXCollections.observableArrayList());
-	deviceNameCB.setItems(FXCollections.observableArrayList());
+		ObservableList<String> typesList = FXCollections.observableArrayList("Keyboard", "Mouse");
+		deviceTypeCB.setItems(typesList);
+		deviceMakeCB.setItems(FXCollections.observableArrayList());
+		deviceNameCB.setItems(FXCollections.observableArrayList());
 
-	// ensures that pulldown is not populated.
-	deviceTypeCB.getSelectionModel().clearSelection();
-	deviceMakeCB.getSelectionModel().clearSelection();
+		// ensures that pulldown is not populated.
+		deviceTypeCB.getSelectionModel().clearSelection();
+		deviceMakeCB.getSelectionModel().clearSelection();
 
-	resetDeviceInformation();
+		resetDeviceInformation();
 
-	deviceTypeCB.valueProperty().addListener(this);
-	deviceMakeCB.valueProperty().addListener(this);
-	deviceNameCB.valueProperty().addListener(this);
-    }
+		deviceTypeCB.valueProperty().addListener(this);
+		deviceMakeCB.valueProperty().addListener(this);
+		deviceNameCB.valueProperty().addListener(this);
+	}
     /**
      * Removes all items from the make combo box and populates with new list.
      * Also removes all items form the deviceName list.
      * @param list the new list of items to populate the combo box list.
      */
-    private void setMakeComboBox(List<String> list){
-	deviceTypeCB.valueProperty().removeListener(this);
-	deviceMakeCB.valueProperty().removeListener(this);
-	deviceNameCB.valueProperty().removeListener(this);
+    private void setMakeComboBox(List<String> list) {
+		deviceTypeCB.valueProperty().removeListener(this);
+		deviceMakeCB.valueProperty().removeListener(this);
+		deviceNameCB.valueProperty().removeListener(this);
 
-	deviceMakeCB.getItems().removeAll();
-	deviceNameCB.getItems().removeAll();
-	deviceNameCB.setItems(FXCollections.observableArrayList());
-	ObservableList<String> observableList = FXCollections.observableArrayList(list);
-	deviceMakeCB.setItems(observableList);
+		deviceMakeCB.getItems().removeAll();
+		deviceNameCB.getItems().removeAll();
+		deviceNameCB.setItems(FXCollections.observableArrayList());
+		ObservableList<String> observableList = FXCollections.observableArrayList(list);
+		deviceMakeCB.setItems(observableList);
 
-	deviceMakeCB.getSelectionModel().clearSelection();
+		deviceMakeCB.getSelectionModel().clearSelection();
 
-	resetDeviceInformation();
+		resetDeviceInformation();
 
-	deviceTypeCB.valueProperty().addListener(this);
-	deviceMakeCB.valueProperty().addListener(this);
-	deviceNameCB.valueProperty().addListener(this);
-    }
-    private void setModelComboBox(DeviceType type, String make){
-	deviceTypeCB.valueProperty().removeListener(this);
-	deviceMakeCB.valueProperty().removeListener(this);
-	deviceNameCB.valueProperty().removeListener(this);
+		deviceTypeCB.valueProperty().addListener(this);
+		deviceMakeCB.valueProperty().addListener(this);
+		deviceNameCB.valueProperty().addListener(this);
+	}
+    private void setModelComboBox(DeviceType type, String make) {
+		deviceTypeCB.valueProperty().removeListener(this);
+		deviceMakeCB.valueProperty().removeListener(this);
+		deviceNameCB.valueProperty().removeListener(this);
 
-	deviceTypeCB.getItems().removeAll();
-	List<String> list = deviceManager.getDriverManager().getDevicesByMake(type, make);
-	ObservableList<String> modelsList = FXCollections.observableArrayList(list);
-	deviceNameCB.setItems(modelsList);
+		deviceTypeCB.getItems().removeAll();
+		List<String> list = deviceMenuUIController.getDeviceManager().getDriverManager().getDevicesByMake(type, make);
+		ObservableList<String> modelsList = FXCollections.observableArrayList(list);
+		deviceNameCB.setItems(modelsList);
 
-	resetDeviceInformation();
+		resetDeviceInformation();
 
-	deviceTypeCB.valueProperty().addListener(this);
-	deviceMakeCB.valueProperty().addListener(this);
-	deviceNameCB.valueProperty().addListener(this);
-    }
+		deviceTypeCB.valueProperty().addListener(this);
+		deviceMakeCB.valueProperty().addListener(this);
+		deviceNameCB.valueProperty().addListener(this);
+	}
     /**
      * Set the device information in the gui from the specified information.
      * @param type the type of device.
@@ -181,7 +171,7 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
      */
     private void setDeviceInformation(DeviceType type, String make, String model, String link) {
 		// find device
-		Device device = deviceManager.getDriverManager().getDevice(type, make, model);
+		Device device = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(type, make, model);
 		if (device == null) {
 			PopupManager.getPopupManager().showError("Unable to find device");
 			return;
@@ -232,11 +222,11 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 	    int index = deviceTypeCB.getSelectionModel().getSelectedIndex();
 	    switch(index){
 		case 1:
-		    setMakeComboBox(deviceManager.getDriverManager().getMouseMakes());
+		    setMakeComboBox(deviceMenuUIController.getDeviceManager().getDriverManager().getMouseMakes());
 		    break;
 		case 0:
 		default:
-		    setMakeComboBox(deviceManager.getDriverManager().getKeyboardMakes());
+		    setMakeComboBox(deviceMenuUIController.getDeviceManager().getDriverManager().getKeyboardMakes());
 	    }
 	}else if(ov == deviceMakeCB.valueProperty()){
 	    int index = deviceTypeCB.getSelectionModel().getSelectedIndex();
@@ -254,11 +244,11 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 	    String link;
 	    switch(index){
 		case 1:
-		    link = deviceManager.getDriverManager().getDevice(DeviceType.MOUSE, make, newValue).getDeviceInformation().getAmazonLink();
+		    link = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(DeviceType.MOUSE, make, newValue).getDeviceInformation().getAmazonLink();
 		    setDeviceInformation(DeviceType.MOUSE,make,newValue,link);
 		    break;
 		default:
-		    link = deviceManager.getDriverManager().getDevice(DeviceType.KEYBOARD, make, newValue).getDeviceInformation().getAmazonLink();
+		    link = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(DeviceType.KEYBOARD, make, newValue).getDeviceInformation().getAmazonLink();
 		    setDeviceInformation(DeviceType.KEYBOARD,make,newValue,link);
 	    }
 	}
