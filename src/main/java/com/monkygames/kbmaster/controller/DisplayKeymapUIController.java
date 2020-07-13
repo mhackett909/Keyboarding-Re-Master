@@ -5,7 +5,7 @@ package com.monkygames.kbmaster.controller;
 
 // === java imports === //
 import com.monkygames.kbmaster.input.Keymap;
-import com.monkygames.kbmaster.io.GenerateBindingsImage;
+import com.monkygames.kbmaster.util.GenerateBindingsImage;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.net.URL;

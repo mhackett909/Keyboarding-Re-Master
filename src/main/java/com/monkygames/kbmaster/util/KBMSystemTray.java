@@ -13,7 +13,6 @@ import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
-import javafx.application.Platform;
 import javax.swing.ImageIcon;
 
 /**
@@ -85,8 +84,8 @@ public class KBMSystemTray implements ActionListener{
 	// javafx outside of the javafx thread
 	controller.showKBMAboutFromNonJavaFXThread();
     }
-    private void showDeviceMenu(){
-	controller.showDeviceUI();
+    private void showDeviceMenu() {
+        controller.showDeviceUI();
     }
     private void exitApplication(){
 	controller.exitApplication();

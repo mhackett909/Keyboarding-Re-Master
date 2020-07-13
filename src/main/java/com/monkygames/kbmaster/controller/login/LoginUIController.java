@@ -4,8 +4,10 @@
 package com.monkygames.kbmaster.controller.login;
 
 import com.monkygames.kbmaster.KeyboardingMaster;
-import com.monkygames.kbmaster.account.CloudAccount;
-import com.monkygames.kbmaster.account.UserSettings;
+import com.monkygames.kbmaster.cloud.CloudAccount;
+import com.monkygames.kbmaster.cloud.DropBoxAccount;
+import com.monkygames.kbmaster.cloud.DropBoxApp;
+import com.monkygames.kbmaster.cloud.UserSettings;
 import com.monkygames.kbmaster.controller.ButtonController;
 import com.monkygames.kbmaster.controller.DeviceMenuUIController;
 import com.monkygames.kbmaster.util.RepeatManager;
@@ -51,6 +53,11 @@ public class LoginUIController implements Initializable {
 	public static final int LOGIN_LOCAL = 0;
 	public static final int LOGIN_DROPBOX = 1;
 
+	/**
+	 * Used to call close() method.
+	 * @return
+	 */
+
     /**
      * Used for setting animation effects.
      */
@@ -71,11 +78,6 @@ public class LoginUIController implements Initializable {
 	 * Controller for dropbox menu.
 	 */
 	private DropBoxUIController dropBoxController;
-	/**
-	 * Network enabled accounts.
-	 */
-	private CloudAccount cloudAccount;
-
     /**
      * Initializes the controller class.
      */
@@ -84,71 +86,50 @@ public class LoginUIController implements Initializable {
 		buttonController = new ButtonController();
 		buttonController.addNode(loginB);
 		buttonController.addNode(close);
-
 		accessCB.setItems(FXCollections.observableArrayList("Local","Dropbox"));
 		accessCB.getSelectionModel().selectFirst();
-
-		/**
-		 * Handle ChoiceBox events.
-		 */
-		accessCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String value, String newValue) {
-				switch(newValue){
-					case "Dropbox":
-						break;
-					case "Local":
-						break;
-				}
-			}
-		});
 		// so that stages can hide without being terminated.
 		Platform.setImplicitExit(false);
     }
 
     @FXML
-    public void loginEventFired(ActionEvent evt){
-
-		// hide login gui
+    public void loginEventFired(ActionEvent evt) {
 		loginStage.hide();
-
-		// TODO check if local or network and take apropriate action
-		switch(accessCB.getSelectionModel().getSelectedIndex()){
-			// local
+		switch (accessCB.getSelectionModel().getSelectedIndex()) {
 			case LOGIN_LOCAL:
-				showDeviceMenuFromLogin(null,true);
+				showDeviceMenuFromLogin(null, true);
 				break;
-			// dropbox
 			case LOGIN_DROPBOX:
-				// create main gui
-				if(dropBoxController == null){
-					try{
+				if (DropBoxApp.ACCESS_TOKEN != "" && DropBoxApp.ACCESS_TOKEN != null) {
+					DropBoxAccount dropBoxAccount = new DropBoxAccount(DropBoxApp.ACCESS_TOKEN);
+					KeyboardingMaster.getInstance().startDropboxSync(dropBoxAccount, true);
+				}
+				else {
+					dropBoxController = null;
+					try {
 						URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/login/DropBoxUI.fxml");
 						FXMLLoader fxmlLoader = new FXMLLoader();
 						fxmlLoader.setLocation(location);
 						fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-						Parent dropBoxRoot = (Parent)fxmlLoader.load(location.openStream());
+						Parent dropBoxRoot = (Parent) fxmlLoader.load(location.openStream());
 						dropBoxController = (DropBoxUIController) fxmlLoader.getController();
 						dropBoxStage = WindowUtil.createStage(dropBoxRoot);
 						dropBoxController.setStage(dropBoxStage);
 						dropBoxController.setLoginController(this);
+						dropBoxStage.show();
 					} catch (IOException ex) {
 						Logger.getLogger(LoginUIController.class.getName()).log(Level.SEVERE, null, ex);
-						System.out.println("FAILED");
 					}
 				}
-				dropBoxController.initializeWeb();
-				dropBoxStage.show();
-				break;
 		}
-    }
+	}
 
     /**
      * Closes the login window and exits the program.
      */
     @FXML
     public void closeEventFired(ActionEvent evt){
-	System.exit(1);
+    	KeyboardingMaster.getInstance().exit();
     }
 
     public void setStage(Stage loginStage){
@@ -166,64 +147,49 @@ public class LoginUIController implements Initializable {
      * The device controller has called to be hiden.
      * @param showLogin true if the login should also be shown and false otherwise.
      */
-    public void hideDeviceMenu(boolean showLogin){
-	deviceMenuStage.hide();
-	if(showLogin){
-	    loginStage.show();
-	    rememberEmailCB.setSelected(KeyboardingMaster.getUserSettings().isRemember);
+    public void hideDeviceMenu(boolean showLogin) {
+		deviceMenuStage.hide();
+		resetLoginUI();
+		if (showLogin) loginStage.show();
 	}
-    }
-    /**
-     * Shows the device menu.
-     * @param hideLogin true if the login should also be hidden and false otherwise.
-     */
-    public void showDeviceMenu(boolean hideLogin){
-	deviceMenuStage.show();
-	if(hideLogin){
-	    loginStage.hide();
+	public void resetLoginUI() {
+		rememberEmailCB.setSelected(KeyboardingMaster.getUserSettings().isRemember);
+		accessCB.getSelectionModel().select(KeyboardingMaster.getUserSettings().loginMethod);
 	}
-    }
     /**
      * Shows the device menu.
      */
-    public void showDeviceMenuFromNonJavaFXThread(){
-	try{
-	    deviceMenuStage.show();
-	}catch(Exception e){
-	    Platform.runLater(new Runnable() {
-		@Override
-		public void run() {
-		    deviceMenuStage.show();
+    public void showDeviceMenuFromNonJavaFXThread() {
+		try {
+			deviceMenuStage.show();
+		} catch (Exception e) {
+			Platform.runLater(() -> deviceMenuStage.show());
 		}
-	    });
 	}
-    }
 
 	/**
 	 * Open the device menu from the login page (either this page or network pages).
-	 * @param cloudAccount the cloud account used to login
+	 * @param dropBoxAccount the cloud account used to login
 	 */
-	public void showDeviceMenuFromLogin(CloudAccount cloudAccount, boolean checkRemember){
+	public void showDeviceMenuFromLogin(DropBoxAccount dropBoxAccount, boolean checkRemember){
 		// check if remember has been selected
 		UserSettings userSettings = KeyboardingMaster.getUserSettings();
 		if(checkRemember){
 			// get the user settings
 			userSettings.loginMethod = accessCB.getSelectionModel().getSelectedIndex();
-			if(cloudAccount != null){
-				userSettings.accessToken = cloudAccount.getAccessToken();
-			}
+			if(dropBoxAccount != null) userSettings.accessToken = dropBoxAccount.getAccessToken();
 
 			if(rememberEmailCB.isSelected()){
 				// save the state and also save the cloud account
 				userSettings.isRemember = true;
-			}else{ 
+			}else{
 				// reset the settings
 				userSettings.isRemember = false;
 			}
 			// save the settings
 			KeyboardingMaster.saveUserSettings();
 		}
-			
+
 		deviceMenuController = null;
 		try {
 			URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/DeviceMenuUI.fxml");
@@ -239,7 +205,7 @@ public class LoginUIController implements Initializable {
 		}
 
 		// check if the cloud account -- if so, pop sync display plus thread
-		deviceMenuController.initResources(userSettings,cloudAccount);
+		deviceMenuController.initResources(userSettings,dropBoxAccount);
 		deviceMenuStage.setOnCloseRequest(event -> { RepeatManager.setRepeat(true); });
 		deviceMenuStage.show();
 	}

@@ -24,7 +24,7 @@ import javafx.scene.control.TabPane;
 /**
  * Handles managing Keymap UI Panels for the device.
  */
-public class KeymapUIManager implements ChangeListener{
+public class KeymapUIController implements ChangeListener{
 
 // ============= Class variables ============== //
     private Device device;
@@ -33,7 +33,7 @@ public class KeymapUIManager implements ChangeListener{
     private Profile profile;
     private Label keymapDescription;
 // ============= Constructors ============== //
-    public KeymapUIManager(){
+    public KeymapUIController(){
 	driverUIController = new DriverUIController[8];
     }
 // ============= Public Methods ============== //
@@ -114,7 +114,7 @@ public class KeymapUIManager implements ChangeListener{
 	    //newProgramUIController.addNotification(this);
 	    //newProgramUIController.setNewProfileController(this);
 	} catch (IOException ex) {
-	    Logger.getLogger(KeymapUIManager.class.getName()).log(Level.SEVERE, null, ex);
+	    Logger.getLogger(KeymapUIController.class.getName()).log(Level.SEVERE, null, ex);
 	    return false;
 	}
 	return true;

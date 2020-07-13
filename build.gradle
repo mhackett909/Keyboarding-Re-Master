@@ -1,22 +1,23 @@
 plugins {
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 application {
     mainClassName = 'com.monkygames.kbmaster.KeyboardingMaster'
     applicationDefaultJvmArgs = ['-Djava.library.path=libs/native']
 }
 javafx {
-    version = "11.0.2"
+    version = "14.0.1"
     modules = [ 'javafx.controls' , 'javafx.fxml' , 'javafx.web' , 'javafx.swing' ]
 }
 repositories {
     mavenCentral()
     flatDir { dir 'libs/input' }
+    maven { url = 'https://maven.teamdev.com/repository/products' }
 }
 dependencies {
     implementation 'com.thoughtworks.xstream:xstream:1.4.12'
-    implementation 'com.itextpdf:itextpdf:5.0.6'
-    implementation 'com.dropbox.core:dropbox-core-sdk:2.1.1'
+    implementation 'com.itextpdf:itextpdf:5.5.13.1'
+    implementation 'com.dropbox.core:dropbox-core-sdk:3.1.4'
     implementation name: 'jinput'
 }

@@ -6,4 +6,5 @@ profiles/*
 *.log
 *.txt
 *.xml
+*.pdf
 #src/main/java/com/monkygames/kbmaster/account/DropBoxApp.java

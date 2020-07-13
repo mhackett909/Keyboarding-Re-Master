@@ -1,7 +1,7 @@
 /* 
  * See LICENSE in top-level directory.
  */
-package com.monkygames.kbmaster.account;
+package com.monkygames.kbmaster.cloud;
 
 /**
  *

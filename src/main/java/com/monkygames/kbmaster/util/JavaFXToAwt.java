@@ -42,7 +42,7 @@ public class JavaFXToAwt{
      * @param jfxKeyEvent the event to get the key code.
      */
     public static int getAWTKeyCode(javafx.scene.input.KeyEvent jfxKeyEvent) {
-	int code = java.awt.event.KeyEvent.VK_UNDEFINED;
+	int code;
 	switch (jfxKeyEvent.getCode()) {
 	    case A:
 		code = java.awt.event.KeyEvent.VK_A;

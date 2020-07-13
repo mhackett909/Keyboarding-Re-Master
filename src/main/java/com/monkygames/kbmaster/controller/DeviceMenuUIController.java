@@ -4,13 +4,14 @@
 package com.monkygames.kbmaster.controller;
 
 import com.monkygames.kbmaster.KeyboardingMaster;
-import com.monkygames.kbmaster.account.CloudAccount;
+import com.monkygames.kbmaster.cloud.DropBoxAccount;
+import com.monkygames.kbmaster.cloud.DropBoxApp;
 import com.monkygames.kbmaster.driver.DeviceManager;
-import com.monkygames.kbmaster.account.UserSettings;
+import com.monkygames.kbmaster.cloud.UserSettings;
 import com.monkygames.kbmaster.controller.login.LoginUIController;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.engine.HardwareManager;
-import com.monkygames.kbmaster.io.GenerateBindingsImage;
+import com.monkygames.kbmaster.util.GenerateBindingsImage;
 import com.monkygames.kbmaster.profiles.ProfileManager;
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.AppType;
@@ -44,7 +45,6 @@ import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -133,7 +133,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
     private AboutUIController aboutController;
     private KBMSystemTray systemTray;
     private UserSettings userSettings;
-    private CloudAccount cloudAccount;
+    private DropBoxAccount dropBoxAccount;
 
 // ============= Constructors ============== //
 // ============= Public Methods ============== //
@@ -145,7 +145,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      * @param device the device to be added.
      */
     public void addDevice(Device device){
-		// update global account
 		if(!deviceManager.downloadDevice(device.getDeviceInformation().getPackageName())){
 	    	PopupManager.getPopupManager().showError("Unable to add device. Is it already added?");
 	    	return;
@@ -183,7 +182,7 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	/**
 	 * Returns the device manager. Used in saving.
 	 */
-	 public DeviceManager getDeviceManager() { return deviceManager; }
+	public DeviceManager getDeviceManager() { return deviceManager; }
 	/**
 	 * Returns the profile manager.
 	 */
@@ -191,18 +190,16 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	/**
 	 * Returns the ProfileUIController. Used to bridge engine to UI.
 	 */
-	 public ProfileUIController getProfileUIController() {
+	public ProfileUIController getProfileUIController() {
 	 	return configureDeviceController.getProfileUIController();
 	 }
-
-
 	/**
      * Prepares the gui and databases to populate device list.
      * @param userSettings the settings for this menu
      */
-    public void initResources(UserSettings userSettings, CloudAccount cloudAccount) {
+    public void initResources(UserSettings userSettings, DropBoxAccount dropBoxAccount) {
 		this.userSettings = userSettings;
-		this.cloudAccount = cloudAccount;
+		this.dropBoxAccount = dropBoxAccount;
 		Image image;
 		// manage the icons
 		switch (userSettings.loginMethod) {
@@ -290,10 +287,10 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      */
     public void exitApplication() {
 		cleanUp();
-		if (cloudAccount != null) {
+		if (dropBoxAccount != null) {
 			loginController.hideDeviceMenu(false);
 			// pop cloud sync UI
-			KeyboardingMaster.getInstance().endDropboxSync(false, cloudAccount);
+			KeyboardingMaster.getInstance().endDropboxSync(false, dropBoxAccount);
 		} else {
 			KeyboardingMaster.getInstance().exit();
 		}
@@ -304,127 +301,110 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 			aboutController.showAbout(AboutUIController.AboutType.KBM);
 		});
 	}
-    public void showDeviceUI(){
-	loginController.showDeviceMenuFromNonJavaFXThread();
-    }
+    public void showDeviceUI() {
+		loginController.showDeviceMenuFromNonJavaFXThread();
+	}
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
     @FXML
-    private void handleButtonAction(ActionEvent evt){
-	Object src = evt.getSource();
-	if(src == addDeviceB){
-	    openNewDeviceUI();
-	}else if(src == removeDeviceB){
-	    openRemoveDeviceUI();
-	}else if(src == configureB){
-	    openConfigureDeviceUI();
-	}else if(src == keysRepeatCB){
-	    handleKeysRepeat();
-	}else if(src == exitB){
-	    exitApplication();
-	}else if(src == setProfileB){
-	    openSelectProfileUI();
-	}else if(src == detailsB){
-	    openDetailsUI();
-	}else if(src == logoutB){
-	    logout();
-	}else if(src == hideB){
-	    if (KBMSystemTray.isSupported()) loginController.hideDeviceMenu(false);
-	    else PopupManager.getPopupManager().showError("KBM SystemTray not supported.");
+    private void handleButtonAction(ActionEvent evt) {
+		Object src = evt.getSource();
+		if (src == addDeviceB) 			openNewDeviceUI();
+		 else if (src == removeDeviceB) openRemoveDeviceUI();
+		 else if (src == configureB) 	openConfigureDeviceUI();
+		 else if (src == keysRepeatCB) 	handleKeysRepeat();
+		 else if (src == exitB) 		exitApplication();
+		 else if (src == setProfileB) 	openSelectProfileUI();
+		 else if (src == detailsB)		openDetailsUI();
+		 else if (src == logoutB) 		logout();
+		 else if (src == hideB) {
+			if (KBMSystemTray.isSupported()) loginController.hideDeviceMenu(false);
+			else PopupManager.getPopupManager().showError("KBM SystemTray not supported.");
+		}
 	}
-    }
     @FXML
-    public void handleAboutEvent(MouseEvent evt){
-	initializeAboutController();
-	Object src = evt.getSource();
-	if(src == kbmIV){
-	    aboutController.showAbout(AboutUIController.AboutType.KBM);
-	}else if(src == linuxGamerIV){
-	    aboutController.showAbout(AboutUIController.AboutType.LINUXGAMER);
-	}else if(src == javaIV){
-	    aboutController.showAbout(AboutUIController.AboutType.JAVA);
-	}else if(src == javafxIV){
-	    aboutController.showAbout(AboutUIController.AboutType.JAVAFX);
-	}else if(src == jinputIV){
-	    aboutController.showAbout(AboutUIController.AboutType.JINPUT);
-	}else if(src == installBuilderIV){
-	    aboutController.showAbout(AboutUIController.AboutType.INSTALLBUILDER);
-	}else if(src == xstreamIV){
-	    aboutController.showAbout(AboutUIController.AboutType.XSTREAM);
+    public void handleAboutEvent(MouseEvent evt) {
+		initializeAboutController();
+		Object src = evt.getSource();
+		if (src == kbmIV)
+			aboutController.showAbout(AboutUIController.AboutType.KBM);
+		else if (src == linuxGamerIV)
+			aboutController.showAbout(AboutUIController.AboutType.LINUXGAMER);
+		else if (src == javaIV)
+			aboutController.showAbout(AboutUIController.AboutType.JAVA);
+		else if (src == javafxIV)
+			aboutController.showAbout(AboutUIController.AboutType.JAVAFX);
+		else if (src == jinputIV)
+			aboutController.showAbout(AboutUIController.AboutType.JINPUT);
+		else if (src == installBuilderIV)
+			aboutController.showAbout(AboutUIController.AboutType.INSTALLBUILDER);
+		else if (src == xstreamIV)
+			aboutController.showAbout(AboutUIController.AboutType.XSTREAM);
 	}
-    }
     /**
      * Initializes the about controller if it doesn't already exist.
      */
-    private void initializeAboutController(){
-	if(aboutController == null){
-	    try {
-		// pop open add new device
-		URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/AboutUI.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setLocation(location);
-		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-		Parent root = (Parent)fxmlLoader.load(location.openStream());
-		aboutController = (AboutUIController) fxmlLoader.getController();
-		Scene scene = new Scene(root);
-		Stage stage = WindowUtil.createStage(root);
-		aboutController.setStage(stage);
-	    } catch (IOException ex) {
-		Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
-	    }
+    private void initializeAboutController() {
+		if (aboutController == null) {
+			try {
+				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/AboutUI.fxml");
+				FXMLLoader fxmlLoader = new FXMLLoader();
+				fxmlLoader.setLocation(location);
+				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+				Parent root = fxmlLoader.load(location.openStream());
+				aboutController = fxmlLoader.getController();
+				Stage stage = WindowUtil.createStage(root);
+				aboutController.setStage(stage);
+			} catch (IOException ex) {
+				Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
 	}
-    }
     /**
      * Sets the xset r to on or off depending on the value of the
      * checkbox.
      */
-    private void handleKeysRepeat(){
-	RepeatManager.setRepeat(keysRepeatCB.isSelected());
-    }
+    private void handleKeysRepeat() {
+		RepeatManager.setRepeat(keysRepeatCB.isSelected());
+	}
     /**
      * Opens a new device UI for adding a new device.
      */
-    private void openNewDeviceUI(){
-	if(newDeviceStage == null){
-	    try {
-		// pop open add new device
-		URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/NewDeviceUI.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setLocation(location);
-		fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-		Parent root = (Parent)fxmlLoader.load(location.openStream());
-		NewDeviceUIController controller = (NewDeviceUIController) fxmlLoader.getController();
-		Scene scene = new Scene(root);
-		newDeviceStage = WindowUtil.createStage(root);
-		controller.setStage(newDeviceStage);
-		controller.setDeviceMenuUIController(this);
-	    } catch (IOException ex) {
-		Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
-	    }
+    private void openNewDeviceUI() {
+		if (newDeviceStage == null) {
+			try {
+				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/NewDeviceUI.fxml");
+				FXMLLoader fxmlLoader = new FXMLLoader();
+				fxmlLoader.setLocation(location);
+				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+				Parent root = fxmlLoader.load(location.openStream());
+				NewDeviceUIController controller = fxmlLoader.getController();
+				newDeviceStage = WindowUtil.createStage(root);
+				controller.setStage(newDeviceStage);
+				controller.setDeviceMenuUIController(this);
+			} catch (IOException ex) {
+				Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+		newDeviceStage.show();
 	}
-	newDeviceStage.show();
-    }
     /**
      * Opens a UI for removing the device.
      */
     private void openRemoveDeviceUI() {
-		// check if there a device selected!
 		DeviceEntry deviceEntry = getDeviceEntry();
 		if (deviceEntry == null) {
-			// pop error
 			PopupManager.getPopupManager().showError("No device selected");
 			return;
 		}
 		if (deleteDeviceController == null) {
 			try {
-				// pop open add new device
 				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/DeleteDeviceUI.fxml");
 				FXMLLoader fxmlLoader = new FXMLLoader();
 				fxmlLoader.setLocation(location);
 				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-				Parent root = (Parent) fxmlLoader.load(location.openStream());
-				deleteDeviceController = (DeleteDeviceUIController) fxmlLoader.getController();
-				Scene scene = new Scene(root);
+				Parent root = fxmlLoader.load(location.openStream());
+				deleteDeviceController = fxmlLoader.getController();
 				Stage stage = WindowUtil.createStage(root);
 				deleteDeviceController.setStage(stage);
 				deleteDeviceController.setController(this);
@@ -432,27 +412,24 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 				Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
-
-		if (deviceEntry.getDevice() != null) {
+		if (deviceEntry.getDevice() != null)
 			deleteDeviceController.setDevice(deviceEntry.getDevice());
-		}
+
 	}
     private void openConfigureDeviceUI() {
 		DeviceEntry deviceEntry = getDeviceEntry();
 		if (deviceEntry == null) {
-			// pop error
 			PopupManager.getPopupManager().showError("No device selected");
 			return;
 		}
 		if (configureDeviceStage == null) {
 			try {
-				// pop open add new device
 				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/ConfigureDeviceUI.fxml");
 				FXMLLoader fxmlLoader = new FXMLLoader();
 				fxmlLoader.setLocation(location);
 				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-				Parent root = (Parent) fxmlLoader.load(location.openStream());
-				configureDeviceController = (ConfigureDeviceUIController) fxmlLoader.getController();
+				Parent root = fxmlLoader.load(location.openStream());
+				configureDeviceController = fxmlLoader.getController();
 				configureDeviceStage = WindowUtil.createStage(root);
 				configureDeviceController.setStage(configureDeviceStage);
 				configureDeviceController.getProfileUIController().setProfileManager(profileManager);
@@ -464,23 +441,20 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 		configureDeviceStage.show();
 
 	}
-
     private void openSelectProfileUI() {
 		DeviceEntry deviceEntry = getDeviceEntry();
 		if (deviceEntry == null) {
-			// pop error
 			PopupManager.getPopupManager().showError("No device selected");
 			return;
 		}
 		if (selectProfileController == null) {
 			try {
-				// pop open add new device
 				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/SelectProfile.fxml");
 				FXMLLoader fxmlLoader = new FXMLLoader();
 				fxmlLoader.setLocation(location);
 				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-				Parent root = (Parent) fxmlLoader.load(location.openStream());
-				selectProfileController = (SelectProfileUIController) fxmlLoader.getController();
+				Parent root = fxmlLoader.load(location.openStream());
+				selectProfileController = fxmlLoader.getController();
 				Stage stage = WindowUtil.createStage(root);
 				selectProfileController.setStage(stage);
 				selectProfileController.setProfileManager(profileManager);
@@ -494,26 +468,23 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
     private void openDetailsUI() {
 		DeviceEntry deviceEntry = getDeviceEntry();
 		if (deviceEntry == null) {
-			// pop error
 			PopupManager.getPopupManager().showError("No device selected");
 			return;
 		}
 		if (displayProfileController == null) {
 			try {
-				// pop open add new device
 				URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/popup/DisplayProfile.fxml");
 				FXMLLoader fxmlLoader = new FXMLLoader();
 				fxmlLoader.setLocation(location);
 				fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
 				Parent root = (Parent) fxmlLoader.load(location.openStream());
-				displayProfileController = (DisplayProfileController) fxmlLoader.getController();
+				displayProfileController = fxmlLoader.getController();
 				Stage stage = WindowUtil.createStage(root);
 				displayProfileController.setStage(stage);
 			} catch (IOException ex) {
 				Logger.getLogger(ConfigureDeviceUIController.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
-		// get device
 		GenerateBindingsImage generator = new GenerateBindingsImage(deviceEntry.getDevice());
 		displayProfileController.setGenerateBindingsImage(generator);
 		ObservableList<App> apps;
@@ -533,16 +504,17 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 		}
 		displayProfileController.displayDevice(deviceEntry.getDevice(), appName);
 	}
+
 // ============= Implemented Methods ============== //
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 		versionL.setText(KeyboardingMaster.VERSION);
 		hardwareManager = new HardwareManager(this);
 		profileManager = new ProfileManager(this);
-		deviceNameCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, String>("deviceName"));
-		profileNameCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, String>("profileName"));
-		isConnectedCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, String>("isConnected"));
-		isEnabledCol.setCellValueFactory(new PropertyValueFactory<DeviceEntry, Boolean>("enabled"));
+		deviceNameCol.setCellValueFactory(new PropertyValueFactory<>("deviceName"));
+		profileNameCol.setCellValueFactory(new PropertyValueFactory<>("profileName"));
+		isConnectedCol.setCellValueFactory(new PropertyValueFactory<>("isConnected"));
+		isEnabledCol.setCellValueFactory(new PropertyValueFactory<>("enabled"));
 
 		CheckboxCallback callback = new CheckboxCallback();
 		callback.setCheckboxHandler(this);
@@ -550,28 +522,20 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 		isEnabledCol.setEditable(true);
 
 		// set the table cell to center for isConnected
-		isConnectedCol.setCellFactory(new Callback<TableColumn<DeviceEntry, String>, TableCell<DeviceEntry, String>>() {
-			@Override
-			public TableCell call(TableColumn<DeviceEntry, String> param) {
-				TableCell cell = new TableCell() {
-					@Override
-					public void updateItem(Object item, boolean empty) {
-						if (item != null) {
-							setText(item.toString());
-						}
-					}
-				};
+		isConnectedCol.setCellFactory(param -> {
+			TableCell cell = new TableCell() {
+				@Override
+				public void updateItem(Object item, boolean empty) {
+					if (item != null) setText(item.toString());
 
-				//adding style class for the cell
-				cell.getStyleClass().add("table-cell-center");
-				return cell;
-			}
+				}
+			};
+
+			//adding style class for the cell
+			cell.getStyleClass().add("table-cell-center");
+			return cell;
 		});
-
-
 		deviceTV.setEditable(true);
-
-		// add the system tray
 		systemTray = new KBMSystemTray(this);
 	}
 
@@ -591,20 +555,20 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
      * Logs out of this device menu.
      * Disables all devices.
      */
-    private void logout(){
-	cleanUp();
-	keysRepeatCB.setSelected(true);
-	// check if cloud sync should be popped
-
-	if(cloudAccount != null){
-	    loginController.hideDeviceMenu(false);
-	    KeyboardingMaster.getInstance().endDropboxSync(true, cloudAccount);
-	    // pop cloud sync
-	}else{
-	    loginController.hideDeviceMenu(true);
+    private void logout() {
+		cleanUp();
+		keysRepeatCB.setSelected(true);
+		if (dropBoxAccount != null) {
+			clearAccessToken();
+			loginController.hideDeviceMenu(false);
+			KeyboardingMaster.getInstance().endDropboxSync(true, dropBoxAccount);
+		} else loginController.hideDeviceMenu(true);
 	}
-
-    }
+	private void clearAccessToken() {
+		DropBoxApp.ACCESS_TOKEN = "";
+		KeyboardingMaster.getUserSettings().accessToken = "";
+		KeyboardingMaster.saveUserSettings();
+	}
     /**
      * Closes all databases, frees memory, and prepares this gui to be closed.
      */
@@ -667,9 +631,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
     }
     public class CheckboxValueCallback implements Callback<Integer, ObservableValue<Boolean>> { 
 	private TableColumn<DeviceEntry, Boolean> tableColumn;
-	public void setTableColumn(TableColumn<DeviceEntry, Boolean> tableColumn){
-	    this.tableColumn = tableColumn;
-	}
 	@Override
 	public ObservableValue<Boolean> call(Integer p) {
 	    return tableColumn.getCellObservableValue(p);

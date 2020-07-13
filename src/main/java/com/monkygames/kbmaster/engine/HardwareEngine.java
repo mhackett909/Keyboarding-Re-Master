@@ -119,11 +119,11 @@ public class HardwareEngine implements Runnable{
 	private boolean hasMouse = true;
 	// ============= Constructors ============== //
 	public HardwareEngine(Device device, HardwareManager hardwareManager){
+		this.hardwareManager = hardwareManager;
 		event = new Event();
 		keyboards = new ArrayList<>();
-		this.mouseEventQueue = null;
-		this.hardwareManager = hardwareManager;
 		this.keyboardEventQueues = new ArrayList<>();
+		this.mouseEventQueue = null;
 		this.device = device;
 		try { robot = new Robot();}
 		catch (AWTException ex) {
@@ -279,9 +279,8 @@ public class HardwareEngine implements Runnable{
 							robot.delay(10);
 							processOutput(name, mapping.getOutput(),0);
 						}else processOutput(name, mapping.getOutput(),event.getValue());
-					}else if(component.getIdentifier() == Axis.Z && event.getValue() == 0){
-						// on release, don't do anything
-					}else{
+					}else if(component.getIdentifier() == Axis.Z && event.getValue() == 0){ /*on release, do nothing*/ }
+					else{
 						try {
 							ButtonMapping bMapping = keymap.getButtonMapping(name);
 							processOutput(name, bMapping.getOutput(), event.getValue());
@@ -450,7 +449,7 @@ public class HardwareEngine implements Runnable{
 		for (PollEventQueue eventQueue : keyboardEventQueues)
 			eventQueue.close();
 		keyboardEventQueues.clear();
-		mouseEventQueue.close();
+		if (mouseEventQueue != null) mouseEventQueue.close();
 		for (Keyboard keyboard : keyboards) keyboard = null;
 		keyboards.clear();
 		mouse = null;

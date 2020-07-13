@@ -3,16 +3,15 @@
  */
 package com.monkygames.kbmaster;
 
-import com.monkygames.kbmaster.account.CloudAccount;
-import com.monkygames.kbmaster.account.DropBoxAccount;
-import com.monkygames.kbmaster.account.UserSettings;
+import com.monkygames.kbmaster.cloud.DropBoxAccount;
+import com.monkygames.kbmaster.cloud.DropBoxApp;
+import com.monkygames.kbmaster.cloud.UserSettings;
 import com.monkygames.kbmaster.controller.login.LoginUIController;
 import com.monkygames.kbmaster.io.XStreamManager;
 import com.monkygames.kbmaster.util.WindowUtil;
-import com.monkygames.kbmaster.util.thread.DropboxSyncTask;
-import com.monkygames.kbmaster.util.thread.SyncEventHandler;
-import com.monkygames.kbmaster.util.thread.SyncEventOnExitHandler;
-import com.monkygames.kbmaster.util.thread.SyncEventOnLogoutHandler;
+import com.monkygames.kbmaster.cloud.thread.DropboxSyncTask;
+import com.monkygames.kbmaster.cloud.thread.SyncEventHandler;
+import com.monkygames.kbmaster.cloud.thread.SyncEventOnExitHandler;
 
 import java.awt.*;
 import java.io.IOException;
@@ -36,7 +35,8 @@ public class KeyboardingMaster extends Application {
 
     // === variables === //
     private LoginUIController controller;
-    public static final String VERSION = "0.5.1";
+    private DropboxSyncTask syncTask;
+    public static final String VERSION = "0.5.2";
 
     /**
      * Reference to this object.
@@ -94,10 +94,10 @@ public class KeyboardingMaster extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(location);
             fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-            root = (Parent)fxmlLoader.load(location.openStream());
+            root = (Parent) fxmlLoader.load(location.openStream());
             controller = (LoginUIController) fxmlLoader.getController();
             controller.setStage(stage);
-            AnchorPane pane = (AnchorPane)root;
+            AnchorPane pane = (AnchorPane) root;
             WindowUtil.configureStage(pane.prefWidthProperty().doubleValue(),
                     pane.prefHeightProperty().doubleValue(),
                     root, stage);
@@ -110,38 +110,37 @@ public class KeyboardingMaster extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(location);
             fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-            root = (Parent)fxmlLoader.load(location.openStream());
+            root = (Parent) fxmlLoader.load(location.openStream());
             dropboxSyncStage = WindowUtil.createStage(root);
         } catch (IOException ex) {
             Logger.getLogger(KeyboardingMaster.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        //TODO finish cloud account code and test user settings
-         if(userSettings.isRemember){
-            switch(userSettings.loginMethod){
-            case LoginUIController.LOGIN_LOCAL:
-                controller.showDeviceMenuFromLogin(null,false);
-                break;
-            case LoginUIController.LOGIN_DROPBOX:
-                // get accesstoken
-                if(userSettings.accessToken != null && !userSettings.accessToken.equals(""))
-                    startDropboxSync(new DropBoxAccount(userSettings.accessToken),false);
-                else controller.showDeviceMenuFromLogin(null,false);
-                break;
+        if (userSettings.isRemember) {
+            switch (userSettings.loginMethod) {
+                case LoginUIController.LOGIN_LOCAL:
+                    controller.showDeviceMenuFromLogin(null, false);
+                    break;
+                case LoginUIController.LOGIN_DROPBOX:
+                    String accessToken = DropBoxApp.ACCESS_TOKEN;
+                    if (accessToken != null && !accessToken.equals(""))
+                        startDropboxSync(new DropBoxAccount(accessToken), false);
+                    else {
+                        controller.resetLoginUI();
+                        controller.showStage();
+                    }
+                    break;
             }
-         }else controller.showStage();
+        } else controller.showStage();
     }
-
     /**
      * Opens the dropbox sync UI and created a thread to start syncing.
      * @param dropBoxAccount the dropbox account to sync.
      * @param checkRemember true if the settings should be saved and false otherwise.
      */
-    public void startDropboxSync(CloudAccount dropBoxAccount, boolean checkRemember){
-        // show the sync 
+    public void startDropboxSync(DropBoxAccount dropBoxAccount, boolean checkRemember){
         dropboxSyncStage.show();
         SyncEventHandler handler = new SyncEventHandler (dropBoxAccount, checkRemember, controller, dropboxSyncStage);
-        DropboxSyncTask syncTask = new DropboxSyncTask(dropBoxAccount);
+        syncTask = new DropboxSyncTask(dropBoxAccount);
         syncTask.setOnSucceeded(handler);
         syncTask.setOnFailed(handler);
         new Thread(syncTask).start();
@@ -150,25 +149,16 @@ public class KeyboardingMaster extends Application {
     /**
      * Initiates a dropbox sync on logout or exit.
      * @param isOnLogout true if after the dropbox sync, return to the login screen
-     * @param cloudAccount the account used to connect to dropbox.
+     * @param dropBoxAccount the account used to connect to dropbox.
      * else exit the program.
      */
-    public void endDropboxSync(boolean isOnLogout, CloudAccount cloudAccount){
+    public void endDropboxSync(boolean isOnLogout, DropBoxAccount dropBoxAccount) {
         dropboxSyncStage.show();
-        if(isOnLogout){
-            SyncEventOnLogoutHandler handler = new SyncEventOnLogoutHandler (dropboxSyncStage);
-            DropboxSyncTask syncTask = new DropboxSyncTask(cloudAccount);
-            syncTask.setOnSucceeded(handler);
-            syncTask.setOnFailed(handler);
-            new Thread(syncTask).start();
-
-        }else{
-            SyncEventOnExitHandler handler = new SyncEventOnExitHandler (dropboxSyncStage);
-            DropboxSyncTask syncTask = new DropboxSyncTask(cloudAccount);
-            syncTask.setOnSucceeded(handler);
-            syncTask.setOnFailed(handler);
-            new Thread(syncTask).start();
-        }
+        SyncEventOnExitHandler handler = new SyncEventOnExitHandler(dropboxSyncStage, isOnLogout);
+        syncTask = new DropboxSyncTask(dropBoxAccount);
+        syncTask.setOnSucceeded(handler);
+        syncTask.setOnFailed(handler);
+        new Thread(syncTask).start();
     }
 
     public static KeyboardingMaster getInstance(){
@@ -178,9 +168,7 @@ public class KeyboardingMaster extends Application {
     /**
      * Exit the program.
      */
-    public void exit(){
-        System.exit(0);
-    }
+    public void exit(){ System.exit(0); }
 
     public void logout(){
         controller.showStage();
@@ -196,11 +184,5 @@ public class KeyboardingMaster extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-    }
-    /**
-     * Print the version to be consumed by the installer.
-     */
-    public static void printVersion(){
-        System.out.println(VERSION);
     }
 }

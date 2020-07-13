@@ -30,10 +30,7 @@ public class DriverManager {
 		devices = new ArrayList<>();
 		keyboardMakes = new ArrayList<>();
 		mouseMakes = new ArrayList<>();
-		// initialize all drivers by make
-		createRazerDrivers();
-		createBelkinDrivers();
-		createOtherDrivers();
+		createDrivers();
 	}
 
 	// ============= Public Methods ============== //
@@ -126,10 +123,11 @@ public class DriverManager {
 	}
 
 	/**
-	 * Handles creating all Razer drivers.
+	 * Handles creating all drivers.
 	 * Includes mice and keyboards.
 	 */
-	private void createRazerDrivers() {
+	private void createDrivers() {
+		//Razer
 		addDevice(new com.monkygames.kbmaster.driver.devices.razer.nostromo.Nostromo());
 		addDevice(new com.monkygames.kbmaster.driver.devices.razer.tartarus.Tartarus());
 		addDevice(new com.monkygames.kbmaster.driver.devices.razer.tartarus_v2.TartarusV2());
@@ -139,17 +137,12 @@ public class DriverManager {
 		addDevice(new com.monkygames.kbmaster.driver.devices.razer.naga.Naga());
 		addDevice(new com.monkygames.kbmaster.driver.devices.razer.taipan.Taipan());
 		addDevice(new com.monkygames.kbmaster.driver.devices.razer.marauder.Marauder());
-	}
 
-	/**
-	 * Creates all Belkin devices.
-	 */
-	private void createBelkinDrivers() {
+		//Belkin
 		addDevice(new com.monkygames.kbmaster.driver.devices.belkin.n52.N52());
 		addDevice(new com.monkygames.kbmaster.driver.devices.belkin.n52te.N52TE());
-	}
 
-	private void createOtherDrivers() {
+		//Other
 		addDevice(new com.monkygames.kbmaster.driver.devices.lacunary_limited.ipv6buddy.IPV6Buddy());
 		addDevice(new com.monkygames.kbmaster.driver.devices.digitus.numpad.Numpad());
 		addDevice(new com.monkygames.kbmaster.driver.devices.generic.mouse.gspy.GSpyUsbGamingMouseRH1900());

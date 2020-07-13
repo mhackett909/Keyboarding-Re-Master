@@ -2,8 +2,8 @@ package com.monkygames.kbmaster.io;
 
 import com.monkygames.kbmaster.driver.DeviceList;
 import com.monkygames.kbmaster.driver.DevicePackage;
-import com.monkygames.kbmaster.account.UserSettings;
-import com.monkygames.kbmaster.account.dropbox.MetaData;
+import com.monkygames.kbmaster.cloud.UserSettings;
+import com.monkygames.kbmaster.cloud.metadata.MetaData;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.driver.DeviceInformation;
 import com.monkygames.kbmaster.input.Button;
@@ -140,9 +140,7 @@ public class XStreamManager {
      */
     public UserSettings readUserSettings(){
         UserSettings userSettings = (UserSettings)read(userSettingsStream,settingsFile.getAbsolutePath());
-        if(userSettings == null){
-            return new UserSettings();
-        }
+        if(userSettings == null) return new UserSettings();
         return userSettings;
     }
 
@@ -151,10 +149,6 @@ public class XStreamManager {
      * @return true on success and false otherwise.
      */
     public boolean writeRootManager(String filename, RootManager rootManager){
-        MetaData metaData = rootManager.getMetaData();
-        if(metaData != null){
-            metaData.rev = "update";
-        }
         return write(rootStream,filename,rootManager);
     }
 
@@ -212,25 +206,6 @@ public class XStreamManager {
         return deviceList;
     }
 
-    /**
-     * Reads a file using the global stream.
-     * @param filename the path to the file to read.
-     * @return the object read from file and null otherwise.
-     */
-    public Object readFile(String filename){
-        return read(globalStream,filename);
-    }
-
-    /**
-     * Writes using the global stream.
-     * @param filename
-     * @param obj
-     * @return 
-     */
-    public boolean writeFile(String filename, Object obj){
-        return write(globalStream, filename, obj);
-    }
-
     // === Private Methods === //
     /**
      * Writes the specified object to the stream.
@@ -256,9 +231,7 @@ public class XStreamManager {
      */
     private Object read(XStream stream, String filename){
         File file = new File(filename);
-        if(!file.exists()){
-            return null;
-        }
+        if(!file.exists()) return null;
         try{
             String xml = new String(Files.readAllBytes(file.toPath()));
             return stream.fromXML(xml);

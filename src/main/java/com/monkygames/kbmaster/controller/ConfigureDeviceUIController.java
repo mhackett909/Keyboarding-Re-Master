@@ -6,7 +6,6 @@ package com.monkygames.kbmaster.controller;
 // === kbmaster imports === //
 import com.monkygames.kbmaster.driver.Device;
 
-import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.util.PopupManager;
 // === java imports === //
 import java.io.IOException;
@@ -142,7 +141,6 @@ public class ConfigureDeviceUIController implements Initializable, PopupNotifyIn
 		} else if (obj == hideB) {
 			profileUIController.saveProfile();
 			stage.hide();
-			// TODO sync with cloud
 		}
 	}
 	@Override

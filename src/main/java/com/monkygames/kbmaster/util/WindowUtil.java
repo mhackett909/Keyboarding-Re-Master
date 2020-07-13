@@ -67,27 +67,27 @@ public class WindowUtil{
      * @param root contains the ui to add to the stage.
      * @return the configured stage.
      */
-    public static Stage configureStage(double width, double height, Parent root, Stage stage){
-	Group root2 = new Group();
-	root2.getChildren().add(root);
-	Scene scene = new Scene(root2);
-	// Transparent scene and configureDeviceStage
-	scene.setFill(Color.TRANSPARENT);
-	scene.getStylesheets().add("path/stylesheet.css");
-	stage.initStyle(StageStyle.TRANSPARENT);
-	// accomodate undecorator style
-	//width += 25*2;
-	//height += 25*2;	
-	width += 100;
-	height += 100;	
-	stage.setMinWidth(width);
-	stage.setMinHeight(height);
-	stage.setMaxWidth(width);
-	stage.setMaxHeight(height);
-	stage.setResizable(false);
-	stage.setScene(scene);
-	return stage;
-    }
+    public static Stage configureStage(double width, double height, Parent root, Stage stage) {
+		Group root2 = new Group();
+		root2.getChildren().add(root);
+		Scene scene = new Scene(root2);
+		// Transparent scene and configureDeviceStage
+		scene.setFill(Color.TRANSPARENT);
+		//scene.getStylesheets().add("path/stylesheet.css");
+		stage.initStyle(StageStyle.TRANSPARENT);
+		// accomodate undecorator style
+		//width += 25*2;
+		//height += 25*2;
+		width += 100;
+		height += 100;
+		stage.setMinWidth(width);
+		stage.setMinHeight(height);
+		stage.setMaxWidth(width);
+		stage.setMaxHeight(height);
+		stage.setResizable(false);
+		stage.setScene(scene);
+		return stage;
+	}
     /**
      * Centers the stage to the center of the screen.
      * @param stage the stage to center.

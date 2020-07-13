@@ -6,7 +6,7 @@ package com.monkygames.kbmaster.controller;
 // === java imports === //
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.input.Keymap;
-import com.monkygames.kbmaster.io.GenerateBindingsImage;
+import com.monkygames.kbmaster.util.GenerateBindingsImage;
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.Profile;
 import java.awt.Image;

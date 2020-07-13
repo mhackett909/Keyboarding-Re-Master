@@ -1,7 +1,7 @@
 /* 
  * See LICENSE in top-level directory.
  */
-package com.monkygames.kbmaster.account;
+package com.monkygames.kbmaster.cloud;
 
 /**
  * Contains information stored locally for the user.
@@ -22,5 +22,4 @@ public class UserSettings {
 	 * Used by web accounts to access online services.
 	 */
 	public String accessToken = "";
-	
 }

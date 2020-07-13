@@ -30,7 +30,7 @@ import javafx.scene.control.Tooltip;
 import com.monkygames.kbmaster.profiles.ProfileManager;
 import com.monkygames.kbmaster.profiles.AppType;
 import com.monkygames.kbmaster.io.BindingPDFWriter;
-import com.monkygames.kbmaster.io.GenerateBindingsImage;
+import com.monkygames.kbmaster.util.GenerateBindingsImage;
 import com.monkygames.kbmaster.profiles.Root;
 import com.monkygames.kbmaster.util.PopupManager;
 import com.monkygames.kbmaster.util.ProfileTypeNames;
@@ -103,7 +103,7 @@ public class ProfileUIController implements Initializable, PopupNotifyInterface{
      */
     private FileChooser pdfChooser;
     private TabPane keymapTabPane;
-    private KeymapUIManager keymapUIManager;
+    private KeymapUIController keymapUIController;
     /**
      * The currently used profile.
      */
@@ -148,7 +148,7 @@ public class ProfileUIController implements Initializable, PopupNotifyInterface{
 	}
     public void setKeymapTabPane(TabPane keymapTabPane) {
 		this.keymapTabPane = keymapTabPane;
-		keymapUIManager.setTabPane(keymapTabPane);
+		keymapUIController.setTabPane(keymapTabPane);
 	}
     /**
      * Sets the device in order to get device name and to be used in
@@ -162,10 +162,10 @@ public class ProfileUIController implements Initializable, PopupNotifyInterface{
 		}
 		this.device = device;
 		currentProfile = device.getProfile();
-		keymapUIManager.setDevice(device);
-		keymapUIManager.initializeTabs();
-		keymapUIManager.setProfile(currentProfile);
-		keymapUIManager.addSaveNotification(this);
+		keymapUIController.setDevice(device);
+		keymapUIController.initializeTabs();
+		keymapUIController.setProfile(currentProfile);
+		keymapUIController.addSaveNotification(this);
 		if(newProfileUIController != null)
 	    	newProfileUIController.setDevice(device);
 		typeCB.setItems(FXCollections.observableArrayList(ProfileTypeNames.getProfileTypeName(AppType.GAME),
@@ -192,7 +192,7 @@ public class ProfileUIController implements Initializable, PopupNotifyInterface{
     /**
      * Set the description label for keymaps.
      */
-    public void setDescriptionLabel(Label descriptionLabel){ keymapUIManager.setLabel(descriptionLabel); }
+    public void setDescriptionLabel(Label descriptionLabel){ keymapUIController.setLabel(descriptionLabel); }
 
 	/**
 	 * Set the description for the currently selected keymap.
@@ -201,7 +201,7 @@ public class ProfileUIController implements Initializable, PopupNotifyInterface{
 	 */
 	public void setKeymapDescription(int keymapID, String description){
 		if(currentProfile != null){
-			keymapUIManager.setDescriptionText(description);
+			keymapUIController.setDescriptionText(description);
 			currentProfile.getKeymap(keymapID).setDescription(description);
 			currentProfile.setLastUpdatedDate(Calendar.getInstance().getTimeInMillis());
 			saveProfile();
@@ -296,7 +296,7 @@ public class ProfileUIController implements Initializable, PopupNotifyInterface{
     public void profileSelected(Profile selectedProfile){
 		if (selectedProfile != currentProfile) saveProfile();
 	   	currentProfile = selectedProfile;
-	    keymapUIManager.setProfile(selectedProfile);
+	    keymapUIController.setProfile(selectedProfile);
 		profileManager.setActiveProfile(device, selectedProfile);
     }
     public void onTypeChange() {
@@ -553,7 +553,7 @@ public class ProfileUIController implements Initializable, PopupNotifyInterface{
 			cal.setTimeInMillis(profile.getLastUpdatedDate());
 			SimpleDateFormat date_format = new SimpleDateFormat("yyyy/MM/dd");
 			updatedL.setText(date_format.format(cal.getTime()));
-			keymapUIManager.setDescriptionText(profile.getKeymap(keymapUIManager.getSelectedIndex()).getDescription());
+			keymapUIController.setDescriptionText(profile.getKeymap(keymapUIController.getSelectedIndex()).getDescription());
 		}
     }
     /**
@@ -563,7 +563,7 @@ public class ProfileUIController implements Initializable, PopupNotifyInterface{
 		infoTA.setText("");
 		authorL.setText("");
 		updatedL.setText("");
-		keymapUIManager.setDescriptionText("");
+		keymapUIController.setDescriptionText("");
 		profileCB.valueProperty().removeListener(profileChangeListener);
 		profileCB.getSelectionModel().clearSelection();
 		profileCB.setItems(FXCollections.observableArrayList());
@@ -666,7 +666,7 @@ public class ProfileUIController implements Initializable, PopupNotifyInterface{
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
 		pdfChooser.getExtensionFilters().add(extFilter);
 
-		keymapUIManager = new KeymapUIManager();
+		keymapUIController = new KeymapUIController();
 
 		kmpFileChooser = new FileChooser();
 		FileChooser.ExtensionFilter kmpExtFilter = new FileChooser.ExtensionFilter("kbmaster profiles (*.xml)", "*.xml");
@@ -729,7 +729,7 @@ public class ProfileUIController implements Initializable, PopupNotifyInterface{
 				int selectedKeymap = keymapTabPane.getSelectionModel().getSelectedIndex();
 				device.setDefaultKeymap(device.getProfile(), selectedKeymap);
 				setKeymapDescription(selectedKeymap, "");
-				DriverUIController driverUIController = keymapUIManager.getDriverUIController(selectedKeymap);
+				DriverUIController driverUIController = keymapUIController.getDriverUIController(selectedKeymap);
 				driverUIController.setSelectedKeymap(device.getProfile().getKeymap(selectedKeymap));
 				//break missing on purpose
 			case "Save":

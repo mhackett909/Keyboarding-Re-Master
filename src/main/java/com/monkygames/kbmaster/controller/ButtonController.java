@@ -5,8 +5,6 @@ package com.monkygames.kbmaster.controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.MouseEvent;
 
 /**

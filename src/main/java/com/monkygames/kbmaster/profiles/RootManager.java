@@ -1,7 +1,7 @@
 package com.monkygames.kbmaster.profiles;
 
-import com.monkygames.kbmaster.account.dropbox.MetaData;
-import com.monkygames.kbmaster.account.dropbox.SyncMetaData;
+import com.monkygames.kbmaster.cloud.metadata.MetaData;
+import com.monkygames.kbmaster.cloud.metadata.SyncMetaData;
 
 /**
  * Contains all the roots.
@@ -27,7 +27,7 @@ public class RootManager implements SyncMetaData{
     public RootManager(){
         appsRoot = new Root("Application",AppType.APPLICATION);
         gamesRoot = new Root("Game",AppType.GAME);
-        metaData = null;
+        metaData = new MetaData(0);
     }
 
     /**

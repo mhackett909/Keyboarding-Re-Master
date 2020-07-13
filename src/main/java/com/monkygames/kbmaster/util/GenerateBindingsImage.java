@@ -1,7 +1,7 @@
 /* 
  * See LICENSE in top-level directory.
  */
-package com.monkygames.kbmaster.io;
+package com.monkygames.kbmaster.util;
 
 // === jnostromo imports === //
 import com.monkygames.kbmaster.driver.Device;

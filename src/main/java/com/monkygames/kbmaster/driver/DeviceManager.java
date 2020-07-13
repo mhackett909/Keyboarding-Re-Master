@@ -3,7 +3,7 @@
  */
 package com.monkygames.kbmaster.driver;
 
-import com.monkygames.kbmaster.account.dropbox.MetaData;
+import com.monkygames.kbmaster.cloud.metadata.MetaData;
 import com.monkygames.kbmaster.controller.DeviceMenuUIController;
 import com.monkygames.kbmaster.profiles.ProfileManager;
 import com.monkygames.kbmaster.io.XStreamManager;
@@ -77,11 +77,7 @@ public class DeviceManager {
     /**
      * Writes the list out to file.
      */
-    public void save() {
-        MetaData metaData = deviceList.getMetaData();
-        if(metaData != null) metaData.rev = "update";
-		XStreamManager.getStreamManager().writeGlobalAccount(deviceList);
-    }
+    public void save() { XStreamManager.getStreamManager().writeGlobalAccount(deviceList); }
     
     /**
      * Downloads the device specified by the package name

@@ -27,7 +27,7 @@
         <Font size="15.0" />
       </font>
     </Button>
-    <ChoiceBox disable="true" fx:id="accessCB" focusTraversable="false" layoutX="190.0" layoutY="130.0" prefWidth="279.0">
+    <ChoiceBox fx:id="accessCB" focusTraversable="false" layoutX="190.0" layoutY="130.0" prefWidth="279.0">
       <items>
         <FXCollections fx:factory="observableArrayList">
           <String fx:value="Item 1" />

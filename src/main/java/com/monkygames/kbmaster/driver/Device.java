@@ -9,7 +9,6 @@ import com.monkygames.kbmaster.profiles.Profile;
 import java.awt.Rectangle;
 import java.util.HashMap;
 
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import javafx.scene.input.KeyCode;
 import net.java.games.input.Component.Identifier.Key;
 
