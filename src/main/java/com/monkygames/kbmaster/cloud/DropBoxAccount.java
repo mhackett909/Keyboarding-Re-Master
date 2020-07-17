@@ -224,12 +224,9 @@ public class DropBoxAccount implements CloudAccount{
     /**
      * Returns true if this is a valid file to upload to dropbox.
      * Only xml files are valid.
-     * @param filename the file to check.
+     * @param fileName the file to check.
      */
-    private boolean isValidFile(String filename){
-        int i = filename.lastIndexOf('.');
-        String ext = filename.substring(i);
-        if(ext == null) return false;
-        return (ext.equals(".xml"));
+    private boolean isValidFile(String fileName){
+        return fileName.endsWith(".xml");
     }
 }

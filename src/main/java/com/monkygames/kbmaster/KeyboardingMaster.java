@@ -14,6 +14,8 @@ import com.monkygames.kbmaster.cloud.thread.SyncEventHandler;
 import com.monkygames.kbmaster.cloud.thread.SyncEventOnExitHandler;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -101,6 +103,11 @@ public class KeyboardingMaster extends Application {
             WindowUtil.configureStage(pane.prefWidthProperty().doubleValue(),
                     pane.prefHeightProperty().doubleValue(),
                     root, stage);
+
+            //For version checking
+            FileOutputStream versionWriter = new FileOutputStream(new File("VERSION"));
+            versionWriter.write(VERSION.getBytes());
+            versionWriter.close();
         } catch (IOException ex) {
             Logger.getLogger(KeyboardingMaster.class.getName()).log(Level.SEVERE, null, ex);
         }

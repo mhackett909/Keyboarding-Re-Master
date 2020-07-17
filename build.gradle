@@ -13,7 +13,6 @@ javafx {
 repositories {
     mavenCentral()
     flatDir { dir 'libs/input' }
-    maven { url = 'https://maven.teamdev.com/repository/products' }
 }
 dependencies {
     implementation 'com.thoughtworks.xstream:xstream:1.4.12'

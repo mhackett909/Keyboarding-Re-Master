@@ -592,18 +592,16 @@ public class ProfileUIController implements Initializable, PopupNotifyInterface{
 		}
 		File file = kmpFileChooser.showSaveDialog(null);
 		if (file != null) {
-			String fileName = file.getAbsolutePath(), extension = "";
-			int lastIndex = fileName.lastIndexOf(".");
-			if (lastIndex > -1) extension = fileName.substring(lastIndex);
+			String fileName = file.getAbsolutePath();
 			// export to an xml file only
-			if (!extension.equals(".xml")) {
+			if (!fileName.endsWith(".xml")) {
 				PopupManager.getPopupManager().showError("Export failed. Please save as .xml");
 				return;
 			}
 			if (file.exists()) file.delete();
 			//Ensure the currently selected keymap is saved before export
 			saveProfile();
-			if (!XStreamManager.getStreamManager().writeProfile(file.getAbsolutePath(), currentProfile))
+			if (!XStreamManager.getStreamManager().writeProfile(fileName, currentProfile))
 				PopupManager.getPopupManager().showError("Export failed.");
 		}else PopupManager.getPopupManager().showError("Export failed: can't find file");
 	}

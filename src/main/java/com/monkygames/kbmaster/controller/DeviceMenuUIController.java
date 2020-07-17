@@ -223,25 +223,23 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	}
 	private void checkUpdates() {
 		try {
-			URL updateCheck = new URL("https://bitbucket.org/vapula87/keyboarding-re-master/raw/be5fb2cfae366363b6dcfc203d0854ea1d926711/src/main/java/com/monkygames/kbmaster/KeyboardingMaster.java");
+			URL updateCheck = new URL("https://bitbucket.org/vapula87/keyboarding-re-master/src/master/VERSION");
 			BufferedReader read = new BufferedReader(new InputStreamReader(updateCheck.openStream()));
-			String readURL, latestVersion = "";
+			String readURL, latestVersion = null;
 			while ((readURL = read.readLine()) != null) {
-				if (readURL.contains("VERSION")) {
-					String[] tokens = readURL.split(" ");
-					int versionIndex = tokens.length-1;
-					Pattern regexPattern = Pattern.compile("\\d.*.*\\d");
-					Matcher regexMatcher = regexPattern.matcher(tokens[versionIndex]);
-					if (regexMatcher.find()) latestVersion = regexMatcher.group();
-					break;
-				}
+				Pattern regexPattern = Pattern.compile("\\d.*.*\\d");
+				Matcher regexMatcher = regexPattern.matcher(readURL);
+				if (regexMatcher.find()) latestVersion = regexMatcher.group();
+				break;
 			}
 			read.close();
 			if (!latestVersion.equals(KeyboardingMaster.VERSION)) updateLink.setText("Updates Available");
 		} catch (MalformedURLException e) {
-			System.out.println("Update check failed.");
+			System.out.println("Update check failed: Incorrect URL.");
 		} catch (IOException e) {
-			System.out.println("Error reading remote file.");
+			System.out.println("Update check failed: Error reading remote file.");
+		} catch (NullPointerException e) {
+			System.out.println("Update check failed: Could not retrieve latest version.");
 		}
 	}
     /**
