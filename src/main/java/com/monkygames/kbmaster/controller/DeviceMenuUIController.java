@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,8 +55,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 /**
  * Handles UI Events for managing devices.
@@ -223,14 +227,17 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 	}
 	private void checkUpdates() {
 		try {
-			URL updateCheck = new URL("https://bitbucket.org/vapula87/keyboarding-re-master/src/master/VERSION");
+			URL updateCheck = new URL("https://bitbucket.org/vapula87/keyboarding-re-master/src/master/");
 			BufferedReader read = new BufferedReader(new InputStreamReader(updateCheck.openStream()));
 			String readURL, latestVersion = null;
 			while ((readURL = read.readLine()) != null) {
-				Pattern regexPattern = Pattern.compile("\\d.*.*\\d");
+				Pattern regexPattern = Pattern.compile("\\d+\\.\\d+\\.\\d+");
 				Matcher regexMatcher = regexPattern.matcher(readURL);
-				if (regexMatcher.find()) latestVersion = regexMatcher.group();
-				break;
+				if (regexMatcher.find()) {
+					latestVersion = regexMatcher.group();
+					System.out.println(latestVersion);
+					break;
+				}
 			}
 			read.close();
 			if (!latestVersion.equals(KeyboardingMaster.VERSION)) updateLink.setText("Updates Available");

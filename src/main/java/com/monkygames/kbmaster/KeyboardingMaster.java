@@ -104,10 +104,6 @@ public class KeyboardingMaster extends Application {
                     pane.prefHeightProperty().doubleValue(),
                     root, stage);
 
-            //For version checking
-            FileOutputStream versionWriter = new FileOutputStream(new File("VERSION"));
-            versionWriter.write(VERSION.getBytes());
-            versionWriter.close();
         } catch (IOException ex) {
             Logger.getLogger(KeyboardingMaster.class.getName()).log(Level.SEVERE, null, ex);
         }

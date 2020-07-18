@@ -13,6 +13,7 @@ Keyboarding Master uses Gradle 6.5 as the build tool.  Issue the following comma
 
 
 Alternatively, you may try the following (requires Gradle installation):
+
 * *gradle build*: Builds The project
 * *gradle run*: Runs the project
 
