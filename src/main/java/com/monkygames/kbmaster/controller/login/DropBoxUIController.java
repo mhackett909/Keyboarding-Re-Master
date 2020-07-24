@@ -108,6 +108,6 @@ public class DropBoxUIController implements Initializable {
     }
 
     public void setStage(Stage stage){
-            this.stage = stage;
+        this.stage = stage;
     }
 }

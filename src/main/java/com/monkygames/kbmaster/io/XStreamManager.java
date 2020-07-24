@@ -217,7 +217,7 @@ public class XStreamManager {
         try{
             Files.write(file.toPath(),xml.getBytes());
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println("XStream write failure ("+file.getName()+"): "+ex.getMessage());
             return false;
         }
         return true;
@@ -236,7 +236,7 @@ public class XStreamManager {
             String xml = new String(Files.readAllBytes(file.toPath()));
             return stream.fromXML(xml);
         } catch (IOException ex){
-            ex.printStackTrace();
+            System.out.println("XStream read error ("+file.getName()+"): "+ex.getMessage());
         }
         return null;
     }

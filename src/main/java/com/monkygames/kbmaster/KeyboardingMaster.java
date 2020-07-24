@@ -14,8 +14,6 @@ import com.monkygames.kbmaster.cloud.thread.SyncEventHandler;
 import com.monkygames.kbmaster.cloud.thread.SyncEventOnExitHandler;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,7 +36,7 @@ public class KeyboardingMaster extends Application {
     // === variables === //
     private LoginUIController controller;
     private DropboxSyncTask syncTask;
-    public static final String VERSION = "0.5.2";
+    public static final String VERSION = "0.5.3";
 
     /**
      * Reference to this object.
@@ -115,6 +113,7 @@ public class KeyboardingMaster extends Application {
             fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
             root = (Parent) fxmlLoader.load(location.openStream());
             dropboxSyncStage = WindowUtil.createStage(root);
+
         } catch (IOException ex) {
             Logger.getLogger(KeyboardingMaster.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -235,7 +235,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 				Matcher regexMatcher = regexPattern.matcher(readURL);
 				if (regexMatcher.find()) {
 					latestVersion = regexMatcher.group();
-					System.out.println(latestVersion);
 					break;
 				}
 			}
@@ -444,7 +443,6 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 		}
 		configureDeviceController.setDevice(deviceEntry.getDevice());
 		configureDeviceStage.show();
-
 	}
     private void openSelectProfileUI() {
 		DeviceEntry deviceEntry = getDeviceEntry();
