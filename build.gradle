@@ -4,7 +4,7 @@ plugins {
 }
 application {
     mainClassName = 'com.monkygames.kbmaster.KeyboardingMaster'
-    applicationDefaultJvmArgs = ['-Djava.library.path=libs/native']
+    applicationDefaultJvmArgs = [ '-Djava.library.path=libs/native' , '-Djdk.gtk.version=2' ]
 }
 javafx {
     version = "14.0.1"

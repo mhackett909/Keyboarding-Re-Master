@@ -102,8 +102,6 @@ public class KBMSystemTray implements ActionListener{
 	    exitApplication();
 	}
     }
-// ============= Extended Methods ============== //
-// ============= Internal Classes ============== //
 // ============= Static Methods ============== //
     /**
      * Checks if the Java System Tray is supported.
@@ -112,13 +110,4 @@ public class KBMSystemTray implements ActionListener{
     public static boolean isSupported(){
 	return SystemTray.isSupported();
     }
-
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

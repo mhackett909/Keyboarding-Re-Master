@@ -19,9 +19,6 @@ import javafx.stage.StageStyle;
  * @version 1.0
  */
 public class WindowUtil{
-
-// ============= Class variables ============== //
-// ============= Constructors ============== //
 // ============= Public Methods ============== //
     /**
      * Creates a stage with special decorations.
@@ -29,13 +26,13 @@ public class WindowUtil{
      * @param root contains the ui to add to the stage.
      * @return the configured stage.
      */
-    public static Stage createStage(Parent root){
-	AnchorPane pane = (AnchorPane)root;
-	double width = pane.prefWidthProperty().doubleValue();
-	double height = pane.prefHeightProperty().doubleValue();
-	Stage stage = new Stage();
-	return configureStage(width,height,root,stage);
-    }
+    public static Stage createStage(Parent root) {
+		AnchorPane pane = (AnchorPane) root;
+		double width = pane.prefWidthProperty().doubleValue();
+		double height = pane.prefHeightProperty().doubleValue();
+		Stage stage = new Stage();
+		return configureStage(width, height, root, stage);
+	}
     /**
      * Creates a stage with special decorations.
      * Note, creates a new stage.
@@ -44,9 +41,9 @@ public class WindowUtil{
      * @param root contains the ui to add to the stage.
      * @return the configured stage.
      */
-    public static Stage createStage(double width, double height, Parent root){
-	return configureStage(width,height,root,new Stage());
-    }
+    public static Stage createStage(double width, double height, Parent root) {
+		return configureStage(width, height, root, new Stage());
+	}
     /**
      * Configures a stage and sets the width and height to the preferred
      * of the parent.
@@ -54,12 +51,12 @@ public class WindowUtil{
      * @param stage receives the root.
      * @return the updated stages.
      */
-    public static Stage configureStage(Parent root, Stage stage){
-	AnchorPane pane = (AnchorPane)root;
-	double width = pane.prefWidthProperty().doubleValue();
-	double height = pane.prefHeightProperty().doubleValue();
-	return configureStage(width,height,root,stage);
-    }
+    public static Stage configureStage(Parent root, Stage stage) {
+		AnchorPane pane = (AnchorPane) root;
+		double width = pane.prefWidthProperty().doubleValue();
+		double height = pane.prefHeightProperty().doubleValue();
+		return configureStage(width, height, root, stage);
+	}
     /**
      * Configures a stage with special decorations.
      * @param width the width of the stage.
@@ -71,13 +68,8 @@ public class WindowUtil{
 		Group root2 = new Group();
 		root2.getChildren().add(root);
 		Scene scene = new Scene(root2);
-		// Transparent scene and configureDeviceStage
 		scene.setFill(Color.TRANSPARENT);
-		//scene.getStylesheets().add("path/stylesheet.css");
 		stage.initStyle(StageStyle.TRANSPARENT);
-		// accomodate undecorator style
-		//width += 25*2;
-		//height += 25*2;
 		width += 100;
 		height += 100;
 		stage.setMinWidth(width);
@@ -92,37 +84,22 @@ public class WindowUtil{
      * Centers the stage to the center of the screen.
      * @param stage the stage to center.
      */
-    public static void centerStage(Stage stage){
-	Screen screen = Screen.getPrimary();
-	Rectangle2D bounds = screen.getVisualBounds();
+    public static void centerStage(Stage stage) {
+		Screen screen = Screen.getPrimary();
+		Rectangle2D bounds = screen.getVisualBounds();
 
-	double width = stage.getMinWidth();
-	double height = stage.getMinHeight();
+		double width = stage.getMinWidth();
+		double height = stage.getMinHeight();
 
-	// calculate x
-	double x = bounds.getWidth()/2 - width/2;
-	double y = bounds.getHeight()/2 - height/2;
-	System.out.println("bounds = "+bounds);
-	System.out.println("x = "+x);
-	System.out.println("y = "+y);
-	System.out.println("stage.width = "+width);
-	System.out.println("stage.height = "+height);
-	stage.setX(x);
-	stage.setY(y);
-    }
-// ============= Protected Methods ============== //
-// ============= Private Methods ============== //
-// ============= Implemented Methods ============== //
-// ============= Extended Methods ============== //
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
-
+		// calculate x
+		double x = bounds.getWidth() / 2 - width / 2;
+		double y = bounds.getHeight() / 2 - height / 2;
+		System.out.println("bounds = " + bounds);
+		System.out.println("x = " + x);
+		System.out.println("y = " + y);
+		System.out.println("stage.width = " + width);
+		System.out.println("stage.height = " + height);
+		stage.setX(x);
+		stage.setY(y);
+	}
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

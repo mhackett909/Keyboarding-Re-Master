@@ -196,8 +196,8 @@ public class LoginUIController implements Initializable {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(location);
 			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-			root = (Parent)fxmlLoader.load(location.openStream());
-			deviceMenuController = (DeviceMenuUIController) fxmlLoader.getController();
+			root = fxmlLoader.load(location.openStream());
+			deviceMenuController = fxmlLoader.getController();
 			deviceMenuStage = WindowUtil.createStage(root);
 			deviceMenuController.setLoginController(this);
 		} catch (IOException ex) {

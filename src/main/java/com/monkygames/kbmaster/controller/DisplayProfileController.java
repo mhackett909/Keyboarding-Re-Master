@@ -33,9 +33,9 @@ import javafx.stage.Stage;
  * Note, both the setGenerateBindingsImage and setStage must be called before using.
  * @version 1.0
  */
-public class DisplayProfileController implements Initializable{
+public class DisplayProfileController implements Initializable {
 
-// ============= Class variables ============== //
+    // ============= Class variables ============== //
     @FXML
     private Button closeB;
     @FXML
@@ -88,95 +88,91 @@ public class DisplayProfileController implements Initializable{
     private javafx.scene.image.Image defaultDevLogoImage;
 // ============= Constructors ============== //
 // ============= Public Methods ============== //
+
     /**
      * Display the device's information including profile and keymaps.
+     *
      * @param device the device to display.
      */
-    public void displayDevice(Device device, App app){
-	Profile profile = device.getProfile();
-	if(profile == null){
-        PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
-	    return;
-	}
-	displayKeymap(profile.getKeymaps(),profile.getDefaultKeymap());
-	displayProfile(profile, app);
-	deviceIV.setImage(new javafx.scene.image.Image(device.getDeviceInformation().getDeviceIcon()));
+    public void displayDevice(Device device, App app) {
+        Profile profile = device.getProfile();
+        if (profile == null) {
+            PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
+            return;
+        }
+        displayKeymap(profile.getKeymaps(), profile.getDefaultKeymap());
+        displayProfile(profile, app);
+        deviceIV.setImage(new javafx.scene.image.Image(device.getDeviceInformation().getDeviceIcon()));
     }
 
     /**
      * Display profile information.
+     *
      * @param profile the profile to display.
      */
-    private void displayProfile(Profile profile, App app){
-	profileNameL.setText(profile.getProfileName());
-	typeL.setText(app.getAppType().name());
-	appL.setText(app.getName());
-	appInfoTA.setText(profile.getInfo());
-	if(app.getAppLogo() == null){
-	    appIV.setImage(defaultAppLogoImage);
-	}else{
-	    appIV.setImage(app.getAppLogo());
-	}
-	if(app.getDevLogo() == null){
-	    devIV.setImage(defaultDevLogoImage);
-	}else{
-	    devIV.setImage(app.getDevLogo());
-	}
-	
-	
+    private void displayProfile(Profile profile, App app) {
+        profileNameL.setText(profile.getProfileName());
+        typeL.setText(app.getAppType().name());
+        appL.setText(app.getName());
+        appInfoTA.setText(profile.getInfo());
+        if (app.getAppLogo() == null) {
+            appIV.setImage(defaultAppLogoImage);
+        } else {
+            appIV.setImage(app.getAppLogo());
+        }
+        if (app.getDevLogo() == null) {
+            devIV.setImage(defaultDevLogoImage);
+        } else {
+            devIV.setImage(app.getDevLogo());
+        }
+
+
     }
+
     /**
      * Generates the descriptions and sets to the label.
      * Open the window.
+     *
      * @param keymaps an array of keymaps to display.
-     * @param id the keymap to select.
+     * @param id      the keymap to select.
      */
-    private void displayKeymap(Keymap[] keymaps, int id){
-	for(int i = 0; i < keymaps.length; i++){
-	    Image image = imageGenerator.generateImage(keymaps[i]);
-	    BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
-	    bufferedImage.getGraphics().drawImage(image, 0, 0, null);
-	    WritableImage writableImage = SwingFXUtils.toFXImage(bufferedImage, null);
-	    images[i].setImage(writableImage);
-	}
-	// select the keymap
-	keymapTabePane.getSelectionModel().select(id);
-	stage.show();
+    private void displayKeymap(Keymap[] keymaps, int id) {
+        for (int i = 0; i < keymaps.length; i++) {
+            Image image = imageGenerator.generateImage(keymaps[i]);
+            BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+            bufferedImage.getGraphics().drawImage(image, 0, 0, null);
+            WritableImage writableImage = SwingFXUtils.toFXImage(bufferedImage, null);
+            images[i].setImage(writableImage);
+        }
+        // select the keymap
+        keymapTabePane.getSelectionModel().select(id);
+        stage.show();
     }
+
     /**
      * Sets the image generator that generates the image to be displayed.
+     *
      * @param imageGenerator used to generate the images to be displayed.
      */
-    public void setGenerateBindingsImage(GenerateBindingsImage imageGenerator){
-	this.imageGenerator = imageGenerator;
+    public void setGenerateBindingsImage(GenerateBindingsImage imageGenerator) {
+        this.imageGenerator = imageGenerator;
     }
-    public void setStage(Stage stage){ 
-	this.stage = stage;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
-    public void closeEventFired(ActionEvent evt){
-	stage.hide();
+
+    public void closeEventFired(ActionEvent evt) {
+        stage.hide();
     }
-// ============= Protected Methods ============== //
-// ============= Private Methods ============== //
+
 // ============= Implemented Methods ============== //
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-	// populate array with keymaps
-	images = new ImageView[] {keymap1, keymap2, keymap3, keymap4, 
-				  keymap5, keymap6, keymap7, keymap8};
-	defaultAppLogoImage = new javafx.scene.image.Image("/com/monkygames/kbmaster/fxml/resources/profile/app_logo.png");
-	defaultDevLogoImage = new javafx.scene.image.Image("/com/monkygames/kbmaster/fxml/resources/profile/dev_logo.png");
+        // populate array with keymaps
+        images = new ImageView[]{keymap1, keymap2, keymap3, keymap4,
+                keymap5, keymap6, keymap7, keymap8};
+        defaultAppLogoImage = new javafx.scene.image.Image("/com/monkygames/kbmaster/fxml/resources/profile/app_logo.png");
+        defaultDevLogoImage = new javafx.scene.image.Image("/com/monkygames/kbmaster/fxml/resources/profile/dev_logo.png");
     }
-// ============= Extended Methods ============== //
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
-
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

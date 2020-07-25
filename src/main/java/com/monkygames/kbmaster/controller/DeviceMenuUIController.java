@@ -614,29 +614,28 @@ public class DeviceMenuUIController implements Initializable, EventHandler<Actio
 		updateDevices();
 		deviceManager.save();
 	}
-// ============= Internal Classes ============== //
+	// ============= Internal Classes ============== //
     public class CheckboxCallback implements Callback<TableColumn<DeviceEntry,Boolean>, TableCell<DeviceEntry,Boolean>> {
-	private EventHandler checkBoxHandler;
-
-	@Override
-	public TableCell call(TableColumn<DeviceEntry, Boolean> param) {
-	    CheckBoxTableCell cell = new CheckBoxTableCell(){
-		public CheckBox checkBox;
-	    };
-	    //adding style class for the cell
-	    cell.getStyleClass().add("table-cell-center");
-	    cell.addEventHandler(ActionEvent.ACTION, checkBoxHandler);
-	    return cell;
-	}
-	public void setCheckboxHandler(EventHandler checkBoxHandler){
-	    this.checkBoxHandler = checkBoxHandler;
-	}
+		private EventHandler checkBoxHandler;
+		@Override
+		public TableCell call(TableColumn<DeviceEntry, Boolean> param) {
+			CheckBoxTableCell cell = new CheckBoxTableCell() {
+				public CheckBox checkBox;
+			};
+			//adding style class for the cell
+			cell.getStyleClass().add("table-cell-center");
+			cell.addEventHandler(ActionEvent.ACTION, checkBoxHandler);
+			return cell;
+		}
+		public void setCheckboxHandler(EventHandler checkBoxHandler) {
+			this.checkBoxHandler = checkBoxHandler;
+		}
     }
-    public class CheckboxValueCallback implements Callback<Integer, ObservableValue<Boolean>> { 
-	private TableColumn<DeviceEntry, Boolean> tableColumn;
-	@Override
-	public ObservableValue<Boolean> call(Integer p) {
-	    return tableColumn.getCellObservableValue(p);
+    public class CheckboxValueCallback implements Callback<Integer, ObservableValue<Boolean>> {
+		private TableColumn<DeviceEntry, Boolean> tableColumn;
+		@Override
+		public ObservableValue<Boolean> call(Integer p) {
+			return tableColumn.getCellObservableValue(p);
+		}
 	}
-    }
 }
