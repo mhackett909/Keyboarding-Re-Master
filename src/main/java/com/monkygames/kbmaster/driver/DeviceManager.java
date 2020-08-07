@@ -60,7 +60,7 @@ public class DeviceManager {
 						app,
 						devicePackage.getProfileInfo().getProfileName()
 				);
-				profile.setDefaultKeymap(devicePackage.getProfileInfo().getDefaultMap());
+				if (profile != null) profile.setDefaultKeymap(devicePackage.getProfileInfo().getDefaultMap());
 				installedDevice.setProfile(profile);
 			}
 			installedDevices.add(installedDevice);

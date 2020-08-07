@@ -10,7 +10,7 @@ package com.monkygames.kbmaster.driver;
 public enum DeviceType {
 
 // ============= Class variables ============== //
-    KEYBOARD, MOUSE
+    KEYBOARD, MOUSE, GAMEPAD
 // ============= Constructors ============== //
 // ============= Public Methods ============== //
 // ============= Protected Methods ============== //

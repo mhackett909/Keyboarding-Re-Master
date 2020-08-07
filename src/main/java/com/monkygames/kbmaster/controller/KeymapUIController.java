@@ -133,7 +133,7 @@ public class KeymapUIController implements ChangeListener{
 		int selectedIndex = tabPane.getSelectionModel().getSelectedIndex();
 		profile.setDefaultKeymap(selectedIndex);
 		String desc = profile.getKeymap(selectedIndex).getDescription();
-		//Platform.runLater() solves a threading issue when hot swapping keymaps
+		//Solves a threading issue when hot swapping keymaps
 		Platform.runLater(() -> keymapDescription.setText(desc));
     }
 // ============= Internal Classes ============== //

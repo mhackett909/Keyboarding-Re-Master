@@ -92,13 +92,11 @@ public class NewProfileUIController extends PopupController implements ChangeLis
 				return;
 			}
 			String author = authorTF.getText();
-			if (author == null) {
-				author = "";
-			}
+			if (author == null) author = "";
+
 			String info = infoTA.getText();
-			if (info == null) {
-				info = "";
-			}
+			if (info == null) info = "";
+
 			// get the current time
 			long time = Calendar.getInstance().getTimeInMillis();
 			Profile profile = new Profile(app, profileName, author, info, time, 0);

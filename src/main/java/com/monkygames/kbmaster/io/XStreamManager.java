@@ -24,6 +24,7 @@ import com.monkygames.kbmaster.profiles.Profile;
 import com.monkygames.kbmaster.profiles.Root;
 import com.monkygames.kbmaster.profiles.RootManager;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.StreamException;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import java.io.File;
@@ -237,6 +238,9 @@ public class XStreamManager {
             return stream.fromXML(xml);
         } catch (IOException ex){
             System.out.println("XStream read error ("+file.getName()+"): "+ex.getMessage());
+        } catch (StreamException e) {
+            System.out.println("XStream read error ("+file.getName()+"): File corrupted.");
+            file.delete();
         }
         return null;
     }

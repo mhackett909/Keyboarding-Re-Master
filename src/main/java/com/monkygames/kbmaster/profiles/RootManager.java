@@ -2,6 +2,9 @@ package com.monkygames.kbmaster.profiles;
 
 import com.monkygames.kbmaster.cloud.metadata.MetaData;
 import com.monkygames.kbmaster.cloud.metadata.SyncMetaData;
+import com.monkygames.kbmaster.driver.Device;
+
+import java.util.Calendar;
 
 /**
  * Contains all the roots.
@@ -59,22 +62,35 @@ public class RootManager implements SyncMetaData{
      * @param profile
      * @return 
      */
-    public void addProfile(App app, Profile profile){ app.addProfile(profile); }
+    public void addProfile(App app, Profile profile){
+        app.addProfile(profile);
+        setMetaData(new MetaData(Calendar.getInstance().getTimeInMillis()));
+    }
+    /**
+     * Removes the profile from the database and updates the list.
+     *
+     * @param profile the profile to remove.
+     */
+    public void removeProfile(App app, Profile profile) {
+        app.removeProfile(profile);
+        setMetaData(new MetaData(Calendar.getInstance().getTimeInMillis()));
+    }
 
     /**
      * Remove the app from the root.
      * @param app the app to remove.
      */
-    public boolean removeApp(App app){
-	Root root;
-	if(app.getAppType() == gamesRoot.getAppType()){
-	    root = gamesRoot;
-	}else if(app.getAppType() == appsRoot.getAppType()){
-	    root = appsRoot;
-	}else{
-	    return false;
-	}
-	root.removeApp(app);
+    public boolean removeApp(App app) {
+        Root root;
+        if (app.getAppType() == gamesRoot.getAppType()) {
+            root = gamesRoot;
+        } else if (app.getAppType() == appsRoot.getAppType()) {
+            root = appsRoot;
+        } else {
+            return false;
+        }
+        root.removeApp(app);
+        setMetaData(new MetaData(Calendar.getInstance().getTimeInMillis()));
         return true;
     }
 
@@ -93,6 +109,7 @@ public class RootManager implements SyncMetaData{
             if (testApp.getName().equals(app.getName())) return false;
         }
         root.addApp(app);
+        setMetaData(new MetaData(Calendar.getInstance().getTimeInMillis()));
         return true;
     }
     public void close() {

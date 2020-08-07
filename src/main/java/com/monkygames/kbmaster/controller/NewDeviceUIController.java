@@ -73,6 +73,9 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 		String model = (String) deviceNameCB.getSelectionModel().getSelectedItem();
 		Device device;
 		switch (index) {
+			case 2:
+				device = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(DeviceType.GAMEPAD, make, model);
+				break;
 			case 1:
 				device = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(DeviceType.MOUSE, make, model);
 				break;
@@ -107,7 +110,7 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 		deviceMakeCB.valueProperty().removeListener(this);
 		deviceNameCB.valueProperty().removeListener(this);
 
-		ObservableList<String> typesList = FXCollections.observableArrayList("Keyboard", "Mouse");
+		ObservableList<String> typesList = FXCollections.observableArrayList("Keyboard", "Mouse", "Gamepad");
 		deviceTypeCB.setItems(typesList);
 		deviceMakeCB.setItems(FXCollections.observableArrayList());
 		deviceNameCB.setItems(FXCollections.observableArrayList());
@@ -183,13 +186,12 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 		if (link == null) {
 			amazonLink.setText("unavailable");
 			amazonLink.setDisable(true);
-			amazonLink.setVisited(false);
 		} else {
 			amazonLink.setText("buy");
 			amazonLink.setUserData(link);
 			amazonLink.setDisable(false);
-			amazonLink.setVisited(false);
 		}
+		amazonLink.setVisited(false);
 		net.java.games.input.Controller[] controllers = HardwareEngine.getControllers(true);
 		boolean connected = false;
 		for (net.java.games.input.Controller controller : controllers) {
@@ -205,7 +207,7 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
 		deviceMakeCB.getItems().removeAll();
 		deviceNameCB.getItems().removeAll();
 
-		ObservableList<String> typesList = FXCollections.observableArrayList("Keyboard", "Mouse");
+		ObservableList<String> typesList = FXCollections.observableArrayList("Keyboard", "Mouse", "Gamepad");
 		deviceTypeCB.setItems(typesList);
 		deviceMakeCB.setItems(FXCollections.observableArrayList());
 		deviceNameCB.setItems(FXCollections.observableArrayList());
@@ -220,37 +222,46 @@ public class NewDeviceUIController implements Initializable, ChangeListener<Stri
     public void changed(ObservableValue<? extends String> ov, String previousValue, String newValue) {
 	if(ov == deviceTypeCB.valueProperty()){
 	    int index = deviceTypeCB.getSelectionModel().getSelectedIndex();
-	    switch(index){
-		case 1:
-		    setMakeComboBox(deviceMenuUIController.getDeviceManager().getDriverManager().getMouseMakes());
-		    break;
-		case 0:
-		default:
-		    setMakeComboBox(deviceMenuUIController.getDeviceManager().getDriverManager().getKeyboardMakes());
-	    }
+	    switch(index) {
+			case 2:
+				setMakeComboBox(deviceMenuUIController.getDeviceManager().getDriverManager().getGamepadMakes());
+				break;
+			case 1:
+				setMakeComboBox(deviceMenuUIController.getDeviceManager().getDriverManager().getMouseMakes());
+				break;
+			case 0:
+			default:
+				setMakeComboBox(deviceMenuUIController.getDeviceManager().getDriverManager().getKeyboardMakes());
+		}
 	}else if(ov == deviceMakeCB.valueProperty()){
 	    int index = deviceTypeCB.getSelectionModel().getSelectedIndex();
-	    switch(index){
-		case 1:
-		    setModelComboBox(DeviceType.MOUSE,newValue);
-		    break;
-		case 0:
-		default:
-		    setModelComboBox(DeviceType.KEYBOARD,newValue);
-	    }
+	    switch(index) {
+			case 2:
+				setModelComboBox(DeviceType.GAMEPAD, newValue);
+				break;
+			case 1:
+				setModelComboBox(DeviceType.MOUSE, newValue);
+				break;
+			default:
+				setModelComboBox(DeviceType.KEYBOARD, newValue);
+		}
 	}else if(ov == deviceNameCB.valueProperty()){
 	    int index = deviceTypeCB.getSelectionModel().getSelectedIndex();
 	    String make = (String)deviceMakeCB.getSelectionModel().getSelectedItem();
 	    String link;
-	    switch(index){
-		case 1:
-		    link = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(DeviceType.MOUSE, make, newValue).getDeviceInformation().getAmazonLink();
-		    setDeviceInformation(DeviceType.MOUSE,make,newValue,link);
-		    break;
-		default:
-		    link = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(DeviceType.KEYBOARD, make, newValue).getDeviceInformation().getAmazonLink();
-		    setDeviceInformation(DeviceType.KEYBOARD,make,newValue,link);
-	    }
+	    switch(index) {
+			case 2:
+				link = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(DeviceType.GAMEPAD, make, newValue).getDeviceInformation().getAmazonLink();
+				setDeviceInformation(DeviceType.GAMEPAD, make, newValue, link);
+				break;
+			case 1:
+				link = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(DeviceType.MOUSE, make, newValue).getDeviceInformation().getAmazonLink();
+				setDeviceInformation(DeviceType.MOUSE, make, newValue, link);
+				break;
+			default:
+				link = deviceMenuUIController.getDeviceManager().getDriverManager().getDeviceByType(DeviceType.KEYBOARD, make, newValue).getDeviceInformation().getAmazonLink();
+				setDeviceInformation(DeviceType.KEYBOARD, make, newValue, link);
+		}
 	}
     }
     public void handleAmazonLink(ActionEvent e) {

@@ -118,11 +118,12 @@ public class DropBoxAccount implements CloudAccount{
     private boolean syncFile(String filename) {
         MetaData localMetaData = getLocalDropboxMetaData(filename);
         MetaData cloudMetaData = getCloudDropboxMetaData(filename);
-        MetaData metaData;
+        MetaData metaData = null;
         if (cloudMetaData == null) metaData = uploadFile(filename);
         else if (localMetaData == null) metaData = downloadFile(filename);
+        else if (localMetaData.lastSync < cloudMetaData.lastSync) metaData = downloadFile(filename);
         else if (localMetaData.lastSync > cloudMetaData.lastSync) metaData = uploadFile(filename);
-        else metaData = downloadFile(filename);
+        else if (localMetaData.lastSync == cloudMetaData.lastSync) return true;
         if (metaData == null) return false;
         return updateLocalFileMetaData(filename, metaData);
     }

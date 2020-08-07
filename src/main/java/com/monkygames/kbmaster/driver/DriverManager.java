@@ -24,12 +24,17 @@ public class DriverManager {
 	 * The list of mouse device makes.
 	 */
 	ArrayList<String> mouseMakes;
+	/**
+	 * The list of joystick device makes.
+	 */
+	ArrayList<String> gamepadMakes;
 
 	// ============= Constructors ============== //
 	public DriverManager() {
 		devices = new ArrayList<>();
 		keyboardMakes = new ArrayList<>();
 		mouseMakes = new ArrayList<>();
+		gamepadMakes = new ArrayList<>();
 		createDrivers();
 	}
 
@@ -47,6 +52,10 @@ public class DriverManager {
 	 * Returns a list of device makes.
 	 */
 	public ArrayList<String> getMouseMakes() { return mouseMakes; }
+	/**
+	 * Returns a list of joystick makes.
+	 */
+	public ArrayList<String> getGamepadMakes() { return gamepadMakes; }
 	/**
 	 * Returns the list of device model names specified by the make and the type.
 	 *
@@ -98,9 +107,11 @@ public class DriverManager {
 		for (Device device : devices) device = null;
 		for (String keyboardMake : keyboardMakes) keyboardMake = null;
 		for (String mouseMake : mouseMakes) mouseMake = null;
+		for (String gamepadMake : gamepadMakes) gamepadMake = null;
 		devices.clear();
 		keyboardMakes.clear();
 		mouseMakes.clear();
+		gamepadMakes.clear();
 	}
 // ============= Private Methods ============== //
 
@@ -118,6 +129,10 @@ public class DriverManager {
 		} else if (device.getDeviceInformation().getDeviceType() == DeviceType.MOUSE) {
 			if (!mouseMakes.contains(device.getDeviceInformation().getMake())) {
 				mouseMakes.add(device.getDeviceInformation().getMake());
+			}
+		} else if (device.getDeviceInformation().getDeviceType() == DeviceType.GAMEPAD) {
+			if (!gamepadMakes.contains(device.getDeviceInformation().getMake())) {
+				gamepadMakes.add(device.getDeviceInformation().getMake());
 			}
 		}
 	}
@@ -147,5 +162,6 @@ public class DriverManager {
 		addDevice(new com.monkygames.kbmaster.driver.devices.digitus.numpad.Numpad());
 		addDevice(new com.monkygames.kbmaster.driver.devices.generic.mouse.gspy.GSpyUsbGamingMouseRH1900());
 		addDevice(new com.monkygames.kbmaster.driver.devices.logitech.LogitechG502());
+		//addDevice(new com.monkygames.kbmaster.driver.devices.sony.SonyDualShock4());
 	}
 }

@@ -84,8 +84,7 @@ public class ProfileManager {
 	 * @param profile the profile to remove.
 	 */
 	public void removeProfile(Device device, App app, Profile profile) {
-		int index = getRoot(device, app.getAppType()).getList().indexOf(app);
-		getRoot(device, app.getAppType()).getList().get(index).removeProfile(profile);
+		getRootManager(device).removeProfile(app, profile);
 	}
 
 	/**

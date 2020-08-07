@@ -27,6 +27,7 @@ import net.java.games.input.Event;
 import net.java.games.input.Keyboard;
 import net.java.games.input.LinuxEnvironmentPlugin;
 import net.java.games.input.Mouse;
+import net.java.games.input.LinuxCombinedController;
 
 /**
  * Handles initializing and managing hardware.
@@ -40,8 +41,9 @@ public class HardwareEngine implements Runnable{
 	private final Device device;
 	private ArrayList<Keyboard> keyboards;
 	private Mouse mouse;
+	private LinuxCombinedController gamepad;
 	private ArrayList<PollEventQueue> keyboardEventQueues;
-	private PollEventQueue mouseEventQueue;
+	private PollEventQueue mouseEventQueue, gamepadEventQueue;
 	private boolean closing;
 	/**
 	 * Timer for checking hardware status.
@@ -119,12 +121,13 @@ public class HardwareEngine implements Runnable{
 	private boolean hasMouse = true;
 	// ============= Constructors ============== //
 	public HardwareEngine(Device device, HardwareManager hardwareManager){
+		this.device = device;
 		this.hardwareManager = hardwareManager;
 		event = new Event();
 		keyboards = new ArrayList<>();
-		this.keyboardEventQueues = new ArrayList<>();
-		this.mouseEventQueue = null;
-		this.device = device;
+		keyboardEventQueues = new ArrayList<>();
+		mouseEventQueue = null;
+		gamepadEventQueue = null;
 		try { robot = new Robot();}
 		catch (AWTException ex) {
 			Logger.getLogger(HardwareEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -210,6 +213,16 @@ public class HardwareEngine implements Runnable{
 	 */
 	private void pollNormalMode(){
 		while(poll){
+
+			//poll gamepad
+			if (gamepad != null) {
+				if (!gamepad.poll()) {
+					poll = false;
+					pollFail = true;
+					grabHardware(false);
+				}
+			}
+
 			// poll keyboard
 			for(Keyboard keyboard: keyboards){
 				if(!keyboard.poll()) {
@@ -228,7 +241,6 @@ public class HardwareEngine implements Runnable{
 			}
 			// Determines whether to process the output or not
 			if (!isEnabled) continue;
-
 			// handle keyboard events
 			for(PollEventQueue keyboardEventQueue: this.keyboardEventQueues){
 				for(Event event: keyboardEventQueue.getEvents()){
@@ -241,10 +253,18 @@ public class HardwareEngine implements Runnable{
 					if(mapping != null) processOutput(name, mapping.getOutput(), event.getValue());
 
 				}
-
+			}
+			// handle gamepad events
+			if (gamepad != null) {
+				if (gamepadEventQueue == null) continue;
+				for (Event event : gamepadEventQueue.getEvents()) {
+					System.out.println("===== New Event Queue =====");
+					Component component = event.getComponent();
+					System.out.println("component = "+component);
+					String name = component.getIdentifier().getName();
+				}
 			}
 			// handle mouse events
-
 			if(hasMouse){
 				if (mouseEventQueue == null) continue;
 				for(Event event: mouseEventQueue.getEvents()){
@@ -379,8 +399,10 @@ public class HardwareEngine implements Runnable{
 		if (closing) return;
 		boolean found = false;
 		for(Controller controller: controllers){
-			//System.out.println("Controller: "+controller);
-			if (controller.getName().equals(device.getDeviceInformation().getJinputName())) {
+			//System.out.println("Controller: "+controller+" ("+controller.getType()+":"+controller.getComponents().length+")");
+			String controllerName = controller.getName(), jinputName = device.getDeviceInformation().getJinputName();
+			String truncatedName = controllerName.substring(0, controllerName.lastIndexOf(" "));
+			if (controllerName.equals(jinputName) || truncatedName.equals(jinputName))	{
 				found = true;
 				hardwareConnected(controller);
 			}
@@ -397,7 +419,8 @@ public class HardwareEngine implements Runnable{
 		if (!hardwareExist()) return;
 		stopPolling();
 		keyboards.clear();
-		if(hasMouse) mouse = null;
+		mouse = null;
+		gamepad = null;
 		device.setEnabled(false);
 		doesHardwareExist = false;
 		synchronized(hardwareManager) {
@@ -416,7 +439,7 @@ public class HardwareEngine implements Runnable{
 					if (keyboard == controller) return;
 				}
 			}
-			else if (mouse == controller) return;
+			else if (mouse == controller || gamepad == controller) return;
 		}
 		if (type == Controller.Type.KEYBOARD) {
 			Keyboard keyboard;
@@ -437,12 +460,18 @@ public class HardwareEngine implements Runnable{
 			unit_height = 1f/height;
 			mouseEventQueue = new PollEventQueue(mouse.getComponents());
 		}
+		else if (type == Controller.Type.GAMEPAD) {
+			if (controller instanceof LinuxCombinedController) {
+				gamepad = (LinuxCombinedController)controller;
+				gamepadEventQueue = new PollEventQueue(gamepad.getComponents());
+			}
+		}
 		doesHardwareExist = true;
 		synchronized(hardwareManager) {
 			hardwareManager.hardwareStatusChange(hardwareExist(),device.getDeviceInformation().getJinputName());
 		}
 		if (device.isEnabled()) startPolling(device.getProfile());
-		//System.out.println(device.getDeviceInformation().getName()+" connected");
+		//System.out.println(device.getDeviceInformation().getName()+" ("+controller.getType()+") connected");
 	}
 	public void close() {
 		closing = true;
@@ -453,6 +482,7 @@ public class HardwareEngine implements Runnable{
 		for (Keyboard keyboard : keyboards) keyboard = null;
 		keyboards.clear();
 		mouse = null;
+		gamepad = null;
 	}
 
 	// ============= Implemented Methods ============== //
