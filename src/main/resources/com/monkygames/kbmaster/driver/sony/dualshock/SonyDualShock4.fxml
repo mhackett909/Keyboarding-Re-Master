@@ -5,18 +5,23 @@
 
 <AnchorPane id="AnchorPane" prefHeight="472.0" prefWidth="574.0" styleClass="mainFxmlClass" stylesheets="@../../driver.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.monkygames.kbmaster.controller.DriverUIController">
     <children>
-        <ImageView fitHeight="441.0557539555851" fitWidth="536.36865234375" layoutX="19.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="300" fitWidth="420" layoutX="150" layoutY="0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image preserveRatio="false" smooth="false" url="@resources/LogitechG502.png" />
+                <Image preserveRatio="false" smooth="false" url="@resources/DualShock front.png" />
             </image>
         </ImageView>
-        <Button layoutX="180.0" layoutY="250.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="1" />
-        <Button layoutX="80.0" layoutY="230.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="2" />
-        <Button layoutX="170.0" layoutY="165.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="3" />
-        <Button layoutX="145.0" layoutY="205.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="4" />
-        <Button layoutX="215.0" layoutY="148.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="5" />
-        <Button layoutX="450.0" layoutY="180.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="6" />
-        <Button layoutX="390.0" layoutY="225.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="7" />
-
+        <ImageView fitHeight="300" fitWidth="420" layoutX="90" layoutY="220" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image preserveRatio="false" smooth="false" url="@resources/DualShock top.png" />
+            </image>
+        </ImageView>
+        <Button layoutX="198.0" layoutY="88.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="1" />
+        <Button layoutX="183.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="2" />
+        <Button layoutX="198.0" layoutY="121.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="3" />
+        <Button layoutX="214.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="4" />
+        <Button layoutX="387.0" layoutY="83.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="5" />
+        <Button layoutX="365.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="6" />
+        <Button layoutX="387.0" layoutY="127.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="7" />
+        <Button layoutX="409.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="7" />
     </children>
 </AnchorPane>

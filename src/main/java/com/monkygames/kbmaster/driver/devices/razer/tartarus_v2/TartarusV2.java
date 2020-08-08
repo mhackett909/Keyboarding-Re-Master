@@ -80,7 +80,6 @@ public class TartarusV2 extends Device{
 	inputMaps.put(28,new InputMap(28,
 			net.java.games.input.Component.Identifier.Button.MIDDLE.getName(),
 			InputEvent.BUTTON2_DOWN_MASK));
-
     }
 // ============= Public Methods ============== //
 // ============= Protected Methods ============== //
@@ -206,20 +205,20 @@ public class TartarusV2 extends Device{
 // ============= Implemented Methods ============== //
 
     @Override
-    public Keymap generateDefaultKeymap(int id){
-	Keymap keymap = new Keymap(id+1);
-	inputMaps.values().stream().forEach((inputMap) -> {
-	    addButtonMapping(keymap, inputMap);
-	});
-	// wheel
-	net.java.games.input.Component.Identifier.Button jinputB;
-	jinputB = net.java.games.input.Component.Identifier.Button.MIDDLE;
-	keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(28,jinputB.getName()),new OutputMouse(jinputB.getName(), InputEvent.BUTTON2_DOWN_MASK, OutputMouse.MouseType.MouseClick)));
-	keymap.setzUpWheelMapping(new WheelMapping(new Wheel(26),new OutputMouse("Scroll Up",-1, OutputMouse.MouseType.MouseWheel)));
-	keymap.setzDownWheelMapping(new WheelMapping(new Wheel(27),new OutputMouse("Scroll Down",1, OutputMouse.MouseType.MouseWheel)));
+    public Keymap generateDefaultKeymap(int id) {
+		Keymap keymap = new Keymap(id + 1);
+		inputMaps.values().stream().forEach((inputMap) -> {
+			addButtonMapping(keymap, inputMap);
+		});
+		// wheel
+		net.java.games.input.Component.Identifier.Button jinputB;
+		jinputB = net.java.games.input.Component.Identifier.Button.MIDDLE;
+		keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new Button(28, jinputB.getName()), new OutputMouse(jinputB.getName(), InputEvent.BUTTON2_DOWN_MASK, OutputMouse.MouseType.MouseClick)));
+		keymap.setzUpWheelMapping(new WheelMapping(new Wheel(26), new OutputMouse("Scroll Up", -1, OutputMouse.MouseType.MouseWheel)));
+		keymap.setzDownWheelMapping(new WheelMapping(new Wheel(27), new OutputMouse("Scroll Down", 1, OutputMouse.MouseType.MouseWheel)));
 
-	return keymap;
-    }
+		return keymap;
+	}
     @Override
     public ButtonMapping getButtonMapping(int index, Keymap keymap){
 	return keymap.getButtonMapping(getId(index));

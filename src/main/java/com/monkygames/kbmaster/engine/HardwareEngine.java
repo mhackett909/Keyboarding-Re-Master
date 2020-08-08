@@ -219,7 +219,7 @@ public class HardwareEngine implements Runnable{
 				if (!gamepad.poll()) {
 					poll = false;
 					pollFail = true;
-					grabHardware(false);
+					isEnabled = false;
 				}
 			}
 
@@ -260,8 +260,7 @@ public class HardwareEngine implements Runnable{
 				for (Event event : gamepadEventQueue.getEvents()) {
 					System.out.println("===== New Event Queue =====");
 					Component component = event.getComponent();
-					System.out.println("component = "+component);
-					String name = component.getIdentifier().getName();
+					System.out.println(component.getIdentifier() + ": " + component.getPollData());
 				}
 			}
 			// handle mouse events
@@ -274,7 +273,7 @@ public class HardwareEngine implements Runnable{
 					String name = component.getIdentifier().getName();
 					if (profile.getDefaultKeymap() != keymap.getID()-1)
 						keymap = profile.getKeymap(profile.getDefaultKeymap());
-					WheelMapping mapping;
+					WheelMapping mapping; 
 					if(component.getIdentifier() == Axis.X){
 						Point point = MouseInfo.getPointerInfo().getLocation();
 						float rel = component.getPollData();

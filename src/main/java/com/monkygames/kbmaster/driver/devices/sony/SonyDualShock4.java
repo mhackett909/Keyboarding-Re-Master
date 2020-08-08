@@ -33,6 +33,7 @@ public class SonyDualShock4 extends Device {
         Keymap keymap = new Keymap(id+1);
         net.java.games.input.Component.Identifier.Button jinputB;
         jinputB = net.java.games.input.Component.Identifier.Button.LEFT;
+        //Component.Identifier.Axis.POV;
         keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new com.monkygames.kbmaster.input.Button(1,jinputB.getName()),new OutputMouse(jinputB.getName(), InputEvent.BUTTON1_DOWN_MASK, OutputMouse.MouseType.MouseClick)));
         jinputB = net.java.games.input.Component.Identifier.Button.RIGHT;
         keymap.addButtonMapping(jinputB.getName(), new ButtonMapping(new com.monkygames.kbmaster.input.Button(2,jinputB.getName()),new OutputMouse(jinputB.getName(),InputEvent.BUTTON3_DOWN_MASK, OutputMouse.MouseType.MouseClick)));
