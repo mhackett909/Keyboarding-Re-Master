@@ -219,7 +219,8 @@ public class HardwareEngine implements Runnable{
 				if (!gamepad.poll()) {
 					poll = false;
 					pollFail = true;
-					isEnabled = false;
+					//isEnabled = false;
+					grabHardware(false);
 				}
 			}
 
@@ -242,35 +243,104 @@ public class HardwareEngine implements Runnable{
 			// Determines whether to process the output or not
 			if (!isEnabled) continue;
 			// handle keyboard events
+			//TODO concurrent modification keyboardeventqueue
 			for(PollEventQueue keyboardEventQueue: this.keyboardEventQueues){
 				for(Event event: keyboardEventQueue.getEvents()){
 					Component component = event.getComponent();
-					//System.out.println("component = "+component);
 					String name = component.getIdentifier().getName();
+					//System.out.println("===== New Event Queue =====");
+					//System.out.println(component.getIdentifier() + ": " + component.getPollData());
 					if (profile.getDefaultKeymap() != keymap.getID()-1)
 						keymap = profile.getKeymap(profile.getDefaultKeymap());
 					ButtonMapping mapping = keymap.getButtonMapping(name);
 					if(mapping != null) processOutput(name, mapping.getOutput(), event.getValue());
-
 				}
 			}
 			// handle gamepad events
 			if (gamepad != null) {
 				if (gamepadEventQueue == null) continue;
 				for (Event event : gamepadEventQueue.getEvents()) {
-					System.out.println("===== New Event Queue =====");
 					Component component = event.getComponent();
-					System.out.println(component.getIdentifier() + ": " + component.getPollData());
+					String name = component.getIdentifier().getName();
+					//System.out.println("===== New Event Queue =====");
+					//System.out.println(component.getIdentifier() + ": " + component.getPollData());
+					if (component.getIdentifier() == Axis.POV) {
+						float pollData = event.getValue();
+						//Must clear unrelated DPAD key presses for smooth movement
+						ButtonMapping bMapping = keymap.getButtonMapping(name+"UP");
+						if (bMapping != null && pollData != 0.25 && pollData != 0.375 && pollData != 0.125) processOutput(name, bMapping.getOutput(), 0);
+						bMapping = keymap.getButtonMapping(name+"DOWN");
+						if (bMapping != null && pollData != 0.75 && pollData != 0.875 && pollData != 0.625) processOutput(name, bMapping.getOutput(), 0);
+						bMapping = keymap.getButtonMapping(name+"LEFT");
+						if (bMapping != null && pollData != 1.0 && pollData != 0.125 && pollData != 0.875) processOutput(name, bMapping.getOutput(), 0);
+						bMapping = keymap.getButtonMapping(name+"RIGHT");
+						if (bMapping != null && pollData != 0.5 && pollData != 0.375 && pollData != 0.625) processOutput(name, bMapping.getOutput(), 0);
+						if (pollData == 0.25) name+="UP";
+						else if (pollData == 0.75) name+="DOWN";
+						else if (pollData == 1.0) name+="LEFT";
+						else if (pollData == 0.5) name+="RIGHT";
+						else if (pollData == 0.375) {
+							bMapping = keymap.getButtonMapping(name+"UP");
+							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							bMapping = keymap.getButtonMapping(name+"RIGHT");
+							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							continue;
+						}
+						else if (pollData == 0.125) {
+							bMapping = keymap.getButtonMapping(name+"UP");
+							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							bMapping = keymap.getButtonMapping(name+"LEFT");
+							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							continue;
+						}
+						else if (pollData == 0.625) {
+							bMapping = keymap.getButtonMapping(name+"DOWN");
+							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							bMapping = keymap.getButtonMapping(name+"RIGHT");
+							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							continue;
+						}
+						else if (pollData == 0.875) {
+							bMapping = keymap.getButtonMapping(name+"DOWN");
+							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							bMapping = keymap.getButtonMapping(name+"LEFT");
+							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							continue;
+						}
+						else if (pollData == 0.0) continue;
+						bMapping = keymap.getButtonMapping(name);
+						if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+					}
+					else if (component.getIdentifier() == Axis.RX) {
+						JoystickMapping jMapping = keymap.getJoystickMapping(name);
+						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
+					}
+					else if (component.getIdentifier() == Axis.RY) {
+						JoystickMapping jMapping = keymap.getJoystickMapping(name);
+						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
+					}
+					else if (component.getIdentifier() == Axis.X) {
+						JoystickMapping jMapping = keymap.getJoystickMapping(name);
+						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
+					}
+					else if (component.getIdentifier() == Axis.Y) {
+						JoystickMapping jMapping = keymap.getJoystickMapping(name);
+						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
+					}
+					else {
+						ButtonMapping bMapping = keymap.getButtonMapping(name);
+						if (bMapping != null) processOutput(name, bMapping.getOutput(), event.getValue());
+					}
 				}
 			}
 			// handle mouse events
 			if(hasMouse){
 				if (mouseEventQueue == null) continue;
 				for(Event event: mouseEventQueue.getEvents()){
-					//System.out.println("===== New Event Queue =====");
 					Component component = event.getComponent();
-					//System.out.println("component = "+component);
 					String name = component.getIdentifier().getName();
+					//System.out.println("===== New Event Queue =====");
+					//System.out.println(component.getIdentifier() + ": " + component.getPollData());
 					if (profile.getDefaultKeymap() != keymap.getID()-1)
 						keymap = profile.getKeymap(profile.getDefaultKeymap());
 					WheelMapping mapping; 
@@ -379,6 +449,9 @@ public class HardwareEngine implements Runnable{
 					}
 				}
 			}
+		}
+		else if (output instanceof OutputJoystick) {
+			System.out.println("Process OutputJoystick: "+output.getName());
 		}
 		// don't do anything if output instanceof OutputDisabled
 	}

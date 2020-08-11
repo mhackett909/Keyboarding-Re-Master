@@ -14,26 +14,19 @@ import net.java.games.input.Component.Identifier.Axis;
  */
 public class Wheel extends Hardware{
 
-// ============= Class variables ============== //
 // ============= Constructors ============== //
-    public Wheel(int id){
-	super(id,"");
-	switch (id) {
-        case 1:
-        case 2:
-            inputString = Axis.Z.getName();
-            break;
-   //     case 3:
-       //     inputString = Axis.SLIDER.getName();
-      //      break;
-        default:
-            inputString = net.java.games.input.Component.Identifier.Button.MIDDLE.getName();
+    public Wheel(int id) {
+        super(id, "");
+        switch (id) {
+            case 1:
+            case 2:
+                inputString = Axis.Z.getName();
+                break;
+            default:
+                inputString = net.java.games.input.Component.Identifier.Button.MIDDLE.getName();
+        }
     }
-    }
-// ============= Public Methods ============== //
-// ============= Protected Methods ============== //
-// ============= Private Methods ============== //
-// ============= Implemented Methods ============== //
+
 // ============= Extended Methods ============== //
     @Override
     public Object clone(){
@@ -43,15 +36,4 @@ public class Wheel extends Hardware{
     public String toString(){
 	return "Wheel["+id+","+inputString+"]";
     }
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
-
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

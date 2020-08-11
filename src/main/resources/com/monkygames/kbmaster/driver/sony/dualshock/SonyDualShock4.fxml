@@ -15,13 +15,24 @@
                 <Image preserveRatio="false" smooth="false" url="@resources/DualShock top.png" />
             </image>
         </ImageView>
-        <Button layoutX="198.0" layoutY="88.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="1" />
-        <Button layoutX="183.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="2" />
-        <Button layoutX="198.0" layoutY="121.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="3" />
-        <Button layoutX="214.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="4" />
-        <Button layoutX="387.0" layoutY="83.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="5" />
-        <Button layoutX="365.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="6" />
-        <Button layoutX="387.0" layoutY="127.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="7" />
-        <Button layoutX="409.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="7" />
+        <Button layoutX="387.0" layoutY="83.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="1" />
+        <Button layoutX="365.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="2" />
+        <Button layoutX="387.0" layoutY="127.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="3" />
+        <Button layoutX="409.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="4" />
+        <Button layoutX="198.0" layoutY="88.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="5" />
+        <Button layoutX="198.0" layoutY="121.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="6" />
+        <Button layoutX="183.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="7" />
+        <Button layoutX="214.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="8" />
+        <Button layoutX="242.0" layoutY="265.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleJoystickAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="9" />
+        <Button layoutX="308.0" layoutY="270.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleJoystickAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="10" />
+        <Button layoutX="301.0" layoutY="342.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="11" />
+        <Button layoutX="171.0" layoutY="326.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="12" />
+        <Button layoutX="302.0" layoutY="370.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="13" />
+        <Button layoutX="176.0" layoutY="353.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="14" />
+        <Button layoutX="244.0" layoutY="145.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="15" />
+        <Button layoutX="341.0" layoutY="145.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="16" />
+        <Button layoutX="355.0" layoutY="75.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="17" />
+        <Button layoutX="293.5" layoutY="147.5" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="18" />
+        <Button layoutX="230.0" layoutY="75.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="19" />
     </children>
 </AnchorPane>

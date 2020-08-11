@@ -19,9 +19,9 @@ public class Hardware{
      */
     protected String inputString;
 // ============= Constructors ============== //
-    public Hardware(int id, String inputString){
-	this.id = id;
-	this.inputString = inputString;
+    public Hardware(int id, String inputString) {
+        this.id = id;
+        this.inputString = inputString;
     }
 // ============= Public Methods ============== //
     /**
@@ -39,9 +39,7 @@ public class Hardware{
     public boolean isHardware(String identifier){
 	return inputString.equals(identifier);
     }
-// ============= Protected Methods ============== //
-// ============= Private Methods ============== //
-// ============= Implemented Methods ============== //
+
 // ============= Extended Methods ============== //
     @Override
     public Object clone(){
@@ -51,15 +49,6 @@ public class Hardware{
     public String toString(){
 	return "Hardware["+id+","+inputString+"]";
     }
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
+
 
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */

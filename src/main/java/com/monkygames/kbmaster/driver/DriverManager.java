@@ -162,6 +162,6 @@ public class DriverManager {
 		addDevice(new com.monkygames.kbmaster.driver.devices.digitus.numpad.Numpad());
 		addDevice(new com.monkygames.kbmaster.driver.devices.generic.mouse.gspy.GSpyUsbGamingMouseRH1900());
 		addDevice(new com.monkygames.kbmaster.driver.devices.logitech.LogitechG502());
-		//addDevice(new com.monkygames.kbmaster.driver.devices.sony.SonyDualShock4());
+		addDevice(new com.monkygames.kbmaster.driver.devices.sony.SonyDualShock4());
 	}
 }

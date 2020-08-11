@@ -237,25 +237,14 @@ public class TartarusV2 extends Device{
 // ============= Extended Methods ============== //
     @Override
     public Rectangle getBindingOutputAndDescriptionLocation(Mapping mapping) {
-	Rectangle rect = new Rectangle();
-	int[] pos = getBindingPosition(mapping.getInputHardware().getID());
-	rect.x = pos[0];
-	rect.y = pos[1];
-	rect.width = pos[0] - 8;
-	rect.height = pos[1] + 15;
+		Rectangle rect = new Rectangle();
+		int[] pos = getBindingPosition(mapping.getInputHardware().getID());
+		rect.x = pos[0];
+		rect.y = pos[1];
+		rect.width = pos[0] - 8;
+		rect.height = pos[1] + 15;
 
-	return rect;
-    }
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
-
-
+		return rect;
+	}
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */
+

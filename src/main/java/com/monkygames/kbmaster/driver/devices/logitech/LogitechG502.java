@@ -81,8 +81,6 @@ public class LogitechG502 extends Device {
                 return net.java.games.input.Component.Identifier.Button.SIDE.getName();
             case 7:
                 return net.java.games.input.Component.Identifier.Button.EXTRA.getName();
-
-
         }
         return net.java.games.input.Component.Identifier.Button.LEFT.getName();
     }

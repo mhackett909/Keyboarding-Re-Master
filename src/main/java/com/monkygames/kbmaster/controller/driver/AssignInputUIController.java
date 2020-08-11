@@ -122,51 +122,49 @@ public class AssignInputUIController extends PopupController implements ChangeLi
      * @param buttonID the unique id of the button to be configured.
      * @return true if its a success and false otherwise.
      */
-    public boolean setAssignedConfig(int buttonID){
-	// pop a message asking to create a profile
-	if(device.getProfile() == null){
-	    PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
-	    return false;
+    public boolean setAssignedConfig(int buttonID) {
+		// pop a message asking to create a profile
+		if (device.getProfile() == null) {
+			PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
+			return false;
+		}
+		
+		currentMapping = device.getMapping(buttonID, keymap);
+		currentOutput = currentMapping.getOutput();
+		if (currentParent != null)
+			settingsPane.getChildren().remove(currentParent);
+		int selectionID = 0;
+		// update the configurations
+		if (currentOutput instanceof OutputKey) {
+			currentParent = singleKeyParent;
+			singleKeyController.setConfiguredOutput(currentOutput);
+			singleKeyController.setEnabled(true);
+			selectionID = 0;
+		} else if (currentOutput instanceof OutputMouse) {
+			currentParent = mouseButtonParent;
+			mouseButtonController.setSelectedMouse(currentOutput.getKeycode());
+			selectionID = 1;
+		} else if (currentOutput instanceof OutputKeymapSwitch) {
+			currentParent = keymapParent;
+			OutputKeymapSwitch keymapSwitch = (OutputKeymapSwitch) currentOutput;
+			// note, we subtract one from the keycode since the range is valid from 1 - 8 inclusive.
+			keymapController.setConfiguredOutput(keymapSwitch.getKeycode() - 1, keymapSwitch.isIsSwitchOnRelease());
+			selectionID = 2;
+		} else if (currentOutput instanceof OutputDisabled) {
+			currentParent = disabledParent;
+			selectionID = 3;
+		}
+		if (currentParent != null) {
+			settingsPane.getChildren().add(currentParent);
+			mappingCB.valueProperty().removeListener(this);
+			mappingCB.getSelectionModel().select(selectionID);
+			mappingCB.valueProperty().addListener(this);
+			resetUI(selectionID);
+		}
+		// update the description
+		descriptionTF.setText(currentOutput.getDescription());
+		return true;
 	}
-	currentMapping = device.getMapping(buttonID, keymap);
-	currentOutput = currentMapping.getOutput();
-
-	if(currentParent != null){
-	    settingsPane.getChildren().remove(currentParent);
-	}
-
-	int selectionID = 0;
-	// update the configurations
-	if(currentOutput instanceof OutputKey){
-	    currentParent = singleKeyParent;
-	    singleKeyController.setConfiguredOutput(currentOutput);
-	    singleKeyController.setEnabled(true);
-	    selectionID = 0;
-	}else if(currentOutput instanceof OutputMouse){
-	    currentParent = mouseButtonParent;
-	    mouseButtonController.setSelectedMouse(currentOutput.getKeycode());
-	    selectionID = 1;
-	}else if(currentOutput instanceof OutputKeymapSwitch){
-	    currentParent = keymapParent;
-	    OutputKeymapSwitch keymapSwitch = (OutputKeymapSwitch)currentOutput;
-	    // note, we subtract one from the keycode since the range is valid from 1 - 8 inclusive.
-	    keymapController.setConfiguredOutput(keymapSwitch.getKeycode()-1,keymapSwitch.isIsSwitchOnRelease());
-	    selectionID = 2;
-	}else if(currentOutput instanceof OutputDisabled){
-	    currentParent = disabledParent;
-	    selectionID = 3;
-	}
-	if(currentParent != null){
-	    settingsPane.getChildren().add(currentParent);
-	    mappingCB.valueProperty().removeListener(this);
-	    mappingCB.getSelectionModel().select(selectionID);
-	    mappingCB.valueProperty().addListener(this);
-	    resetUI(selectionID);
-	}
-	// update the description
-	descriptionTF.setText(currentOutput.getDescription());
-	return true;
-    }
 // ============= Protected Methods ============== //
 // ============= Private Methods ============== //
     private void reset(){

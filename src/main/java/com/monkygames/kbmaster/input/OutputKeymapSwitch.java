@@ -22,11 +22,11 @@ public class OutputKeymapSwitch extends Output{
     private String originalName;
 
 // ============= Constructors ============== //
-    public OutputKeymapSwitch(String name, int keycode, boolean isSwitchOnRelease){
-	super(name,keycode,0);
-	this.isSwitchOnRelease = isSwitchOnRelease;
-	this.originalName = new String(name);
-	updateName();
+    public OutputKeymapSwitch(String name, int keycode, boolean isSwitchOnRelease) {
+        super(name, keycode, 0);
+        this.isSwitchOnRelease = isSwitchOnRelease;
+        this.originalName = new String(name);
+        updateName();
     }
 // ============= Public Methods ============== //
     public boolean isIsSwitchOnRelease() {
@@ -34,34 +34,24 @@ public class OutputKeymapSwitch extends Output{
     }
 
     public void setIsSwitchOnRelease(boolean isSwitchOnRelease) {
-	this.isSwitchOnRelease = isSwitchOnRelease;
-	updateName();
+        this.isSwitchOnRelease = isSwitchOnRelease;
+        updateName();
     }
-// ============= Protected Methods ============== //
+
 // ============= Private Methods ============== //
-    private void updateName(){
-	if(isSwitchOnRelease){
-	    name = originalName+" (while held)";
-	}else{
-	    name = originalName;
-	}
+    private void updateName() {
+        if (isSwitchOnRelease) {
+            name = originalName + " (while held)";
+        } else {
+            name = originalName;
+        }
     }
-// ============= Implemented Methods ============== //
+
 // ============= Extended Methods ============== //
     @Override
-    public Object clone(){
-	OutputKeymapSwitch output = new OutputKeymapSwitch(name,keycode,isSwitchOnRelease);
-	output.setDescription(getDescription());
-	return output;
+    public Object clone() {
+        OutputKeymapSwitch output = new OutputKeymapSwitch(name, keycode, isSwitchOnRelease);
+        output.setDescription(getDescription());
+        return output;
     }
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */
