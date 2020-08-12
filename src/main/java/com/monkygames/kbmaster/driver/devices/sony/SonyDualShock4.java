@@ -25,7 +25,60 @@ public class SonyDualShock4 extends Device {
     }
     @Override
     public Rectangle getBindingOutputAndDescriptionLocation(Mapping mapping) {
-       return null;
+        Rectangle rect = new Rectangle();
+        switch(mapping.getInputHardware().getID()){
+            // left
+            case 1:
+                rect.x = 188;
+                rect.y = 119;
+                rect.width = 174;
+                rect.height = 134;
+                break;
+            // right
+            case 2:
+                rect.x = 278;
+                rect.y = 119;
+                rect.width = 290;
+                rect.height = 134;
+                break;
+            // zmid
+            case 3:
+                rect.x = 83;
+                rect.y = 134;
+                rect.width = 83;
+                rect.height = 153;
+                break;
+            // zup
+            case 4:
+                rect.x = 83;
+                rect.y = 76;
+                rect.width = 83;
+                rect.height = 95;
+                break;
+            // zdwn
+            case 5:
+                rect.x = 83;
+                rect.y = 187;
+                rect.width = 83;
+                rect.height = 206;
+                break;
+            // side
+            case 6:
+                rect.x = 507;
+                rect.y = 330;
+                rect.width = 491;
+                rect.height = 345;
+                break;
+            // extra
+            case 7:
+                rect.x = 460;
+                rect.y = 374;
+                rect.width = 445;
+                rect.height = 389;
+                break;
+        }
+        return rect;
+        
     }
 
     @Override

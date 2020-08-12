@@ -212,8 +212,8 @@ public class HardwareEngine implements Runnable{
 	 * Poll the hardware and generate system key calls.
 	 */
 	private void pollNormalMode(){
+		float lastPoll = 0.0f;
 		while(poll){
-
 			//poll gamepad
 			if (gamepad != null) {
 				if (!gamepad.poll()) {
@@ -243,7 +243,6 @@ public class HardwareEngine implements Runnable{
 			// Determines whether to process the output or not
 			if (!isEnabled) continue;
 			// handle keyboard events
-			//TODO concurrent modification keyboardeventqueue
 			for(PollEventQueue keyboardEventQueue: this.keyboardEventQueues){
 				for(Event event: keyboardEventQueue.getEvents()){
 					Component component = event.getComponent();
@@ -281,35 +280,43 @@ public class HardwareEngine implements Runnable{
 						else if (pollData == 0.5) name+="RIGHT";
 						else if (pollData == 0.375) {
 							bMapping = keymap.getButtonMapping(name+"UP");
-							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null && lastPoll != 0.25) processOutput(name, bMapping.getOutput(), 1);
 							bMapping = keymap.getButtonMapping(name+"RIGHT");
-							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null && lastPoll != 0.5) processOutput(name, bMapping.getOutput(), 1);
+							lastPoll = pollData;
 							continue;
 						}
 						else if (pollData == 0.125) {
 							bMapping = keymap.getButtonMapping(name+"UP");
-							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null && lastPoll != 0.25) processOutput(name, bMapping.getOutput(), 1);
 							bMapping = keymap.getButtonMapping(name+"LEFT");
-							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null && lastPoll != 1.0) processOutput(name, bMapping.getOutput(), 1);
+							lastPoll = pollData;
 							continue;
 						}
 						else if (pollData == 0.625) {
 							bMapping = keymap.getButtonMapping(name+"DOWN");
-							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null  && lastPoll != 0.75) processOutput(name, bMapping.getOutput(), 1);
 							bMapping = keymap.getButtonMapping(name+"RIGHT");
-							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null && lastPoll != 0.5) processOutput(name, bMapping.getOutput(), 1);
+							lastPoll = pollData;
 							continue;
 						}
 						else if (pollData == 0.875) {
 							bMapping = keymap.getButtonMapping(name+"DOWN");
-							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null  && lastPoll != 0.75) processOutput(name, bMapping.getOutput(), 1);
 							bMapping = keymap.getButtonMapping(name+"LEFT");
-							if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null  && lastPoll != 1.0) processOutput(name, bMapping.getOutput(), 1);
+							lastPoll = pollData;
 							continue;
 						}
-						else if (pollData == 0.0) continue;
+						else if (pollData == 0.0) {
+							lastPoll = pollData;
+							continue;
+						}
 						bMapping = keymap.getButtonMapping(name);
 						if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
+						lastPoll = pollData;
 					}
 					else if (component.getIdentifier() == Axis.RX) {
 						JoystickMapping jMapping = keymap.getJoystickMapping(name);
@@ -404,8 +411,7 @@ public class HardwareEngine implements Runnable{
 					robot.keyPress(output.getModifier());
 				robot.keyPress(output.getKeycode());
 			}else if(eventValue == 0){
-				// note, don't do anything if
-				// the value is 2 (which means repeat)
+				// note, don't do anything if the value is 2 (which means repeat)
 				robot.keyRelease(output.getKeycode());
 				// release the modifier after the key has been released
 				if(output.getModifier() != 0)
