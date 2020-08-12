@@ -20,6 +20,7 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.scene.input.KeyCode;
 import net.java.games.input.Component;
 import net.java.games.input.Component.Identifier.Axis;
 import net.java.games.input.Controller;
@@ -42,9 +43,12 @@ public class HardwareEngine implements Runnable{
 	private ArrayList<Keyboard> keyboards;
 	private Mouse mouse;
 	private LinuxCombinedController gamepad;
+	private JoystickInfo joystickInfo;
 	private ArrayList<PollEventQueue> keyboardEventQueues;
 	private PollEventQueue mouseEventQueue, gamepadEventQueue;
 	private boolean closing;
+
+
 	/**
 	 * Timer for checking hardware status.
 	 */
@@ -212,7 +216,6 @@ public class HardwareEngine implements Runnable{
 	 * Poll the hardware and generate system key calls.
 	 */
 	private void pollNormalMode(){
-		float lastPoll = 0.0f;
 		while(poll){
 			//poll gamepad
 			if (gamepad != null) {
@@ -265,74 +268,82 @@ public class HardwareEngine implements Runnable{
 					//System.out.println(component.getIdentifier() + ": " + component.getPollData());
 					if (component.getIdentifier() == Axis.POV) {
 						float pollData = event.getValue();
-						//Must clear unrelated DPAD key presses for smooth movement
+						//Must call key release on unrelated DPad buttons and prevent new key press on already pressed keys
 						ButtonMapping bMapping = keymap.getButtonMapping(name+"UP");
-						if (bMapping != null && pollData != 0.25 && pollData != 0.375 && pollData != 0.125) processOutput(name, bMapping.getOutput(), 0);
+						if (bMapping != null && pollData != JoystickInfo.DPAD_UP && pollData != JoystickInfo.DPAD_UP_RIGHT && pollData != JoystickInfo.DPAD_UP_LEFT)
+							processOutput(name, bMapping.getOutput(), 0);
 						bMapping = keymap.getButtonMapping(name+"DOWN");
-						if (bMapping != null && pollData != 0.75 && pollData != 0.875 && pollData != 0.625) processOutput(name, bMapping.getOutput(), 0);
+						if (bMapping != null && pollData != JoystickInfo.DPAD_DOWN && pollData != JoystickInfo.DPAD_DOWN_LEFT && pollData != JoystickInfo.DPAD_DOWN_RIGHT)
+							processOutput(name, bMapping.getOutput(), 0);
 						bMapping = keymap.getButtonMapping(name+"LEFT");
-						if (bMapping != null && pollData != 1.0 && pollData != 0.125 && pollData != 0.875) processOutput(name, bMapping.getOutput(), 0);
+						if (bMapping != null && pollData != JoystickInfo.DPAD_LEFT && pollData != JoystickInfo.DPAD_UP_LEFT && pollData != JoystickInfo.DPAD_DOWN_LEFT)
+							processOutput(name, bMapping.getOutput(), 0);
 						bMapping = keymap.getButtonMapping(name+"RIGHT");
-						if (bMapping != null && pollData != 0.5 && pollData != 0.375 && pollData != 0.625) processOutput(name, bMapping.getOutput(), 0);
-						if (pollData == 0.25) name+="UP";
-						else if (pollData == 0.75) name+="DOWN";
-						else if (pollData == 1.0) name+="LEFT";
-						else if (pollData == 0.5) name+="RIGHT";
-						else if (pollData == 0.375) {
+						if (bMapping != null && pollData != JoystickInfo.DPAD_RIGHT && pollData != JoystickInfo.DPAD_UP_RIGHT && pollData != JoystickInfo.DPAD_DOWN_RIGHT)
+							processOutput(name, bMapping.getOutput(), 0);
+						if (pollData == JoystickInfo.DPAD_UP) name+="UP";
+						else if (pollData == JoystickInfo.DPAD_DOWN) name+="DOWN";
+						else if (pollData == JoystickInfo.DPAD_LEFT) name+="LEFT";
+						else if (pollData == JoystickInfo.DPAD_RIGHT) name+="RIGHT";
+						else if (pollData == JoystickInfo.DPAD_UP_RIGHT) {
 							bMapping = keymap.getButtonMapping(name+"UP");
-							if (bMapping != null && lastPoll != 0.25) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null && joystickInfo.getLastPOV() != JoystickInfo.DPAD_UP) processOutput(name, bMapping.getOutput(), 1);
 							bMapping = keymap.getButtonMapping(name+"RIGHT");
-							if (bMapping != null && lastPoll != 0.5) processOutput(name, bMapping.getOutput(), 1);
-							lastPoll = pollData;
+							if (bMapping != null && joystickInfo.getLastPOV() != JoystickInfo.DPAD_RIGHT) processOutput(name, bMapping.getOutput(), 1);
+							joystickInfo.setLastPOV(pollData);
 							continue;
 						}
-						else if (pollData == 0.125) {
+						else if (pollData == JoystickInfo.DPAD_UP_LEFT) {
 							bMapping = keymap.getButtonMapping(name+"UP");
-							if (bMapping != null && lastPoll != 0.25) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null && joystickInfo.getLastPOV() != JoystickInfo.DPAD_UP) processOutput(name, bMapping.getOutput(), 1);
 							bMapping = keymap.getButtonMapping(name+"LEFT");
-							if (bMapping != null && lastPoll != 1.0) processOutput(name, bMapping.getOutput(), 1);
-							lastPoll = pollData;
+							if (bMapping != null && joystickInfo.getLastPOV() != JoystickInfo.DPAD_LEFT) processOutput(name, bMapping.getOutput(), 1);
+							joystickInfo.setLastPOV(pollData);
 							continue;
 						}
-						else if (pollData == 0.625) {
+						else if (pollData == JoystickInfo.DPAD_DOWN_RIGHT) {
 							bMapping = keymap.getButtonMapping(name+"DOWN");
-							if (bMapping != null  && lastPoll != 0.75) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null  && joystickInfo.getLastPOV() != JoystickInfo.DPAD_DOWN) processOutput(name, bMapping.getOutput(), 1);
 							bMapping = keymap.getButtonMapping(name+"RIGHT");
-							if (bMapping != null && lastPoll != 0.5) processOutput(name, bMapping.getOutput(), 1);
-							lastPoll = pollData;
+							if (bMapping != null && joystickInfo.getLastPOV() != JoystickInfo.DPAD_RIGHT) processOutput(name, bMapping.getOutput(), 1);
+							joystickInfo.setLastPOV(pollData);
 							continue;
 						}
-						else if (pollData == 0.875) {
+						else if (pollData == JoystickInfo.DPAD_DOWN_LEFT) {
 							bMapping = keymap.getButtonMapping(name+"DOWN");
-							if (bMapping != null  && lastPoll != 0.75) processOutput(name, bMapping.getOutput(), 1);
+							if (bMapping != null  && joystickInfo.getLastPOV() != JoystickInfo.DPAD_DOWN) processOutput(name, bMapping.getOutput(), 1);
 							bMapping = keymap.getButtonMapping(name+"LEFT");
-							if (bMapping != null  && lastPoll != 1.0) processOutput(name, bMapping.getOutput(), 1);
-							lastPoll = pollData;
+							if (bMapping != null  && joystickInfo.getLastPOV() != JoystickInfo.DPAD_LEFT) processOutput(name, bMapping.getOutput(), 1);
+							joystickInfo.setLastPOV(pollData);
 							continue;
 						}
-						else if (pollData == 0.0) {
-							lastPoll = pollData;
+						else if (pollData == JoystickInfo.RESET) {
+							joystickInfo.setLastPOV(pollData);
 							continue;
 						}
 						bMapping = keymap.getButtonMapping(name);
 						if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
-						lastPoll = pollData;
+						joystickInfo.setLastPOV(pollData);
 					}
 					else if (component.getIdentifier() == Axis.RX) {
 						JoystickMapping jMapping = keymap.getJoystickMapping(name);
 						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
+						joystickInfo.setLastRX(event.getValue());
 					}
 					else if (component.getIdentifier() == Axis.RY) {
 						JoystickMapping jMapping = keymap.getJoystickMapping(name);
 						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
+						joystickInfo.setLastRY(event.getValue());
 					}
 					else if (component.getIdentifier() == Axis.X) {
 						JoystickMapping jMapping = keymap.getJoystickMapping(name);
 						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
+						joystickInfo.setLastX(event.getValue());
 					}
 					else if (component.getIdentifier() == Axis.Y) {
 						JoystickMapping jMapping = keymap.getJoystickMapping(name);
 						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
+						joystickInfo.setLastY(event.getValue());
 					}
 					else {
 						ButtonMapping bMapping = keymap.getButtonMapping(name);
@@ -457,7 +468,167 @@ public class HardwareEngine implements Runnable{
 			}
 		}
 		else if (output instanceof OutputJoystick) {
-			System.out.println("Process OutputJoystick: "+output.getName());
+			OutputJoystick outputJ = (OutputJoystick) output;
+			if (outputJ.getJoystickType() == OutputJoystick.JoystickType.DPAD) {
+				float angle = 0;
+				if (output.getName().equals("X"))
+					angle = joystickInfo.findAngle(eventValue,joystickInfo.getLastY());
+				else if (output.getName().equals("Y"))
+					angle = joystickInfo.findAngle(joystickInfo.getLastX(),eventValue);
+				else if (output.getName().equals("RX"))
+					angle = joystickInfo.findAngle(eventValue,joystickInfo.getLastRY());
+				else if (output.getName().equals("RY"))
+					angle = joystickInfo.findAngle(joystickInfo.getLastRX(),eventValue);
+				int keycode = 0;
+				if ((angle > 0 && angle < JoystickInfo.ACUTE_ANGLE) || (angle > 337.5 && angle <=JoystickInfo.COMPLETE_ANGLE)) {
+					switch (joystickInfo.getLastPress()) {
+						case RIGHT:
+							return;
+						case UP_RIGHT:
+							robot.keyRelease(outputJ.getKeycode("UP",outputJ.getKeycode()));
+							joystickInfo.setLastPress(JoystickInfo.LastPress.RIGHT);
+							return;
+						case DOWN_RIGHT:
+							robot.keyRelease(outputJ.getKeycode("DOWN",outputJ.getKeycode()));
+							joystickInfo.setLastPress(JoystickInfo.LastPress.RIGHT);
+							return;
+						default:
+							keycode = outputJ.getKeycode("RIGHT", output.getKeycode());
+					}
+				}else if (angle >= 157.5 && angle < 202.5) {
+					switch (joystickInfo.getLastPress()) {
+						case LEFT:
+							return;
+						case UP_LEFT:
+							robot.keyRelease(outputJ.getKeycode("UP",outputJ.getKeycode()));
+							joystickInfo.setLastPress(JoystickInfo.LastPress.LEFT);
+							return;
+						case DOWN_LEFT:
+							robot.keyRelease(outputJ.getKeycode("DOWN",outputJ.getKeycode()));
+							joystickInfo.setLastPress(JoystickInfo.LastPress.LEFT);
+							return;
+						default:
+							keycode = outputJ.getKeycode("LEFT", output.getKeycode());
+					}
+				}else if (angle >= 67.5 && angle < 112.5) {
+					switch (joystickInfo.getLastPress()) {
+						case UP:
+							return;
+						case UP_RIGHT:
+							robot.keyRelease(outputJ.getKeycode("RIGHT",outputJ.getKeycode()));
+							joystickInfo.setLastPress(JoystickInfo.LastPress.UP);
+							return;
+						case UP_LEFT:
+							robot.keyRelease(outputJ.getKeycode("LEFT",outputJ.getKeycode()));
+							joystickInfo.setLastPress(JoystickInfo.LastPress.UP);
+							return;
+						default:
+							keycode = outputJ.getKeycode("UP", output.getKeycode());
+					}
+				}else if (angle >= 247.5 && angle < 292.5) {
+					switch (joystickInfo.getLastPress()) {
+						case DOWN:
+							return;
+						case DOWN_RIGHT:
+							robot.keyRelease(outputJ.getKeycode("RIGHT",outputJ.getKeycode()));
+							joystickInfo.setLastPress(JoystickInfo.LastPress.DOWN);
+							return;
+						case DOWN_LEFT:
+							robot.keyRelease(outputJ.getKeycode("LEFT",outputJ.getKeycode()));
+							joystickInfo.setLastPress(JoystickInfo.LastPress.DOWN);
+							return;
+						default:
+							keycode = outputJ.getKeycode("DOWN", output.getKeycode());
+					}
+				}else if (angle >= JoystickInfo.ACUTE_ANGLE && angle < 67.5) {
+					switch (joystickInfo.getLastPress()) {
+						case UP_RIGHT:
+							return;
+						case UP:
+							robot.keyPress(outputJ.getKeycode("RIGHT", output.getKeycode()));
+							break;
+						case RIGHT:
+							robot.keyPress(outputJ.getKeycode("UP", output.getKeycode()));
+							break;
+						default:
+							robot.keyPress(outputJ.getKeycode("RIGHT", output.getKeycode()));
+							robot.keyPress(outputJ.getKeycode("UP", output.getKeycode()));
+					}
+					joystickInfo.setLastPress(JoystickInfo.LastPress.UP_RIGHT);
+					return;
+				}else if (angle >= 112.5 && angle < 157.5) {
+					switch (joystickInfo.getLastPress()) {
+						case UP_LEFT:
+							return;
+						case UP:
+							robot.keyPress(outputJ.getKeycode("LEFT", output.getKeycode()));
+							break;
+						case LEFT:
+							robot.keyPress(outputJ.getKeycode("UP", output.getKeycode()));
+							break;
+						default:
+							robot.keyPress(outputJ.getKeycode("LEFT", output.getKeycode()));
+							robot.keyPress(outputJ.getKeycode("UP", output.getKeycode()));
+					}
+					joystickInfo.setLastPress(JoystickInfo.LastPress.UP_LEFT);
+					return;
+				}else if (angle >= 202.5 && angle < 247.5) {
+					switch (joystickInfo.getLastPress()) {
+						case DOWN_LEFT:
+							return;
+						case DOWN:
+							robot.keyPress(outputJ.getKeycode("LEFT", output.getKeycode()));
+							break;
+						case LEFT:
+							robot.keyPress(outputJ.getKeycode("DOWN", output.getKeycode()));
+							break;
+						default:
+							robot.keyPress(outputJ.getKeycode("LEFT", output.getKeycode()));
+							robot.keyPress(outputJ.getKeycode("DOWN", output.getKeycode()));
+					}
+					joystickInfo.setLastPress(JoystickInfo.LastPress.DOWN_LEFT);
+					return;
+				}else if (angle >= 292.5 && angle < 337.5) {
+					switch (joystickInfo.getLastPress()) {
+						case DOWN_RIGHT:
+							return;
+						case DOWN:
+							robot.keyPress(outputJ.getKeycode("RIGHT", output.getKeycode()));
+							break;
+						case RIGHT:
+							robot.keyPress(outputJ.getKeycode("DOWN", output.getKeycode()));
+							break;
+						default:
+							robot.keyPress(outputJ.getKeycode("RIGHT", output.getKeycode()));
+							robot.keyPress(outputJ.getKeycode("DOWN", output.getKeycode()));
+					}
+					joystickInfo.setLastPress(JoystickInfo.LastPress.DOWN_RIGHT);
+					return;
+				}else {
+					robot.keyRelease(outputJ.getKeycode("RIGHT",outputJ.getKeycode()));
+					robot.keyRelease(outputJ.getKeycode("LEFT",outputJ.getKeycode()));
+					robot.keyRelease(outputJ.getKeycode("DOWN",outputJ.getKeycode()));
+					robot.keyRelease(outputJ.getKeycode("UP",outputJ.getKeycode()));
+				}
+				if (keycode != 0) {
+					robot.keyPress(keycode);
+					if (keycode == KeyCode.UP.getCode() || keycode == KeyCode.W.getCode())
+						joystickInfo.setLastPress(JoystickInfo.LastPress.UP);
+					else if (keycode == KeyCode.DOWN.getCode() || keycode == KeyCode.S.getCode())
+						joystickInfo.setLastPress(JoystickInfo.LastPress.DOWN);
+					else if (keycode == KeyCode.LEFT.getCode() || keycode == KeyCode.A.getCode())
+						joystickInfo.setLastPress(JoystickInfo.LastPress.LEFT);
+					else if (keycode == KeyCode.RIGHT.getCode() || keycode == KeyCode.D.getCode())
+						joystickInfo.setLastPress(JoystickInfo.LastPress.RIGHT);
+				}else joystickInfo.setLastPress(JoystickInfo.LastPress.NONE);
+			}
+			else if (((OutputJoystick) output).getJoystickType() == OutputJoystick.JoystickType.MOUSE) {
+				if (output.getName().equals("X") || output.getName().equals("Y")) {
+					System.out.println("("+joystickInfo.getLastX()+", "+joystickInfo.getLastY()+")");
+				}else if (output.getName().equals("RX") || output.getName().equals("RY")) {
+					System.out.println("("+joystickInfo.getLastRX()+", "+joystickInfo.getLastRY()+")");
+				}
+			}
 		}
 		// don't do anything if output instanceof OutputDisabled
 	}
@@ -542,6 +713,7 @@ public class HardwareEngine implements Runnable{
 			if (controller instanceof LinuxCombinedController) {
 				gamepad = (LinuxCombinedController)controller;
 				gamepadEventQueue = new PollEventQueue(gamepad.getComponents());
+				joystickInfo = new JoystickInfo();
 			}
 		}
 		doesHardwareExist = true;

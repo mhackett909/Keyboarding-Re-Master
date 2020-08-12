@@ -39,90 +39,97 @@ import javafx.stage.Stage;
  * Handles the cloning feature.
  * @version 1.0
  */
-public class AssignInputUIController extends PopupController implements ChangeListener<String>{
-// ============= Class variables ============== //
-    @FXML
-    private ComboBox mappingCB;
-    @FXML
-    private TextField descriptionTF;
-    @FXML
-    private Pane settingsPane;
-    private Device device;
-    private SingleKeyController singleKeyController;
-    private MouseButtonController mouseButtonController;
-    private KeymapController keymapController;
-    private Parent singleKeyParent, mouseButtonParent, keymapParent, disabledParent;
-    private Parent currentParent;
-    /**
-     * The selected keymap.
-     */
-    private Keymap keymap;
-    /**
-     * The current button mapping for the selected index.
-     */
-    private Output currentOutput;
-    /**
-     * The current mapping that is being configured;
-     */
-    private Mapping currentMapping;
-    private static final String SINGLE_KEY = "Single Key";
-    private static final String MOUSE_BUTTON = "Mouse Button";
-    private static final String KEYMAP = "Keymap";
-    private static final String DISABLED = "Disabled";
-    private static final int MOUSE_NULL = 0;
+public class AssignInputUIController extends PopupController implements ChangeListener<String> {
+	// ============= Class variables ============== //
+	@FXML
+	private ComboBox mappingCB;
+	@FXML
+	private TextField descriptionTF;
+	@FXML
+	private Pane settingsPane;
+	private Device device;
+	private SingleKeyController singleKeyController;
+	private MouseButtonController mouseButtonController;
+	private KeymapController keymapController;
+	private Parent singleKeyParent, mouseButtonParent, keymapParent, disabledParent;
+	private Parent currentParent;
+	/**
+	 * The selected keymap.
+	 */
+	private Keymap keymap;
+	/**
+	 * The current button mapping for the selected index.
+	 */
+	private Output currentOutput;
+	/**
+	 * The current mapping that is being configured;
+	 */
+	private Mapping currentMapping;
+	private static final String SINGLE_KEY = "Single Key";
+	private static final String MOUSE_BUTTON = "Mouse Button";
+	private static final String KEYMAP = "Keymap";
+	private static final String DISABLED = "Disabled";
+	private static final int MOUSE_NULL = 0;
 	private static final int KEYMAP_NULL = -1;
-// ============= Constructors ============== //
-// ============= Public Methods ============== //
-    public void setDevice(Device device){
-	this.device = device;
-    }
-    public void okEventFired(ActionEvent evt){
-	// set the mapping
-	if(currentParent == singleKeyParent){
-		if (singleKeyController.getConfiguredOutput().getName().equals("Unassigned")) {
-			PopupManager.getPopupManager().showError("No key assigned.");
-			return;
-		}
-	    currentMapping.setOutput(singleKeyController.getConfiguredOutput());
-	}else if(currentParent == mouseButtonParent){
-		if (mouseButtonController.getSelectedMouse() == -1) {
-			PopupManager.getPopupManager().showError("No mouse action selected.");
-			return;
-		}
-	    currentMapping.setOutput(mouseButtonController.getConfiguredOutput());
-	}else if(currentParent == keymapParent){
-		if (keymapController.keymapSelected() == -1) {
-			PopupManager.getPopupManager().showError("No keymap selected.");
-			return;
-		}
-	    currentMapping.setOutput(keymapController.getConfiguredOutput());
-	}else if(currentParent == disabledParent){
-	    currentMapping.setMapping(false);
-	    currentMapping.setOutput(new OutputDisabled());
+	
+	
+	// ============= Public Methods ============== //
+	public void setDevice(Device device) {
+		this.device = device;
 	}
-	// save description
-	currentMapping.getOutput().setDescription(descriptionTF.getText());
-	// save profile
-	this.notifyOK("Save");
-	reset();
-    }
-    public void cancelEventFired(ActionEvent evt){
-	reset();
-	notifyCancel(null);
-    }
-    /**
-     * Sets the selected keymap to be configured.
-     * @param keymap the keymap to be configured.
-     */
-    public void setSelectedKeymap(Keymap keymap){
+	
+	public void okEventFired(ActionEvent evt) {
+		// set the mapping
+		if (currentParent == singleKeyParent) {
+			if (singleKeyController.getConfiguredOutput().getName().equals("Unassigned")) {
+				PopupManager.getPopupManager().showError("No key assigned.");
+				return;
+			}
+			currentMapping.setOutput(singleKeyController.getConfiguredOutput());
+		} else if (currentParent == mouseButtonParent) {
+			if (mouseButtonController.getSelectedMouse() == -1) {
+				PopupManager.getPopupManager().showError("No mouse action selected.");
+				return;
+			}
+			currentMapping.setOutput(mouseButtonController.getConfiguredOutput());
+		} else if (currentParent == keymapParent) {
+			if (keymapController.keymapSelected() == -1) {
+				PopupManager.getPopupManager().showError("No keymap selected.");
+				return;
+			}
+			currentMapping.setOutput(keymapController.getConfiguredOutput());
+		} else if (currentParent == disabledParent) {
+			currentMapping.setMapping(false);
+			currentMapping.setOutput(new OutputDisabled());
+		}
+		// save description
+		currentMapping.getOutput().setDescription(descriptionTF.getText());
+		// save profile
+		this.notifyOK("Save");
+		reset();
+	}
+	
+	public void cancelEventFired(ActionEvent evt) {
+		reset();
+		notifyCancel(null);
+	}
+	
+	/**
+	 * Sets the selected keymap to be configured.
+	 *
+	 * @param keymap the keymap to be configured.
+	 */
+	public void setSelectedKeymap(Keymap keymap) {
 		this.keymap = keymap;
-    }
-    /**
-     * Set the configuration for the specified button id.
-     * @param buttonID the unique id of the button to be configured.
-     * @return true if its a success and false otherwise.
-     */
-    public boolean setAssignedConfig(int buttonID) {
+	}
+	
+	/**
+	 * Set the configuration for the specified button id.
+	 *
+	 * @param buttonID the unique id of the button to be configured.
+	 * @return true if its a success and false otherwise.
+	 */
+	public boolean setAssignedConfig(int buttonID) {
 		// pop a message asking to create a profile
 		if (device.getProfile() == null) {
 			PopupManager.getPopupManager().showError("No profile selected.\nPlease select or create a profile.");
@@ -131,8 +138,7 @@ public class AssignInputUIController extends PopupController implements ChangeLi
 		
 		currentMapping = device.getMapping(buttonID, keymap);
 		currentOutput = currentMapping.getOutput();
-		if (currentParent != null)
-			settingsPane.getChildren().remove(currentParent);
+		if (currentParent != null) settingsPane.getChildren().remove(currentParent);
 		int selectionID = 0;
 		// update the configurations
 		if (currentOutput instanceof OutputKey) {
@@ -165,139 +171,136 @@ public class AssignInputUIController extends PopupController implements ChangeLi
 		descriptionTF.setText(currentOutput.getDescription());
 		return true;
 	}
-// ============= Protected Methods ============== //
-// ============= Private Methods ============== //
-    private void reset(){
-	hideStage();
-    }
-    private void resetUI(int id) {
-    	switch (id) {
+	
+	// ============= Protected Methods ============== //
+	// ============= Private Methods ============== //
+	private void reset() {
+		hideStage();
+	}
+	
+	private void resetUI(int id) {
+		switch (id) {
 			case 0:
 				mouseButtonController.setSelectedMouse(MOUSE_NULL);
-				keymapController.setConfiguredOutput(KEYMAP_NULL,false);
+				keymapController.setConfiguredOutput(KEYMAP_NULL, false);
 				break;
 			case 1:
-				singleKeyController.setConfiguredOutput(new OutputKey("Unassigned",0,0));
-				keymapController.setConfiguredOutput(KEYMAP_NULL,false);
+				singleKeyController.setConfiguredOutput(new OutputKey("Unassigned", 0, 0));
+				keymapController.setConfiguredOutput(KEYMAP_NULL, false);
 				break;
 			case 2:
-				singleKeyController.setConfiguredOutput(new OutputKey("Unassigned",0,0));
+				singleKeyController.setConfiguredOutput(new OutputKey("Unassigned", 0, 0));
 				mouseButtonController.setSelectedMouse(MOUSE_NULL);
 				break;
 			default:
-				singleKeyController.setConfiguredOutput(new OutputKey("Unassigned",0,0));
-				keymapController.setConfiguredOutput(KEYMAP_NULL,false);
+				singleKeyController.setConfiguredOutput(new OutputKey("Unassigned", 0, 0));
+				keymapController.setConfiguredOutput(KEYMAP_NULL, false);
 				mouseButtonController.setSelectedMouse(MOUSE_NULL);
 		}
 	}
-// ============= Implemented Methods ============== //
-// ============= Extended Methods ============== //
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-	// set up mapping cb
-	mappingCB.setItems(FXCollections.observableArrayList(SINGLE_KEY,MOUSE_BUTTON,KEYMAP,DISABLED));
-	//mappingCB.getSelectionModel().selectFirst();
-	mappingCB.valueProperty().addListener(this);
-	try {
-	    URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/driver/SingleKeyPane.fxml");
-	    FXMLLoader fxmlLoader = new FXMLLoader(location);
-	    fxmlLoader.setLocation(location);
-	    fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-	    singleKeyParent = (Parent)fxmlLoader.load(location.openStream());
-	    singleKeyController = (SingleKeyController) fxmlLoader.getController();
-	} catch (IOException ex) {
-	    Logger.getLogger(AssignInputUIController.class.getName()).log(Level.SEVERE, null, ex);
+	
+	// ============= Implemented Methods ============== //
+	// ============= Extended Methods ============== //
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		// set up mapping cb
+		mappingCB.setItems(FXCollections.observableArrayList(SINGLE_KEY, MOUSE_BUTTON, KEYMAP, DISABLED));
+		//mappingCB.getSelectionModel().selectFirst();
+		mappingCB.valueProperty().addListener(this);
+		try {
+			URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/driver/SingleKeyPane.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader(location);
+			fxmlLoader.setLocation(location);
+			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+			singleKeyParent = (Parent) fxmlLoader.load(location.openStream());
+			singleKeyController = (SingleKeyController) fxmlLoader.getController();
+		} catch (IOException ex) {
+			Logger.getLogger(AssignInputUIController.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		try {
+			URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/driver/MouseButtonPane.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader(location);
+			fxmlLoader.setLocation(location);
+			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+			mouseButtonParent = (Parent) fxmlLoader.load(location.openStream());
+			mouseButtonController = (MouseButtonController) fxmlLoader.getController();
+		} catch (IOException ex) {
+			Logger.getLogger(AssignInputUIController.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		try {
+			URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/driver/KeymapPane.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader(location);
+			fxmlLoader.setLocation(location);
+			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+			keymapParent = (Parent) fxmlLoader.load(location.openStream());
+			keymapController = (KeymapController) fxmlLoader.getController();
+		} catch (IOException ex) {
+			Logger.getLogger(AssignInputUIController.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		try {
+			URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/driver/DisabledPane.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader(location);
+			fxmlLoader.setLocation(location);
+			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+			disabledParent = (Parent) fxmlLoader.load(location.openStream());
+		} catch (IOException ex) {
+			Logger.getLogger(AssignInputUIController.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		Tooltip tooltip = new Tooltip();
+		tooltip.setText("Mouse Click to type text & Type Enter to exit typing mode");
+		descriptionTF.setTooltip(tooltip);
 	}
-	try {
-	    URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/driver/MouseButtonPane.fxml");
-	    FXMLLoader fxmlLoader = new FXMLLoader(location);
-	    fxmlLoader.setLocation(location);
-	    fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-	    mouseButtonParent = (Parent)fxmlLoader.load(location.openStream());
-	    mouseButtonController = (MouseButtonController) fxmlLoader.getController();
-	} catch (IOException ex) {
-	    Logger.getLogger(AssignInputUIController.class.getName()).log(Level.SEVERE, null, ex);
+	
+	@Override
+	public void changed(ObservableValue<? extends String> ov, String oldValue, String newValue) {
+		if (currentParent != null) {
+			settingsPane.getChildren().remove(currentParent);
+		}
+		if (newValue.equals(SINGLE_KEY)) {
+			currentParent = singleKeyParent;
+		} else if (newValue.equals(MOUSE_BUTTON)) {
+			currentParent = mouseButtonParent;
+		} else if (newValue.equals(KEYMAP)) {
+			currentParent = keymapParent;
+		} else if (newValue.equals(DISABLED)) {
+			currentParent = disabledParent;
+		}
+		if (currentParent != null) {
+			settingsPane.getChildren().add(currentParent);
+			if (!descriptionTF.isFocused()) {
+				descriptionTF.setEditable(false);
+				singleKeyController.setEnabled(true);
+			}
+		}
 	}
-	try {
-	    URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/driver/KeymapPane.fxml");
-	    FXMLLoader fxmlLoader = new FXMLLoader(location);
-	    fxmlLoader.setLocation(location);
-	    fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-	    keymapParent = (Parent)fxmlLoader.load(location.openStream());
-	    keymapController = (KeymapController) fxmlLoader.getController();
-	} catch (IOException ex) {
-	    Logger.getLogger(AssignInputUIController.class.getName()).log(Level.SEVERE, null, ex);
+	
+	/**
+	 * Allows the user to edit the description field.
+	 */
+	public void handleDescriptionClicked(MouseEvent event) {
+		descriptionTF.setEditable(true);
+		singleKeyController.setEnabled(false);
 	}
-	try {
-	    URL location = getClass().getResource("/com/monkygames/kbmaster/fxml/driver/DisabledPane.fxml");
-	    FXMLLoader fxmlLoader = new FXMLLoader(location);
-	    fxmlLoader.setLocation(location);
-	    fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-	    disabledParent = (Parent)fxmlLoader.load(location.openStream());
-	} catch (IOException ex) {
-	    Logger.getLogger(AssignInputUIController.class.getName()).log(Level.SEVERE, null, ex);
-	}
-	Tooltip tooltip = new Tooltip();
-	tooltip.setText("Mouse Click to type text & Type Enter to exit typing mode");
-	descriptionTF.setTooltip(tooltip);
-    }
-    @Override
-    public void changed(ObservableValue<? extends String> ov, String oldValue, String newValue) {
-	if(currentParent != null){
-	    settingsPane.getChildren().remove(currentParent);
-	}
-	if(newValue.equals(SINGLE_KEY)){
-	    currentParent = singleKeyParent;
-	}else if(newValue.equals(MOUSE_BUTTON)){
-	    currentParent = mouseButtonParent;
-	}else if(newValue.equals(KEYMAP)){
-	    currentParent = keymapParent;
-	}else if(newValue.equals(DISABLED)){
-	    currentParent = disabledParent;
-	}
-	if(currentParent != null){
-	    settingsPane.getChildren().add(currentParent);
-	    if (!descriptionTF.isFocused()) {
+	
+	/**
+	 * Allows the user to exit the description field.
+	 */
+	public void handleDescriptionEntered(KeyEvent event) {
+		if (event.getCode().equals(KeyCode.ENTER)) {
 			descriptionTF.setEditable(false);
+			descriptionTF.deselect();
 			singleKeyController.setEnabled(true);
 		}
 	}
-    }
-    /**
-     * Allows the user to edit the description field.
-     */
-    public void handleDescriptionClicked(MouseEvent event) {
-	descriptionTF.setEditable(true);
-	singleKeyController.setEnabled(false);
-    }
-    /**
-     * Allows the user to exit the description field.
-     */
-    public void handleDescriptionEntered(KeyEvent event){
-	if(event.getCode().equals(KeyCode.ENTER)){
-		descriptionTF.setEditable(false);
-		descriptionTF.deselect();
-	    singleKeyController.setEnabled(true);
+	
+	@Override
+	public void showStage() {
+		super.showStage();
 	}
-    }
-// ============= Internal Classes ============== //
-// ============= Static Methods ============== //
-
-    @Override
-    public void showStage(){
-	super.showStage();
-    }
-    @Override
-    public void setStage(Stage stage){
-	super.setStage(stage);
-	singleKeyController.setStage(stage);
-    }
+	
+	@Override
+	public void setStage(Stage stage) {
+		super.setStage(stage);
+		singleKeyController.setStage(stage);
+	}
 }
-/*
- * Local variables:
- *  c-indent-level: 4
- *  c-basic-offset: 4
- * End:
- *
- * vim: ts=8 sts=4 sw=4 noexpandtab
- */
