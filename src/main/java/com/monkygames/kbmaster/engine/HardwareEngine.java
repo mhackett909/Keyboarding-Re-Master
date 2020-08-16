@@ -34,7 +34,6 @@ import net.java.games.input.LinuxCombinedController;
  * Handles initializing and managing hardware.
  * Also is responsible for polling the devices (as a thread).
  * Some devices may not have a mouse.
- * @version 1.0
  */
 public class HardwareEngine implements Runnable{
 
@@ -261,6 +260,39 @@ public class HardwareEngine implements Runnable{
 			// handle gamepad events
 			if (gamepad != null) {
 				if (gamepadEventQueue == null) continue;
+				// Check if joystick is currently moving
+				if (joystickInfo.getMouseSpeedXY() > 0) {
+					long elapsedTime = System.currentTimeMillis() - joystickInfo.getTimeXY();
+					float minTimeFloat = joystickInfo.getMouseSpeedXY() * JoystickInfo.MIN_TIME;
+					minTimeFloat = JoystickInfo.MIN_TIME - minTimeFloat;
+					minTimeFloat = JoystickInfo.MIN_TIME + minTimeFloat;
+					minTimeFloat = Math.round(minTimeFloat);
+					long minTime = (long) minTimeFloat;
+					if (elapsedTime >= minTime) {
+						joystickInfo.setTimeXY(System.currentTimeMillis());
+						float angle = joystickInfo.findAngle(joystickInfo.getLastX(),joystickInfo.getLastY());
+						if (joystickInfo.getLastAngleXY() != angle) joystickInfo.setLastAngleXY(angle);
+						int[] newCoords = joystickInfo.getNewCoords("XY");
+						robot.mouseMove(newCoords[0], newCoords[1]);
+						// remember to check for mousepress and inversion
+					}
+				}
+				else if (joystickInfo.getMouseSpeedRXRY() > 0) {
+					long elapsedTime = System.currentTimeMillis() - joystickInfo.getTimeRXRY();
+					float minTimeFloat = joystickInfo.getMouseSpeedRXRY() * JoystickInfo.MIN_TIME;
+					minTimeFloat = JoystickInfo.MIN_TIME - minTimeFloat;
+					minTimeFloat = JoystickInfo.MIN_TIME + minTimeFloat;
+					minTimeFloat = Math.round(minTimeFloat);
+					long minTime = (long) minTimeFloat;
+					if (elapsedTime >= minTime) {
+						joystickInfo.setTimeRXRY(System.currentTimeMillis());
+						float angle = joystickInfo.findAngle(joystickInfo.getLastRX(),joystickInfo.getLastRY());
+						if (joystickInfo.getLastAngleRXRY() != angle) joystickInfo.setLastAngleRXRY(angle);
+						int[] newCoords = joystickInfo.getNewCoords("RXRY");
+						robot.mouseMove(newCoords[0], newCoords[1]);
+						// remember to check for mousepress and inversion
+					}
+				}
 				for (Event event : gamepadEventQueue.getEvents()) {
 					Component component = event.getComponent();
 					String name = component.getIdentifier().getName();
@@ -366,12 +398,12 @@ public class HardwareEngine implements Runnable{
 						Point point = MouseInfo.getPointerInfo().getLocation();
 						float rel = component.getPollData();
 						float x = point.x + rel;
-						robot.mouseMove((int)x, point.y);
+						if (point.x != x) robot.mouseMove((int) x, point.y);
 					}else if(component.getIdentifier() == Axis.Y){
 						Point point = MouseInfo.getPointerInfo().getLocation();
 						float rel = component.getPollData();
 						float y = point.y + rel;
-						robot.mouseMove(point.x, (int)y);
+						if (point.y != y) robot.mouseMove(point.x, (int) y);
 					}else if(component.getIdentifier() == Axis.Z && event.getValue() >= 1){
 						mapping = keymap.getzUpWheelMapping();
 						if(mapping.getOutput() instanceof OutputKey || mapping.getOutput() instanceof OutputKeymapSwitch){
@@ -623,10 +655,34 @@ public class HardwareEngine implements Runnable{
 				}else joystickInfo.setLastPress(JoystickInfo.LastPress.NONE);
 			}
 			else if (((OutputJoystick) output).getJoystickType() == OutputJoystick.JoystickType.MOUSE) {
-				if (output.getName().equals("X") || output.getName().equals("Y")) {
-					System.out.println("("+joystickInfo.getLastX()+", "+joystickInfo.getLastY()+")");
-				}else if (output.getName().equals("RX") || output.getName().equals("RY")) {
-					System.out.println("("+joystickInfo.getLastRX()+", "+joystickInfo.getLastRY()+")");
+				if (output.getName().equals("X")) {
+					float mouseSpeed = joystickInfo.getMouseSpeed(eventValue, joystickInfo.getLastY());
+					joystickInfo.setMouseSpeedXY(mouseSpeed);
+					if (mouseSpeed == 0) {
+						//TODO release mousepress if enabled
+					}
+					
+				} else if (output.getName().equals("Y")) {
+					float mouseSpeed = joystickInfo.getMouseSpeed(joystickInfo.getLastX(), eventValue);
+					joystickInfo.setMouseSpeedXY(mouseSpeed);
+					if (mouseSpeed == 0) {
+						//TODO release mousepress if enabled
+					}
+				
+				} else if (output.getName().equals("RX")) {
+					float mouseSpeed = joystickInfo.getMouseSpeed(eventValue, joystickInfo.getLastRY());
+					joystickInfo.setMouseSpeedRXRY(mouseSpeed);
+					if (mouseSpeed == 0) {
+						//TODO release mousepress if enabled
+					}
+					
+				} else if (output.getName().equals("RY")) {
+					float mouseSpeed = joystickInfo.getMouseSpeed(joystickInfo.getLastRX(), eventValue);
+					joystickInfo.setMouseSpeedRXRY(mouseSpeed);
+					if (mouseSpeed == 0) {
+						//TODO release mousepress if enabled
+					}
+					
 				}
 			}
 		}

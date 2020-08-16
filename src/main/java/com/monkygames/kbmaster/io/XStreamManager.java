@@ -6,18 +6,7 @@ import com.monkygames.kbmaster.cloud.UserSettings;
 import com.monkygames.kbmaster.cloud.metadata.MetaData;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.driver.DeviceInformation;
-import com.monkygames.kbmaster.input.Button;
-import com.monkygames.kbmaster.input.ButtonMapping;
-import com.monkygames.kbmaster.input.Hardware;
-import com.monkygames.kbmaster.input.Keymap;
-import com.monkygames.kbmaster.input.Mapping;
-import com.monkygames.kbmaster.input.Output;
-import com.monkygames.kbmaster.input.OutputDisabled;
-import com.monkygames.kbmaster.input.OutputKey;
-import com.monkygames.kbmaster.input.OutputKeymapSwitch;
-import com.monkygames.kbmaster.input.OutputMouse;
-import com.monkygames.kbmaster.input.Wheel;
-import com.monkygames.kbmaster.input.WheelMapping;
+import com.monkygames.kbmaster.input.*;
 import com.monkygames.kbmaster.profiles.App;
 import com.monkygames.kbmaster.profiles.AppType;
 import com.monkygames.kbmaster.profiles.Profile;
@@ -71,7 +60,6 @@ public class XStreamManager {
     public static final String globalAccountFileName = "device_descriptors.xml";
 
     public XStreamManager(){
-
         // user settings
         userSettingsStream = new XStream(new DomDriver());
         userSettingsStream.alias("UserSettings", UserSettings.class);
@@ -90,6 +78,7 @@ public class XStreamManager {
         rootStream.alias("Button",Button.class);
         rootStream.alias("OutputKey",OutputKey.class);
         rootStream.alias("OutputMouse",OutputMouse.class);
+        rootStream.alias("OutputJoystick", OutputJoystick.class);
         rootStream.alias("Wheel",Wheel.class);
         XStream.setupDefaultSecurity(rootStream);
         rootStream.allowTypesByWildcard(new String[] {"com.monkygames.kbmaster.**"});

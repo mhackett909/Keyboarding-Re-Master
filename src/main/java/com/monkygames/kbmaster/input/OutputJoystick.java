@@ -1,4 +1,5 @@
 package com.monkygames.kbmaster.input;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import javafx.scene.input.KeyCode;
 
 import java.security.Key;
