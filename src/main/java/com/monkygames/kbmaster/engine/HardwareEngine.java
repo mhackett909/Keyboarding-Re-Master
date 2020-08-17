@@ -262,14 +262,18 @@ public class HardwareEngine implements Runnable{
 				if (gamepadEventQueue == null) continue;
 				// Check if joystick is currently moving
 				if (joystickInfo.getMouseSpeedXY() > 0) {
-					long elapsedTime = System.currentTimeMillis() - joystickInfo.getTimeXY();
+					long elapsedTime = System.nanoTime() - joystickInfo.getTimeXY();
 					float minTimeFloat = joystickInfo.getMouseSpeedXY() * JoystickInfo.MIN_TIME;
 					minTimeFloat = JoystickInfo.MIN_TIME - minTimeFloat;
 					minTimeFloat = JoystickInfo.MIN_TIME + minTimeFloat;
+					//Mouse speed sensitivity adjustment
+					float adjustment = (float) Math.ceil(joystickInfo.getMouseSpeedXY() * JoystickInfo.SENSITIVITY);
+					adjustment = JoystickInfo.SENSITIVITY / adjustment;
+					minTimeFloat*=adjustment;
 					minTimeFloat = Math.round(minTimeFloat);
 					long minTime = (long) minTimeFloat;
 					if (elapsedTime >= minTime) {
-						joystickInfo.setTimeXY(System.currentTimeMillis());
+						joystickInfo.setTimeXY(System.nanoTime());
 						float angle = joystickInfo.findAngle(joystickInfo.getLastX(),joystickInfo.getLastY());
 						if (joystickInfo.getLastAngleXY() != angle) joystickInfo.setLastAngleXY(angle);
 						int[] newCoords = joystickInfo.getNewCoords("XY");
@@ -278,14 +282,18 @@ public class HardwareEngine implements Runnable{
 					}
 				}
 				else if (joystickInfo.getMouseSpeedRXRY() > 0) {
-					long elapsedTime = System.currentTimeMillis() - joystickInfo.getTimeRXRY();
+					long elapsedTime = System.nanoTime() - joystickInfo.getTimeRXRY();
 					float minTimeFloat = joystickInfo.getMouseSpeedRXRY() * JoystickInfo.MIN_TIME;
 					minTimeFloat = JoystickInfo.MIN_TIME - minTimeFloat;
 					minTimeFloat = JoystickInfo.MIN_TIME + minTimeFloat;
+					//Mouse speed sensitivity adjustment
+					float adjustment = (float) Math.ceil(joystickInfo.getMouseSpeedRXRY() * JoystickInfo.SENSITIVITY);
+					adjustment = JoystickInfo.SENSITIVITY / adjustment;
+					minTimeFloat*=adjustment;
 					minTimeFloat = Math.round(minTimeFloat);
 					long minTime = (long) minTimeFloat;
 					if (elapsedTime >= minTime) {
-						joystickInfo.setTimeRXRY(System.currentTimeMillis());
+						joystickInfo.setTimeRXRY(System.nanoTime());
 						float angle = joystickInfo.findAngle(joystickInfo.getLastRX(),joystickInfo.getLastRY());
 						if (joystickInfo.getLastAngleRXRY() != angle) joystickInfo.setLastAngleRXRY(angle);
 						int[] newCoords = joystickInfo.getNewCoords("RXRY");

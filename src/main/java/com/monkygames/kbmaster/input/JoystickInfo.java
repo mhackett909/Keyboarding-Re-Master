@@ -13,7 +13,8 @@ public class JoystickInfo {
 	public static final float DPAD_UP = 0.25f, DPAD_DOWN = 0.75f, DPAD_LEFT = 1.0f, DPAD_RIGHT = 0.5f;
 	public static final float DPAD_UP_RIGHT = 0.375f, DPAD_UP_LEFT = 0.125f, DPAD_DOWN_RIGHT = 0.625f, DPAD_DOWN_LEFT = 0.875f;
 	public static final float PI = 3.14159f, RESET = 0.0f, MAX_SPEED = 1.0f;
-	public static final long MIN_TIME = 1;
+	public static final long MIN_TIME = 300000;
+	public static final int SENSITIVITY = 4;
 	public enum LastPress { UP, DOWN, RIGHT, LEFT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT, NONE }
 	private float lastX, lastY, lastRX, lastRY, lastPOV, mouseSpeedXY, mouseSpeedRXRY, lastAngleXY, lastAngleRXRY;
 	private float startingX, startingY, startingRX, startingRY;
@@ -72,6 +73,11 @@ public class JoystickInfo {
 	public LastPress getLastPress() { return lastPress; }
 	
 	///---Public Methods---\\\
+	/**
+	 * The angle between the origin and the provided (x,y) coordinates.
+	 * @param x The x coordinate of the joystick.
+	 * @param y The y coordinate of the joystick.
+	 */
 	public float findAngle(float x, float y) {
 		float angle = 0;
 		if (x == 0 && y == 0) return angle;
@@ -162,6 +168,7 @@ public class JoystickInfo {
 				if (jType.equals("RXRY")) radiusRXRY++;
 				else radiusXY++;
 		}
+		// If the new point is outside the radius, increase the radius
 		float dist = distance(intCoords[0],intCoords[1], x, y);
 		if (dist >= radius) {
 			if (jType.equals("RXRY")) radiusRXRY++;
@@ -169,12 +176,17 @@ public class JoystickInfo {
 		}
 		return intCoords;
 	}
+	
 	///---Private  Methods---\\\
+	/**
+	 * Finds the quadrant in which the (x,y) value resides.
+	 * Note: the y-axis is inverse for the joystick devices I have tested.
+	 * @return null if the point is on an axis.
+	 */
 	private Quadrant findQuadrant(float x, float y) {
-		if (x > 0 && y < 0) return Quadrant.I;
-		else if (x < 0 && y < 0) return Quadrant.II;
-		else if (x < 0 && y > 0) return Quadrant.III;
-		else return Quadrant.IV;
+		if (x == 0 || y == 0) return null;
+		else if (x > 0) return (y < 0 ? Quadrant.I : Quadrant.IV);
+		else return (y < 0 ? Quadrant.II : Quadrant.III);
 	}
 	/**
 	 * The distance formula.
@@ -184,8 +196,7 @@ public class JoystickInfo {
 		x2*=x2;
 		y2-=y1;
 		y2*=y2;
-		x2+=y2;
-		return (float) Math.sqrt(x2);
+		return (float) Math.sqrt(x2+y2);
 	}
 	/**
 	 * Finds a point on the circle using the given angle, radius, and starting position.
@@ -196,8 +207,7 @@ public class JoystickInfo {
 		angle /= STRAIGHT_ANGLE;
 		float newX = (float) (radius * Math.cos(angle));
 		float newY = (float) (radius * Math.sin(angle));
-		//y-axis is inverse
-		newY*=-1;
+		newY*=-1; //y-axis is inverse for the dualshock 4
 		newX += x;
 		newY += y;
 		return new float[]{ newX, newY };
