@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" focusTraversable="true" prefHeight="400.0" prefWidth="650.0" styleClass="mainFxmlClass, popupWindow" xmlns:fx="http://javafx.com/fxml" fx:controller="com.monkygames.kbmaster.controller.driver.AssignInputUIController">
+<AnchorPane id="AnchorPane" focusTraversable="true" prefHeight="400.0" prefWidth="650.0" styleClass="mainFxmlClass, popupWindow" xmlns:fx="http://javafx.com/fxml" fx:controller="com.monkygames.kbmaster.controller.driver.AssignJoystickUIController">
   <children>
     <Label alignment="CENTER" contentDisplay="LEFT" layoutX="219.0" layoutY="14.0" text="Input Assignment" textAlignment="CENTER">
       <font>

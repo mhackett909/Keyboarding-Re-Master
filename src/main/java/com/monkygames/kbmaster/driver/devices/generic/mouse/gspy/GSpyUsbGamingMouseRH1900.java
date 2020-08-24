@@ -7,15 +7,9 @@ package com.monkygames.kbmaster.driver.devices.generic.mouse.gspy;
 import java.awt.event.InputEvent;
 // === kbmaster imports === //
 import com.monkygames.kbmaster.driver.*;
-import com.monkygames.kbmaster.input.Button;
-import com.monkygames.kbmaster.input.ButtonMapping;
-import com.monkygames.kbmaster.input.Keymap;
-import com.monkygames.kbmaster.input.Mapping;
-import com.monkygames.kbmaster.input.OutputDisabled;
-import com.monkygames.kbmaster.input.OutputMouse;
+import com.monkygames.kbmaster.input.*;
 import com.monkygames.kbmaster.input.OutputMouse.MouseType;
-import com.monkygames.kbmaster.input.Wheel;
-import com.monkygames.kbmaster.input.WheelMapping;
+
 import java.awt.Rectangle;
 
 /**
@@ -71,7 +65,13 @@ public class GSpyUsbGamingMouseRH1900 extends Device{
     public ButtonMapping getButtonMapping(int index, Keymap keymap){
 	return keymap.getButtonMapping(getId(index));
     }
-    @Override
+	
+	@Override
+	public JoystickMapping getJoystickMapping(int index, Keymap keymap) {
+		return null;
+	}
+	
+	@Override
     public Mapping getMapping(int index, Keymap keymap){
 	switch(index){
 	    case 5:

@@ -12,5 +12,4 @@ public class JoystickMapping extends Mapping {
     public String toString(){
         return "JoystickMapping["+inputHardware+","+output+"]";
     }
-
 }

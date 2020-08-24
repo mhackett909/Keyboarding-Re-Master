@@ -23,8 +23,8 @@
         <Button layoutX="198.0" layoutY="121.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="6" />
         <Button layoutX="183.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="7" />
         <Button layoutX="214.0" layoutY="105.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="8" />
-        <Button layoutX="242.0" layoutY="265.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleJoystickAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="9" />
-        <Button layoutX="308.0" layoutY="270.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleJoystickAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="10" />
+        <Button layoutX="308.0" layoutY="270.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleJoystickAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="9" />
+        <Button layoutX="242.0" layoutY="265.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleJoystickAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="10" />
         <Button layoutX="301.0" layoutY="342.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="11" />
         <Button layoutX="171.0" layoutY="326.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="12" />
         <Button layoutX="302.0" layoutY="370.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="14.0" prefWidth="14.0" styleClass="button_stamp" text="13" />

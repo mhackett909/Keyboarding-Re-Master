@@ -34,11 +34,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-/**
- * Handles the cloning feature.
- * @version 1.0
- */
 public class AssignInputUIController extends PopupController implements ChangeListener<String> {
 	// ============= Class variables ============== //
 	@FXML
@@ -85,18 +80,21 @@ public class AssignInputUIController extends PopupController implements ChangeLi
 				PopupManager.getPopupManager().showError("No key assigned.");
 				return;
 			}
+			currentMapping.setMapping(true);
 			currentMapping.setOutput(singleKeyController.getConfiguredOutput());
 		} else if (currentParent == mouseButtonParent) {
 			if (mouseButtonController.getSelectedMouse() == -1) {
 				PopupManager.getPopupManager().showError("No mouse action selected.");
 				return;
 			}
+			currentMapping.setMapping(true);
 			currentMapping.setOutput(mouseButtonController.getConfiguredOutput());
 		} else if (currentParent == keymapParent) {
 			if (keymapController.keymapSelected() == -1) {
 				PopupManager.getPopupManager().showError("No keymap selected.");
 				return;
 			}
+			currentMapping.setMapping(true);
 			currentMapping.setOutput(keymapController.getConfiguredOutput());
 		} else if (currentParent == disabledParent) {
 			currentMapping.setMapping(false);

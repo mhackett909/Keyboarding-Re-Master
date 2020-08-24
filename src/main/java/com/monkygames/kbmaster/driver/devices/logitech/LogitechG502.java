@@ -57,6 +57,12 @@ public class LogitechG502 extends Device {
     public ButtonMapping getButtonMapping(int index, Keymap keymap){
         return keymap.getButtonMapping(getId(index));
     }
+    
+    @Override
+    public JoystickMapping getJoystickMapping(int index, Keymap keymap) {
+        return null;
+    }
+    
     @Override
     public Mapping getMapping(int index, Keymap keymap){
         switch(index){

@@ -77,7 +77,7 @@ public class SingleKeyController implements Initializable, EventHandler {
 		}
 		if (isEnabled) {
 			stage.addEventFilter(KeyEvent.KEY_RELEASED, this);
-		} else {
+		}else {
 			stage.removeEventFilter(KeyEvent.KEY_RELEASED, this);
 		}
 		this.isEnabled = isEnabled;
@@ -112,17 +112,17 @@ public class SingleKeyController implements Initializable, EventHandler {
 			ctrlL.setDisable(true);
 			shiftL.setDisable(true);
 			awtModifier = java.awt.event.KeyEvent.VK_ALT;
-		} else if (type.equals("CTRL")) {
+		}else if (type.equals("CTRL")) {
 			altL.setDisable(true);
 			ctrlL.setDisable(false);
 			shiftL.setDisable(true);
 			awtModifier = java.awt.event.KeyEvent.VK_CONTROL;
-		} else if (type.equals("SHIFT")) {
+		}else if (type.equals("SHIFT")) {
 			altL.setDisable(true);
 			ctrlL.setDisable(true);
 			shiftL.setDisable(false);
 			awtModifier = java.awt.event.KeyEvent.VK_SHIFT;
-		} else {
+		}else {
 			altL.setDisable(true);
 			ctrlL.setDisable(true);
 			shiftL.setDisable(true);
@@ -151,36 +151,29 @@ public class SingleKeyController implements Initializable, EventHandler {
 			KeyEvent keyEvent = (KeyEvent) event;
 			String key = keyEvent.getCharacter();
 			singleKeyTF.setText(key);
-		} else if (KeyEvent.KEY_PRESSED.equals(event.getEventType())) {
+		}else if (KeyEvent.KEY_PRESSED.equals(event.getEventType())) {
 			KeyEvent keyEvent = (KeyEvent) event;
 			String key = keyEvent.getCharacter();
-		} else if (KeyEvent.KEY_RELEASED.equals(event.getEventType())) {
+		}else if (KeyEvent.KEY_RELEASED.equals(event.getEventType())) {
 			KeyEvent keyEvent = (KeyEvent) event;
-			if (keyEvent.getCode() == KeyCode.CONTROL && !ignoreModifierRelease) {
-				setKeyPressed(keyEvent, "KEY");
-			} else if (keyEvent.isControlDown()) {
+			if (keyEvent.getCode() == KeyCode.CONTROL && !ignoreModifierRelease) setKeyPressed(keyEvent, "KEY");
+			else if (keyEvent.isControlDown()) {
 				ignoreModifierRelease = true;
 				setKeyPressed(keyEvent, "CTRL");
-			} else if (keyEvent.getCode() == KeyCode.ALT && !ignoreModifierRelease) {
-				setKeyPressed(keyEvent, "KEY");
-			} else if (keyEvent.isAltDown()) {
+			}else if (keyEvent.getCode() == KeyCode.ALT && !ignoreModifierRelease) setKeyPressed(keyEvent, "KEY");
+			else if (keyEvent.isAltDown()) {
 				ignoreModifierRelease = true;
 				setKeyPressed(keyEvent, "ALT");
-			} else if (keyEvent.getCode() == KeyCode.SHIFT && !ignoreModifierRelease) {
-				setKeyPressed(keyEvent, "KEY");
-			} else if (keyEvent.isShiftDown()) {
+			}else if (keyEvent.getCode() == KeyCode.SHIFT && !ignoreModifierRelease) setKeyPressed(keyEvent, "KEY");
+			else if (keyEvent.isShiftDown()) {
 				ignoreModifierRelease = true;
 				setKeyPressed(keyEvent, "SHIFT");
-			} else if (keyEvent.getCode() == KeyCode.META && !ignoreModifierRelease) {
-				setKeyPressed(keyEvent, "KEY");
-			} else if (keyEvent.isMetaDown()) {
+			}else if (keyEvent.getCode() == KeyCode.META && !ignoreModifierRelease) setKeyPressed(keyEvent, "KEY");
+			else if (keyEvent.isMetaDown()) {
 				ignoreModifierRelease = true;
 				setKeyPressed(keyEvent, "META");
-			} else if (!ignoreModifierRelease) {
-				setKeyPressed(keyEvent, "KEY");
-			} else {
-				ignoreModifierRelease = false;
-			}
+			}else if (!ignoreModifierRelease) setKeyPressed(keyEvent, "KEY");
+			else ignoreModifierRelease = false;
 		}
 	}
 }

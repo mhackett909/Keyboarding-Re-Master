@@ -223,7 +223,13 @@ public class TartarusV2 extends Device{
     public ButtonMapping getButtonMapping(int index, Keymap keymap){
 	return keymap.getButtonMapping(getId(index));
     }
-    @Override
+	
+	@Override
+	public JoystickMapping getJoystickMapping(int index, Keymap keymap) {
+		return null;
+	}
+	
+	@Override
     public Mapping getMapping(int index, Keymap keymap){
 		switch(index){
 			case 26:

@@ -2,11 +2,17 @@ package com.monkygames.kbmaster.driver.devices.sony;
 
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.driver.DeviceType;
-import com.monkygames.kbmaster.input.*;
+import com.monkygames.kbmaster.input.Mapping;
+import com.monkygames.kbmaster.input.JoystickMapping;
+import com.monkygames.kbmaster.input.ButtonMapping;
+import com.monkygames.kbmaster.input.Joystick;
+import com.monkygames.kbmaster.input.Keymap;
+import com.monkygames.kbmaster.input.OutputKey;
+import com.monkygames.kbmaster.input.OutputJoystick;
+import com.monkygames.kbmaster.input.OutputDisabled;
 import com.monkygames.kbmaster.input.Button;
 import net.java.games.input.Component;
-
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 public class SonyDualShock4 extends Device {
@@ -78,9 +84,7 @@ public class SonyDualShock4 extends Device {
                 break;
         }
         return rect;
-        
     }
-
     @Override
     public Keymap generateDefaultKeymap(int id) {
         Keymap keymap = new Keymap(id+1);
@@ -94,16 +98,10 @@ public class SonyDualShock4 extends Device {
         keymap.addButtonMapping(name+"LEFT", new ButtonMapping(new Button(7,name+"LEFT"),new OutputKey("Left", KeyEvent.VK_LEFT,0)));
         keymap.addButtonMapping(name+"RIGHT", new ButtonMapping(new Button(8,name+"RIGHT"),new OutputKey("Right", KeyEvent.VK_RIGHT,0)));
         
-        Joystick joystick = new Joystick(9, "Left");
-        jinputA = Component.Identifier.Axis.X;
-        keymap.addJoystickMapping(jinputA.getName(),new JoystickMapping(joystick,new OutputJoystick("X",1, OutputJoystick.JoystickType.DPAD)));
-        jinputA = Component.Identifier.Axis.Y;
-        keymap.addJoystickMapping(jinputA.getName(),new JoystickMapping(joystick,new OutputJoystick("Y",1, OutputJoystick.JoystickType.DPAD)));
-        joystick = new Joystick(10, "Right");
-        jinputA = Component.Identifier.Axis.RX;
-        keymap.addJoystickMapping(jinputA.getName(),new JoystickMapping(joystick,new OutputJoystick("RX",1, OutputJoystick.JoystickType.DPAD)));
-        jinputA = Component.Identifier.Axis.RY;
-        keymap.addJoystickMapping(jinputA.getName(),new JoystickMapping(joystick,new OutputJoystick("RY",1, OutputJoystick.JoystickType.DPAD)));
+        Joystick joystick = new Joystick(9, "JOYSTICK_XY");
+        keymap.addJoystickMapping("JOYSTICK_XY",new JoystickMapping(joystick,new OutputJoystick("X",1, OutputJoystick.JoystickType.DPAD)));
+        joystick = new Joystick(10, "JOYSTICK_RXRY");
+        keymap.addJoystickMapping("JOYSTICK_RXRY",new JoystickMapping(joystick,new OutputJoystick("RX",1, OutputJoystick.JoystickType.MOUSE)));
         
         //Buttons
         Component.Identifier.Button jinputB;
@@ -146,6 +144,10 @@ public class SonyDualShock4 extends Device {
     public Mapping getMapping(int index, Keymap keymap) {
         return keymap.getButtonMapping(getId(index));
     }
+    
+    public JoystickMapping getJoystickMapping(int index, Keymap keymap) {
+        return keymap.getJoystickMapping(getId(index));
+    }
 
     @Override
     public String getId(int index){
@@ -166,6 +168,10 @@ public class SonyDualShock4 extends Device {
                 return Component.Identifier.Axis.POV.getName()+"LEFT";
             case 8:
                 return Component.Identifier.Axis.POV.getName()+"RIGHT";
+            case 9:
+                return "JOYSTICK_XY";
+            case 10:
+                return "JOYSTICK_RXRY";
             case 11:
                 return Component.Identifier.Button.LEFT_THUMB.getName();
             case 12:

@@ -5,6 +5,7 @@ package com.monkygames.kbmaster.controller;
 
 // === javafx imports === //
 import com.monkygames.kbmaster.controller.driver.AssignInputUIController;
+import com.monkygames.kbmaster.controller.driver.AssignJoystickUIController;
 import com.monkygames.kbmaster.driver.Device;
 import com.monkygames.kbmaster.input.Keymap;
 import com.monkygames.kbmaster.util.PopupManager;
@@ -28,6 +29,7 @@ public class DriverUIController implements Initializable {
 	@FXML
 	private Pane rootPane;
 	private AssignInputUIController assignInputUIController = null;
+	private AssignJoystickUIController assignJoystickUIController = null;
 	// ============= Constructors ============== //
 	// ============= Public Methods ============== //
 	
@@ -40,6 +42,7 @@ public class DriverUIController implements Initializable {
 	 */
 	public void addSaveNotification(PopupNotifyInterface popupNotification) {
 		assignInputUIController.addNotification(popupNotification);
+		assignJoystickUIController.addNotification(popupNotification);
 	}
 	
 	/**
@@ -49,23 +52,14 @@ public class DriverUIController implements Initializable {
 	 */
 	public void setSelectedKeymap(Keymap keymap) {
 		assignInputUIController.setSelectedKeymap(keymap);
-	}
-	
-	public void initButtons() {
-		List<Node> nodes = rootPane.getChildren();
-		//Note, in Java 8, can use Lamba Function here
-		for (Node node : nodes) {
-			if (node instanceof Button) {
-			
-			}
-		}
+		assignJoystickUIController.setSelectedKeymap(keymap);
 	}
 	
 	public void setDevice(Device device) {
 		assignInputUIController.setDevice(device);
+		assignJoystickUIController.setDevice(device);
 	}
 	
-	// ============= Protected Methods ============== //
 	// ============= Private Methods ============== //
 	@FXML
 	private void handleButtonAction(ActionEvent evt) {
@@ -88,22 +82,19 @@ public class DriverUIController implements Initializable {
 	
 	/**
 	 * Sets the assigned button and opens the AssignInputPopup.
-	 *
 	 * @param buttonID the id of the button to configure.
 	 */
 	private void openAssignInputPopup(int buttonID) {
-		// set the configuration for this button
-		if (assignInputUIController.setAssignedConfig(buttonID)) {
+		if (assignInputUIController.setAssignedConfig(buttonID))
 			assignInputUIController.showStage();
-		}
 	}
 	/**
 	 * Opens the AssignJoystickPopup.
-	 *
 	 * @param buttonID the id of the joystick to configure.
 	 */
 	private void openAssignJoystickPopup(int buttonID) {
-		System.out.println("Open joystick UI: "+buttonID);
+		if (assignJoystickUIController.setAssignedConfig(buttonID))
+			assignJoystickUIController.showStage();
 	}
 	
 	// ============= Implemented Methods ============== //
@@ -112,6 +103,10 @@ public class DriverUIController implements Initializable {
 		if (assignInputUIController == null) {
 			assignInputUIController = (AssignInputUIController) PopupManager.getPopupManager().openPopup("/com/monkygames/kbmaster/fxml/driver/AssignInputUI.fxml");
 			if (assignInputUIController == null) return;
+		}
+		if (assignJoystickUIController == null) {
+			assignJoystickUIController = (AssignJoystickUIController) PopupManager.getPopupManager().openPopup("/com/monkygames/kbmaster/fxml/driver/AssignJoystickUI.fxml");
+			if (assignJoystickUIController == null) return;
 		}
 	}
 	

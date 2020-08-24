@@ -30,7 +30,7 @@ public class MouseButtonController implements Initializable {
 	private Pane rootPane;
 	@FXML
 	private ComboBox buttonCB;
-	// ============= Constructors ============== //
+
 	// ============= Public Methods ============== //
 	
 	/**
@@ -62,7 +62,6 @@ public class MouseButtonController implements Initializable {
 		return clone;
 	}
 	
-	// ============= Protected Methods ============== //
 	// ============= Private Methods ============== //
 	@FXML
 	private void handleButtonAction(ActionEvent evt) {
@@ -93,20 +92,14 @@ public class MouseButtonController implements Initializable {
 	 * this mouse event is fired.
 	 */
 	private int getKeyCode(String name) {
-		if (name.equals("Click")) {
-			return InputEvent.BUTTON1_DOWN_MASK;
-		} else if (name.equals("Double-Click")) {
-			return InputEvent.BUTTON1_DOWN_MASK;
-		} else if (name.equals("Middle-Click")) {
-			return InputEvent.BUTTON2_DOWN_MASK;
-		} else if (name.equals("Right-Click")) {
-			return InputEvent.BUTTON3_DOWN_MASK;
-		} else if (name.equals("Scroll Up")) {
-			return -1;
-		} else if (name.equals("Scroll Down")) {
-			return 1;
-		}
-		return 0;
+		return switch (name) {
+			case "Click", "Double-Click" -> InputEvent.BUTTON1_DOWN_MASK;
+			case "Middle-Click" -> InputEvent.BUTTON2_DOWN_MASK;
+			case "Right-Click" -> InputEvent.BUTTON3_DOWN_MASK;
+			case "Scroll Up" -> -1;
+			case "Scroll Down" -> 1;
+			default -> 0;
+		};
 	}
 	
 	// ============= Implemented Methods ============== //

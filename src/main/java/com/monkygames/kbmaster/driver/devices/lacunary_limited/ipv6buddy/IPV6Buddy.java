@@ -6,6 +6,7 @@ package com.monkygames.kbmaster.driver.devices.lacunary_limited.ipv6buddy;
 // === java imports === //
 import java.awt.event.KeyEvent;
 // === jinput imports === //
+import com.monkygames.kbmaster.input.JoystickMapping;
 import net.java.games.input.Component.Identifier.Key;
 // === kbmaster imports === //
 import com.monkygames.kbmaster.driver.*;
@@ -116,7 +117,13 @@ public class IPV6Buddy extends Device{
     public ButtonMapping getButtonMapping(int index, Keymap keymap){
 	return keymap.getButtonMapping(getId(index));
     }
-    @Override
+	
+	@Override
+	public JoystickMapping getJoystickMapping(int index, Keymap keymap) {
+		return null;
+	}
+	
+	@Override
     public Mapping getMapping(int index, Keymap keymap){
 	return keymap.getButtonMapping(getId(index));
 

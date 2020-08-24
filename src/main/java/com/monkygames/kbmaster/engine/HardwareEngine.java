@@ -260,6 +260,15 @@ public class HardwareEngine implements Runnable{
 			// handle gamepad events
 			if (gamepad != null) {
 				if (gamepadEventQueue == null) continue;
+				if (profile.getDefaultKeymap() != keymap.getID()-1) {
+					keymap = profile.getKeymap(profile.getDefaultKeymap());
+					resetJoystick();
+				}
+				//Check if output is disabled
+				Output testOutput =  keymap.getJoystickMapping("JOYSTICK_XY").getOutput();
+				if (testOutput instanceof OutputDisabled) joystickInfo.setMouseSpeedXY(0);
+				testOutput =  keymap.getJoystickMapping("JOYSTICK_RXRY").getOutput();
+				if (testOutput instanceof OutputDisabled) joystickInfo.setMouseSpeedRXRY(0);
 				// Check if joystick is currently moving
 				if (joystickInfo.getMouseSpeedXY() > 0) {
 					long elapsedTime = System.nanoTime() - joystickInfo.getTimeXY();
@@ -278,7 +287,7 @@ public class HardwareEngine implements Runnable{
 						if (joystickInfo.getLastAngleXY() != angle) joystickInfo.setLastAngleXY(angle);
 						int[] newCoords = joystickInfo.getNewCoords("XY");
 						robot.mouseMove(newCoords[0], newCoords[1]);
-						// remember to check for mousepress and inversion
+						// TODO remember to check for mousepress and inversion
 					}
 				}
 				else if (joystickInfo.getMouseSpeedRXRY() > 0) {
@@ -298,7 +307,7 @@ public class HardwareEngine implements Runnable{
 						if (joystickInfo.getLastAngleRXRY() != angle) joystickInfo.setLastAngleRXRY(angle);
 						int[] newCoords = joystickInfo.getNewCoords("RXRY");
 						robot.mouseMove(newCoords[0], newCoords[1]);
-						// remember to check for mousepress and inversion
+						// TODO remember to check for mousepress and inversion
 					}
 				}
 				for (Event event : gamepadEventQueue.getEvents()) {
@@ -365,25 +374,15 @@ public class HardwareEngine implements Runnable{
 						if (bMapping != null) processOutput(name, bMapping.getOutput(), 1);
 						joystickInfo.setLastPOV(pollData);
 					}
-					else if (component.getIdentifier() == Axis.RX) {
+					else if (component.getIdentifier() == Axis.RX || component.getIdentifier() == Axis.RY) {
+						name = "JOYSTICK_RXRY";
 						JoystickMapping jMapping = keymap.getJoystickMapping(name);
-						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
-						joystickInfo.setLastRX(event.getValue());
+						if (jMapping != null) processOutput(component.getIdentifier().getName(), jMapping.getOutput(), event.getValue());
 					}
-					else if (component.getIdentifier() == Axis.RY) {
+					else if (component.getIdentifier() == Axis.X || component.getIdentifier() == Axis.Y) {
+						name = "JOYSTICK_XY";
 						JoystickMapping jMapping = keymap.getJoystickMapping(name);
-						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
-						joystickInfo.setLastRY(event.getValue());
-					}
-					else if (component.getIdentifier() == Axis.X) {
-						JoystickMapping jMapping = keymap.getJoystickMapping(name);
-						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
-						joystickInfo.setLastX(event.getValue());
-					}
-					else if (component.getIdentifier() == Axis.Y) {
-						JoystickMapping jMapping = keymap.getJoystickMapping(name);
-						if (jMapping != null) processOutput(name, jMapping.getOutput(), event.getValue());
-						joystickInfo.setLastY(event.getValue());
+						if (jMapping != null) processOutput(component.getIdentifier().getName(), jMapping.getOutput(), event.getValue());
 					}
 					else {
 						ButtonMapping bMapping = keymap.getButtonMapping(name);
@@ -510,15 +509,13 @@ public class HardwareEngine implements Runnable{
 		else if (output instanceof OutputJoystick) {
 			OutputJoystick outputJ = (OutputJoystick) output;
 			if (outputJ.getJoystickType() == OutputJoystick.JoystickType.DPAD) {
-				float angle = 0;
-				if (output.getName().equals("X"))
-					angle = joystickInfo.findAngle(eventValue,joystickInfo.getLastY());
-				else if (output.getName().equals("Y"))
-					angle = joystickInfo.findAngle(joystickInfo.getLastX(),eventValue);
-				else if (output.getName().equals("RX"))
-					angle = joystickInfo.findAngle(eventValue,joystickInfo.getLastRY());
-				else if (output.getName().equals("RY"))
-					angle = joystickInfo.findAngle(joystickInfo.getLastRX(),eventValue);
+				float angle = switch (name) {
+					case "x" -> joystickInfo.findAngle(eventValue, joystickInfo.getLastY());
+					case "y" -> joystickInfo.findAngle(joystickInfo.getLastX(), eventValue);
+					case "rx" -> joystickInfo.findAngle(eventValue, joystickInfo.getLastRY());
+					case "ry" -> joystickInfo.findAngle(joystickInfo.getLastRX(), eventValue);
+					default -> 0;
+				};
 				int keycode = 0;
 				if ((angle > 0 && angle < JoystickInfo.ACUTE_ANGLE) || (angle > 337.5 && angle <=JoystickInfo.COMPLETE_ANGLE)) {
 					switch (joystickInfo.getLastPress()) {
@@ -663,34 +660,43 @@ public class HardwareEngine implements Runnable{
 				}else joystickInfo.setLastPress(JoystickInfo.LastPress.NONE);
 			}
 			else if (((OutputJoystick) output).getJoystickType() == OutputJoystick.JoystickType.MOUSE) {
-				if (output.getName().equals("X")) {
-					float mouseSpeed = joystickInfo.getMouseSpeed(eventValue, joystickInfo.getLastY());
-					joystickInfo.setMouseSpeedXY(mouseSpeed);
-					if (mouseSpeed == 0) {
-						//TODO release mousepress if enabled
+				switch (name) {
+					case "x" -> {
+						float mouseSpeed = joystickInfo.getMouseSpeed(eventValue, joystickInfo.getLastY());
+						joystickInfo.setMouseSpeedXY(mouseSpeed);
+						joystickInfo.setLastX(eventValue);
+						if (mouseSpeed == 0) {
+							//TODO release mousepress if enabled
+						}
+						break;
 					}
-					
-				} else if (output.getName().equals("Y")) {
-					float mouseSpeed = joystickInfo.getMouseSpeed(joystickInfo.getLastX(), eventValue);
-					joystickInfo.setMouseSpeedXY(mouseSpeed);
-					if (mouseSpeed == 0) {
-						//TODO release mousepress if enabled
+					case "y" -> {
+						float mouseSpeed = joystickInfo.getMouseSpeed(joystickInfo.getLastX(), eventValue);
+						joystickInfo.setMouseSpeedXY(mouseSpeed);
+						joystickInfo.setLastY(eventValue);
+						if (mouseSpeed == 0) {
+							//TODO release mousepress if enabled
+						}
+						break;
 					}
-				
-				} else if (output.getName().equals("RX")) {
-					float mouseSpeed = joystickInfo.getMouseSpeed(eventValue, joystickInfo.getLastRY());
-					joystickInfo.setMouseSpeedRXRY(mouseSpeed);
-					if (mouseSpeed == 0) {
-						//TODO release mousepress if enabled
+					case "rx" -> {
+						float mouseSpeed = joystickInfo.getMouseSpeed(eventValue, joystickInfo.getLastRY());
+						joystickInfo.setMouseSpeedRXRY(mouseSpeed);
+						joystickInfo.setLastRX(eventValue);
+						if (mouseSpeed == 0) {
+							//TODO release mousepress if enabled
+						}
+						break;
 					}
-					
-				} else if (output.getName().equals("RY")) {
-					float mouseSpeed = joystickInfo.getMouseSpeed(joystickInfo.getLastRX(), eventValue);
-					joystickInfo.setMouseSpeedRXRY(mouseSpeed);
-					if (mouseSpeed == 0) {
-						//TODO release mousepress if enabled
+					case "ry" -> {
+						float mouseSpeed = joystickInfo.getMouseSpeed(joystickInfo.getLastRX(), eventValue);
+						joystickInfo.setMouseSpeedRXRY(mouseSpeed);
+						joystickInfo.setLastRY(eventValue);
+						if (mouseSpeed == 0) {
+							//TODO release mousepress if enabled
+						}
+						break;
 					}
-					
 				}
 			}
 		}
@@ -787,16 +793,34 @@ public class HardwareEngine implements Runnable{
 		if (device.isEnabled()) startPolling(device.getProfile());
 		//System.out.println(device.getDeviceInformation().getName()+" ("+controller.getType()+") connected");
 	}
+	public void resetJoystick() {
+		joystickInfo.setMouseSpeedXY(0);
+		joystickInfo.setMouseSpeedRXRY(0);
+		OutputJoystick testJoystick =  (OutputJoystick) keymap.getJoystickMapping("JOYSTICK_XY").getOutput();
+		robot.keyRelease(testJoystick.getKeycode("UP",testJoystick.getKeycode()));
+		robot.keyRelease(testJoystick.getKeycode("DOWN",testJoystick.getKeycode()));
+		robot.keyRelease(testJoystick.getKeycode("LEFT",testJoystick.getKeycode()));
+		robot.keyRelease(testJoystick.getKeycode("RIGHT",testJoystick.getKeycode()));
+		testJoystick =  (OutputJoystick) keymap.getJoystickMapping("JOYSTICK_RXRY").getOutput();
+		robot.keyRelease(testJoystick.getKeycode("UP",testJoystick.getKeycode()));
+		robot.keyRelease(testJoystick.getKeycode("DOWN",testJoystick.getKeycode()));
+		robot.keyRelease(testJoystick.getKeycode("LEFT",testJoystick.getKeycode()));
+		robot.keyRelease(testJoystick.getKeycode("RIGHT",testJoystick.getKeycode()));
+		//TODO resetMouse() and resetKeyboard() (if necessary)
+	}
 	public void close() {
 		closing = true;
-		for (PollEventQueue eventQueue : keyboardEventQueues)
-			eventQueue.close();
+		for (PollEventQueue eventQueue : keyboardEventQueues) eventQueue.close();
 		keyboardEventQueues.clear();
-		if (mouseEventQueue != null) mouseEventQueue.close();
 		for (Keyboard keyboard : keyboards) keyboard = null;
 		keyboards.clear();
+		if (mouseEventQueue != null) mouseEventQueue.close();
+		if (gamepadEventQueue != null) gamepadEventQueue.close();
 		mouse = null;
-		gamepad = null;
+		if (gamepad != null) {
+			resetJoystick();
+			gamepad = null;
+		}
 	}
 
 	// ============= Implemented Methods ============== //

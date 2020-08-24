@@ -1,6 +1,6 @@
 package com.monkygames.kbmaster.input;
-
-import java.awt.*;
+import java.awt.Point;
+import java.awt.MouseInfo;
 
 /**
  * Contains info about the joystick device.
@@ -20,7 +20,7 @@ public class JoystickInfo {
 	private float startingX, startingY, startingRX, startingRY;
 	private long savedTimeXY, savedTimeRXRY;
 	private int radiusXY, radiusRXRY;
-	private enum Quadrant { I, II, III, IV };
+	private enum Quadrant { I, II, III, IV }
 	private LastPress lastPress;
 	
 	///---Constructor---\\\
@@ -94,15 +94,14 @@ public class JoystickInfo {
 			angle = (float) Math.atan(Math.abs(y)/Math.abs(x));
 			angle *= STRAIGHT_ANGLE;
 			angle /= PI;
-			switch (findQuadrant(x,y)) {
-				case II:
-					angle = STRAIGHT_ANGLE-angle;
-					break;
-				case III:
-					angle = STRAIGHT_ANGLE+angle;
-					break;
-				case IV:
-					angle = COMPLETE_ANGLE-angle;
+			Quadrant quadrant = findQuadrant(x,y);
+			if (quadrant != null) {
+				angle = switch (quadrant) {
+					case II -> STRAIGHT_ANGLE - angle;
+					case III -> STRAIGHT_ANGLE + angle;
+					case IV -> COMPLETE_ANGLE - angle;
+					default -> angle;
+				};
 			}
 		}
 		return angle;
@@ -114,7 +113,7 @@ public class JoystickInfo {
 	 * @return The percentage of normal mouse speed.
 	 */
 	public float getMouseSpeed(float x, float y) {
-		float mouseSpeed = distance(0,0,x, y);
+		float mouseSpeed = distance(0,0,x,y);
 		mouseSpeed /= MAX_SPEED;
 		return (mouseSpeed > 1 ? 1 : mouseSpeed);
 	}
@@ -134,12 +133,13 @@ public class JoystickInfo {
 		//Compare the point on the circle to the current mouse position.
 		//Determine which direction is closest to the point and move that way.
 		Point point = MouseInfo.getPointerInfo().getLocation();
-		float[] distances = new float[5];
-		distances[0] = distance(floatCoords[0], floatCoords[1], point.x, point.y+1); //Up
-		distances[1] = distance(floatCoords[0], floatCoords[1], point.x, point.y-1); //Down
-		distances[2] = distance(floatCoords[0], floatCoords[1], point.x-1, point.y); //Left
-		distances[3] = distance(floatCoords[0], floatCoords[1], point.x+1, point.y); //Right
-		distances[4] = distance(floatCoords[0], floatCoords[1], point.x, point.y); //Current position
+		float[] distances = new float[]{
+				distance(floatCoords[0], floatCoords[1], point.x, point.y + 1), //Up
+				distance(floatCoords[0], floatCoords[1], point.x, point.y - 1), //Down
+				distance(floatCoords[0], floatCoords[1], point.x - 1, point.y), //Left
+				distance(floatCoords[0], floatCoords[1], point.x + 1, point.y), //Right
+				distance(floatCoords[0], floatCoords[1], point.x, point.y) //Current position
+		};
 		int position = 0;
 		float shortestDistance = distances[position];
 		for (int i = 1; i < distances.length; i++) {
@@ -149,24 +149,17 @@ public class JoystickInfo {
 			}
 		}
 		int[] intCoords;
+		// Increase radius but do not move
 		switch (position) {
-			case 0:
-				intCoords = new int[]{point.x,point.y+1}; //Up
-				break;
-			case 1:
-				intCoords = new int[]{point.x,point.y-1}; //Down
-				break;
-			case 2:
-				intCoords = new int[]{point.x-1,point.y}; //Left
-				break;
-			case 3:
-				intCoords = new int[]{point.x+1,point.y}; //Right
-				break;
-			default:
-				// Increase radius but do not move
-				intCoords = new int[]{point.x, point.y};
+			case 0 -> intCoords = new int[]{ point.x, point.y + 1 }; //Up
+			case 1 -> intCoords = new int[]{ point.x, point.y - 1 }; //Down
+			case 2 -> intCoords = new int[]{ point.x - 1, point.y }; //Left
+			case 3 -> intCoords = new int[]{ point.x + 1, point.y }; //Right
+			default -> {
+				intCoords = new int[]{ point.x, point.y };
 				if (jType.equals("RXRY")) radiusRXRY++;
 				else radiusXY++;
+			}
 		}
 		// If the new point is outside the radius, increase the radius
 		float dist = distance(intCoords[0],intCoords[1], x, y);
@@ -191,7 +184,7 @@ public class JoystickInfo {
 	/**
 	 * The distance formula.
 	 */
-	public float distance(float x1, float y1, float x2, float y2) {
+	private static float distance(float x1, float y1, float x2, float y2) {
 		x2-=x1;
 		x2*=x2;
 		y2-=y1;
@@ -207,7 +200,7 @@ public class JoystickInfo {
 		angle /= STRAIGHT_ANGLE;
 		float newX = (float) (radius * Math.cos(angle));
 		float newY = (float) (radius * Math.sin(angle));
-		newY*=-1; //y-axis is inverse for the dualshock 4
+		newY*=-1; //y-axis is inverse for joysticks
 		newX += x;
 		newY += y;
 		return new float[]{ newX, newY };

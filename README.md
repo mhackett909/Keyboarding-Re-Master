@@ -21,10 +21,13 @@ Alternatively, you may try the following (requires Gradle installation):
 Additional developer documentation is [here](https://kbmaster.atlassian.net/wiki/display/KBM/Developer+Documentation)
 
 ## Support
-Please see /docs/Keyboarding (Re)Master.doc for technical assistance (including information about setting up support for your own device). The original Keyboarding Master documentation is also available there. Additionally, you may email me at mhackett909@gmail.com with any questions or comments.
+* If your device cannot be read, try updating permissions: sudo chmod -R o+r /dev/input
+* Please see /docs/Keyboarding (Re)Master.doc for technical assistance (including information about setting up support for your own device). The original Keyboarding Master documentation is also available there. 
+* Additionally, you may email me at mhackett909@gmail.com with any questions or comments.
 
 ## Technical
 * *Runtime*: Java 14
 * *IDE*: IntelliJ Community 2020.2
 * *OS*: Ubuntu 20.04
+
 
