@@ -17,7 +17,6 @@ import java.awt.Robot;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -718,9 +717,8 @@ public class HardwareEngine implements Runnable{
 	}
 	private void scanHardware(Controller[] controllers){
 		//System.out.println("///---Scanning Controllers---\\\\\\");
- 		if (closing) return;
+		if (closing) return;
 		boolean found = false;
-
 		for(Controller controller: controllers){
 			//System.out.println("Controller: "+controller+" ("+controller.getType()+":"+controller.getComponents().length+")");
 			String controllerName = controller.getName(), jinputName = device.getDeviceInformation().getJinputName();
@@ -730,12 +728,10 @@ public class HardwareEngine implements Runnable{
 				hardwareConnected(controller);
 			}
 		}
-
 		if (!found || pollFail) {
 			hardwareDisconnected();
 			pollFail = false;
 		}
-
 	}
 	/**
 	 * Set if hardware has been disconnected.
@@ -768,9 +764,7 @@ public class HardwareEngine implements Runnable{
 				}
 			}
 			else if (mouse == controller || gamepad == controller) return;
-			// return;
 		}
-
 		if (type == Controller.Type.KEYBOARD) {
 			Keyboard keyboard;
 			keyboard = (Keyboard)controller;
