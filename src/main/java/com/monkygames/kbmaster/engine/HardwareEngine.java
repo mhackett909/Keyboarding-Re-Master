@@ -17,6 +17,7 @@ import java.awt.Robot;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,8 +46,6 @@ public class HardwareEngine implements Runnable{
 	private JoystickInfo joystickInfo;
 	private ArrayList<PollEventQueue> keyboardEventQueues;
 	private PollEventQueue mouseEventQueue, gamepadEventQueue;
-	private boolean closing;
-
 
 	/**
 	 * Timer for checking hardware status.
@@ -57,6 +56,10 @@ public class HardwareEngine implements Runnable{
 	 * True if polling and false otherwise.
 	 */
 	private boolean isPolling = false;
+	/**
+	 * Used to prevent scanning if engine is closing.
+	 */
+	private boolean closing;
 	/**
 	 * Controls the thread loop for polling.
 	 */
@@ -715,8 +718,9 @@ public class HardwareEngine implements Runnable{
 	}
 	private void scanHardware(Controller[] controllers){
 		//System.out.println("///---Scanning Controllers---\\\\\\");
-		if (closing) return;
+ 		if (closing) return;
 		boolean found = false;
+
 		for(Controller controller: controllers){
 			//System.out.println("Controller: "+controller+" ("+controller.getType()+":"+controller.getComponents().length+")");
 			String controllerName = controller.getName(), jinputName = device.getDeviceInformation().getJinputName();
@@ -726,10 +730,12 @@ public class HardwareEngine implements Runnable{
 				hardwareConnected(controller);
 			}
 		}
+
 		if (!found || pollFail) {
 			hardwareDisconnected();
 			pollFail = false;
 		}
+
 	}
 	/**
 	 * Set if hardware has been disconnected.
@@ -755,11 +761,16 @@ public class HardwareEngine implements Runnable{
 		if (hardwareExist()) {
 			if (type == Controller.Type.KEYBOARD) {
 				for (Keyboard keyboard : keyboards) {
-					if (keyboard == controller) return;
+					String controllerName = controller.getName();
+					String keyboardName = keyboard.getName();
+					if (controllerName.contains(keyboardName)
+							|| keyboardName.contains(controllerName)) return;
 				}
 			}
 			else if (mouse == controller || gamepad == controller) return;
+			// return;
 		}
+
 		if (type == Controller.Type.KEYBOARD) {
 			Keyboard keyboard;
 			keyboard = (Keyboard)controller;
