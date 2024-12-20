@@ -6,7 +6,7 @@ The keyboard master provides its users with the ability to custom configure thei
 Additional documentation can be found [here](https://kbmaster.atlassian.net/wiki/display/KBM/Home)
 
 ## Compiling
-Keyboarding (Re)Master uses Gradle 6.5 as the build tool.  Issue the following commands:
+Keyboarding (Re)Master uses Gradle 7.6.1 as the build tool.  Issue the following commands:
 
 * *./gradlew build*: Builds The project
 * *./gradlew run*: Runs the project
@@ -22,12 +22,13 @@ Additional developer documentation is [here](https://kbmaster.atlassian.net/wiki
 
 ## Support
 * If your device cannot be read, try updating permissions: sudo chmod -R o+r /dev/input
+  * You may also try running the application as sudo: sudo ./gradlew run
 * Please see /docs/Keyboarding (Re)Master.doc for technical assistance (including information about setting up support for your own device). The original Keyboarding Master documentation is also available there. 
 * Additionally, you may email me at mhackett909@gmail.com with any questions or comments.
 
 ## Technical
-* *Runtime*: Java 14
-* *IDE*: IntelliJ Community 2020.2
-* *OS*: Ubuntu 20.04
+* *Runtime*: Java 17
+* *IDE*: IntelliJ Community 2024.3
+* *OS*: Ubuntu 22.04
 
 
